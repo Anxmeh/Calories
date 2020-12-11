@@ -83,6 +83,66 @@ namespace CalorieCounter.Entities
             }
         }
 
+        public static void SeedProducts(EFContext _context)
+        {
+            if (_context.Products.Count() <= 0)
+            {
+                var products = new List<Product>();
+                products.Add(new Product
+                {
+                    Name = "Сhicken breast",
+                    Protein = 23.6,
+                    Fat = 1.9,
+                    Carbohydrate = 0.4,
+                    Calories = 113
+                });
+                products.Add(new Product
+                {
+                    Name = "Boilde buckwheat",
+                    Protein = 3.9,
+                    Fat = 1.4,
+                    Carbohydrate = 20.1,
+                    Calories = 109
+                });
+                products.Add(new Product
+                {
+                    Name = "Oat flakes",
+                    Protein = 10.8,
+                    Fat = 3.2,
+                    Carbohydrate = 59.5,
+                    Calories = 310
+                });
+                products.Add(new Product
+                {
+                    Name = "Milk 2.5%",
+                    Protein = 2.9,
+                    Fat = 2.5,
+                    Carbohydrate = 4.8,
+                    Calories = 53
+                });
+                products.Add(new Product
+                {
+                    Name = "Coffee",
+                    Protein = 0.2,
+                    Fat = 0.5,
+                    Carbohydrate = 0.2,
+                    Calories = 6
+                });
+                products.Add(new Product
+                {
+                    Name = "Dark chocolate",
+                    Protein = 6.3,
+                    Fat = 31.8,
+                    Carbohydrate = 53.7,
+                    Calories = 526
+                });
+
+                foreach (var product in products)
+                    _context.Products.Add(product);
+                _context.SaveChanges();
+            }
+        }
+
         public static void SeedDataByAS(IServiceProvider services)
         {
             using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
@@ -91,8 +151,8 @@ namespace CalorieCounter.Entities
                 var managerRole = scope.ServiceProvider.GetRequiredService<RoleManager<DbRole>>();
                 var context = scope.ServiceProvider.GetRequiredService<EFContext>();
                 SeederDB.SeedData(manager, managerRole);
-              //  SeederDB.SeedCategories(context);
-               
+                SeederDB.SeedProducts(context);
+
             }
         }
     }

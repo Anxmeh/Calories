@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main"
+        android:icon="@drawable/ic_main"
+        android:title="Main Page" />
+    <item
+        android:id="@+id/categories_v1"
+        android:icon="@drawable/ic_categories"
+        android:title="Categories v1" />
+    <item
+        android:id="@+id/categories_v2"
+        android:icon="@drawable/ic_category"
+        android:title="Categories v2" />
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title="Search" />
+    <item
+        android:id="@+id/login"
+        android:icon="@drawable/ic_login"
+        android:title="Login" />
+    <item
+        android:id="@+id/register"
+        android:icon="@drawable/ic_register"
+        android:title="Register" />
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_user"
+        android:title="Profile" />
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_exit"
+        android:title="Logout" />
+    <item
+        android:id="@+id/upload"
+        android:icon="@drawable/ic_categories"
+        android:title="Upload" />
+
+</menu>

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">CaloriesCounter</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="passwordConfirm">Confirm Password</string>
+    <string name="signIn">Sign In</string>
+    <string name="signUp">Sign Up</string>
+    <string name="empty">Empty</string>
+    <string name="selectImage">Оберіть фото</string>
+    <string name="editProfile">Edit Profile</string>
+    <string name="saveChanges">Save Changes</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="productName">Product Name</string>
+    <string name="Calories">Calories: </string>
+    <string name="Protein">Protein: </string>
+    <string name="Carbohydrate">Carbs: </string>
+    <string name="Fat">Fat: </string>
+    <string name="AddProduct">Add product</string>
+</resources>
