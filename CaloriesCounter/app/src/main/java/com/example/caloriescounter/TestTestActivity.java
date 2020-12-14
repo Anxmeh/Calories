@@ -4,22 +4,25 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.caloriescounter.adapters.ProductAdapter;
+import com.example.caloriescounter.models.MyFragment;
 import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.utils.CommonUtils;
@@ -30,9 +33,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CreateNewDishActivity extends AppCompatActivity {
+public class TestTestActivity extends AppCompatActivity {
 
-    //private GridView gridView;
+    EditText textActivity;
+    Button buttonSendToFragment;
+   // MyFragment myFragment;
+
     private ListView listView;
     private List<Product> products;
     EditText inputSearch;
@@ -41,11 +47,15 @@ public class CreateNewDishActivity extends AppCompatActivity {
     final Context context = this;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_new_dish);
 
-        final TextView addedprod = findViewById(R.id.tvListProducts);
+        setContentView(R.layout.activity_test_test);
+
+       // textActivity = (EditText) findViewById(R.id.activitytext);
+        buttonSendToFragment = (Button) findViewById(R.id.sendtofragment);
+
+        final TextView addedprod = findViewById(R.id.etProduct);
         listView = findViewById(R.id.listViewProducts);
         inputSearch = (EditText) findViewById(R.id.inputSearch);
 
@@ -60,7 +70,7 @@ public class CreateNewDishActivity extends AppCompatActivity {
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             products = response.body();
-                            final ProductAdapter adapter = new ProductAdapter(products, CreateNewDishActivity.this);
+                            final ProductAdapter adapter = new ProductAdapter(products, TestTestActivity.this);
                             //customAdapter = new ProductAdapter(products, CreateNewDishActivity.this);
 
                             listView.setAdapter(adapter);
@@ -72,7 +82,7 @@ public class CreateNewDishActivity extends AppCompatActivity {
                                 public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                                     //Когда пользователь вводит какой-нибудь текст:
                                     adapter.getFilter().filter(cs);
-                                   // CreateNewDishActivity.this.adapter.getFilter().filter(cs);
+                                    // CreateNewDishActivity.this.adapter.getFilter().filter(cs);
 
                                 }
 
@@ -95,7 +105,7 @@ public class CreateNewDishActivity extends AppCompatActivity {
                                 @Override
                                 public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(CreateNewDishActivity.this);
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(TestTestActivity.this);
                                     builder.setMessage("Are you sure you want to delete category")
                                             .setCancelable(false)
                                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -126,12 +136,8 @@ public class CreateNewDishActivity extends AppCompatActivity {
                             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    //Log.d("itemClick: position = " + position + ", id = " + id);
-                                   // Log.d("itemClick: position = " + position + ", "tete");
-
                                     Product product = (Product) adapter.getItem(position);
                                     Product product2 = products.get(position);
-
                                     addedprod.append(product.getName() + " ");
 
 
@@ -156,6 +162,29 @@ public class CreateNewDishActivity extends AppCompatActivity {
                                                         public void onClick(DialogInterface dialog,int id) {
                                                             //Вводим текст и отображаем в строке ввода на основном экране:
                                                             addedprod.append(userInput.getText() + "\n");
+
+                                                            // получим экземпляр FragmentTransaction из нашей Activity
+                                                            FragmentManager fragmentManager = getFragmentManager();
+                                                            FragmentTransaction fragmentTransaction = fragmentManager
+                                                                    .beginTransaction();
+
+                                                            // добавляем фрагмент
+                                                         //  MyFragment myFragment = new MyFragment();
+                                                            MyFragment myFragment = MyFragment.newInstance(product.getName());
+                                                            //fragmentTransaction.add(R.id.myfragment, myFragment);
+                                                            fragmentTransaction.add(R.id.container, myFragment);
+                                                            fragmentTransaction.commit();
+
+                                                            buttonSendToFragment.setOnClickListener(new View.OnClickListener() {
+
+                                                                @Override
+                                                                public void onClick(View arg0) {
+                                                                    // TODO Auto-generated method stub
+                                                                   // String text = textActivity.getText().toString();
+                                                                   // TextView textFragment = (TextView) findViewById(R.id.prodInList);
+                                                                   // textFragment.setText(product.getName());
+                                                                }
+                                                            });
                                                         }
                                                     })
                                             .setNegativeButton("Отмена",
@@ -172,28 +201,11 @@ public class CreateNewDishActivity extends AppCompatActivity {
                                     alertDialog.show();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                     // Intent intent = new Intent(ProductsActivity.this, ClickedProductActivity.class).
                                     //putExtra("product", product);
                                     //  startActivity(intent);
+
+
                                 }
                             });
 
@@ -209,5 +221,36 @@ public class CreateNewDishActivity extends AppCompatActivity {
                         t.printStackTrace();
                     }
                 });
+
+
+
+
+
+
+
+
+
+
+//        // получим экземпляр FragmentTransaction из нашей Activity
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager
+//                .beginTransaction();
+//
+//        // добавляем фрагмент
+//        myFragment = new MyFragment();
+//        fragmentTransaction.add(R.id.myfragment, myFragment);
+//        fragmentTransaction.commit();
+//
+//        buttonSendToFragment.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View arg0) {
+//                // TODO Auto-generated method stub
+//                String text = textActivity.getText().toString();
+//                TextView textFragment = (TextView) findViewById(R.id.fragmenttext);
+//                textFragment.setText(text);
+//            }
+//        });
+
     }
 }

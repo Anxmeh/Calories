@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickList(View v) {
-        Intent intent = new Intent(this, ProductsActivity.class);
+        Intent intent = new Intent(this, CreateNewDishActivity.class);
         startActivity(intent);
     }
 
@@ -61,8 +61,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+//    public void btnAddNewDish(View v) {
+//        Intent intent = new Intent(this, CreateNewDishActivity.class);
+//        startActivity(intent);
+//    }
+
     public void btnAddNewDish(View v) {
-        Intent intent = new Intent(this, CreateNewDishActivity.class);
+        Intent intent = new Intent(this, TestTestActivity.class);
         startActivity(intent);
     }
 

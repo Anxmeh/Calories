@@ -17,7 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CaloriesCounter"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddProductActivity"></activity>
+        <activity android:name=".TestTestActivity"></activity>
+        <activity android:name=".TestProdActivity" />
+        <activity android:name=".TestActivity" />
+        <activity android:name=".AddProductActivity" />
         <activity android:name=".CreateNewDishActivity" />
         <activity android:name=".ClickedProductActivity" />
         <activity android:name=".ProductsActivity" />

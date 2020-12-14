@@ -9,12 +9,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,9 +30,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CreateNewDishActivity extends AppCompatActivity {
+public class TestProdActivity extends AppCompatActivity {
 
-    //private GridView gridView;
     private ListView listView;
     private List<Product> products;
     EditText inputSearch;
@@ -40,12 +39,24 @@ public class CreateNewDishActivity extends AppCompatActivity {
 
     final Context context = this;
 
+    private LinearLayout mLayout;
+    private EditText mEditText;
+    private Button mButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_new_dish);
+        setContentView(R.layout.activity_test_prod);
 
-        final TextView addedprod = findViewById(R.id.tvListProducts);
+//        mLayout = (LinearLayout) findViewById(R.id.linearLayout);
+//        mEditText = (EditText) findViewById(R.id.editText);
+//        mButton = (Button) findViewById(R.id.button);
+//        mButton.setOnClickListener(onClick());
+//        TextView textView = new TextView(this);
+//        textView.setText("New text");
+
+
+        final TextView addedprod = findViewById(R.id.etProduct);
         listView = findViewById(R.id.listViewProducts);
         inputSearch = (EditText) findViewById(R.id.inputSearch);
 
@@ -60,7 +71,7 @@ public class CreateNewDishActivity extends AppCompatActivity {
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             products = response.body();
-                            final ProductAdapter adapter = new ProductAdapter(products, CreateNewDishActivity.this);
+                            final ProductAdapter adapter = new ProductAdapter(products, TestProdActivity.this);
                             //customAdapter = new ProductAdapter(products, CreateNewDishActivity.this);
 
                             listView.setAdapter(adapter);
@@ -72,7 +83,7 @@ public class CreateNewDishActivity extends AppCompatActivity {
                                 public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                                     //Когда пользователь вводит какой-нибудь текст:
                                     adapter.getFilter().filter(cs);
-                                   // CreateNewDishActivity.this.adapter.getFilter().filter(cs);
+                                    // CreateNewDishActivity.this.adapter.getFilter().filter(cs);
 
                                 }
 
@@ -95,7 +106,7 @@ public class CreateNewDishActivity extends AppCompatActivity {
                                 @Override
                                 public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(CreateNewDishActivity.this);
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(TestProdActivity.this);
                                     builder.setMessage("Are you sure you want to delete category")
                                             .setCancelable(false)
                                             .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -126,12 +137,8 @@ public class CreateNewDishActivity extends AppCompatActivity {
                             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    //Log.d("itemClick: position = " + position + ", id = " + id);
-                                   // Log.d("itemClick: position = " + position + ", "tete");
-
                                     Product product = (Product) adapter.getItem(position);
                                     Product product2 = products.get(position);
-
                                     addedprod.append(product.getName() + " ");
 
 
@@ -156,6 +163,13 @@ public class CreateNewDishActivity extends AppCompatActivity {
                                                         public void onClick(DialogInterface dialog,int id) {
                                                             //Вводим текст и отображаем в строке ввода на основном экране:
                                                             addedprod.append(userInput.getText() + "\n");
+
+                                                            LayoutInflater ltInflater = getLayoutInflater();
+                                                            LinearLayout subLayoutFieldsForBtnAdd = (LinearLayout) findViewById(R.id.subLayoutFields);
+                                                            View view1 = ltInflater.inflate(R.layout.sub_fields_prod, subLayoutFieldsForBtnAdd, true);
+                                                            EditText et = (EditText)findViewById(R.id.prodInList);
+
+                                                            et.setText(product.getName());
                                                         }
                                                     })
                                             .setNegativeButton("Отмена",
@@ -172,28 +186,11 @@ public class CreateNewDishActivity extends AppCompatActivity {
                                     alertDialog.show();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                     // Intent intent = new Intent(ProductsActivity.this, ClickedProductActivity.class).
                                     //putExtra("product", product);
                                     //  startActivity(intent);
+
+
                                 }
                             });
 
@@ -210,4 +207,43 @@ public class CreateNewDishActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+
+
+
+
+    public void onClickAdd(View view) {
+        LayoutInflater ltInflater = getLayoutInflater();
+        LinearLayout subLayoutFieldsForBtnAdd = (LinearLayout) findViewById(R.id.subLayoutFields);
+        View view1 = ltInflater.inflate(R.layout.sub_fields_prod, subLayoutFieldsForBtnAdd, true);
+        EditText et = (EditText)findViewById(R.id.prodInList);
+        et.setText("This is not the original Text defined in the XML layout !");
+
+       // mEditText = (EditText) findViewById(R.id.editText);
+    }
+
+    public void onClickRemove(View v) {
+        View v1 = (View) v.getParent();
+        LinearLayout subLayoutFieldsForBtnRemove = (LinearLayout) findViewById(R.id.subLayoutFields);
+        subLayoutFieldsForBtnRemove.removeView((LinearLayout)v1.getParent());
+    }
+
+//    private View.OnClickListener onClick() {
+//        return new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                mLayout.addView(createNewTextView(mEditText.getText().toString()));
+//            }
+//        };
+//    }
+//
+//    private TextView createNewTextView(String text) {
+//        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        final TextView textView = new TextView(this);
+//        textView.setLayoutParams(lparams);
+//        textView.setText("New text: " + text);
+//        return textView;
+//    }
 }

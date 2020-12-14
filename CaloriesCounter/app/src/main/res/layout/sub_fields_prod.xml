@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="false"
+    android:id="@+id/detailsLayout"
+    android:focusableInTouchMode="true">
+
+    <EditText android:id="@+id/prodInList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Prod"
+        android:inputType="textVisiblePassword"/>
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="ADD"-->
+<!--            android:id="@+id/btnAdd"-->
+<!--            android:onClick="onClickAdd" />-->
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="REMOVE"
+            android:id="@+id/btnRemove"
+            android:onClick="onClickRemove" />
+
+    </LinearLayout>
+</LinearLayout>

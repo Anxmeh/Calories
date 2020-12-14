@@ -52,12 +52,20 @@ public class ProductAdapter extends BaseAdapter  implements Filterable {
         return null;
     }
 
+//    @Override
+//    public long getItemId(int position) {
+//        if (products.size() < position)
+//            return 0;
+//
+//        return products.get(position).getId();
+//    }
+
     @Override
     public long getItemId(int position) {
         if (products.size() < position)
             return 0;
 
-        return products.get(position).getId();
+        return filteredProducts.get(position).getId();
     }
 
     @Override
