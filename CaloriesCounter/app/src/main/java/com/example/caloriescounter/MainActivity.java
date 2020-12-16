@@ -66,10 +66,16 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(intent);
 //    }
 
+
     public void btnAddNewDish(View v) {
-        Intent intent = new Intent(this, TestTestActivity.class);
+        Intent intent = new Intent(this, RecyclerActivity.class);
         startActivity(intent);
     }
+
+//    public void btnAddNewDish(View v) {
+//        Intent intent = new Intent(this, TestActivity.class);
+//        startActivity(intent);
+//    }
 
     @SuppressLint("NonConstantResourceId")
     public boolean onNavItemSelected(MenuItem menuItem) {

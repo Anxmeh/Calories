@@ -14,6 +14,7 @@ namespace CalorieCounter.Entities
     {
         public virtual DbSet<UserProfile> UserProfile { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Dish> ProductsInDish { get; set; }
         public EFContext(DbContextOptions<EFContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder)
         {

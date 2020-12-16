@@ -1,6 +1,9 @@
 package com.example.caloriescounter.network;
 
 import com.example.caloriescounter.models.AddProductView;
+import com.example.caloriescounter.models.Dish;
+import com.example.caloriescounter.models.DishIngredientsView;
+import com.example.caloriescounter.models.Ingredients;
 import com.example.caloriescounter.models.LoginView;
 import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.models.RegisterView;
@@ -28,6 +31,21 @@ public interface JSONPlaceHolderApi {
 
     @POST("/api/products/addproduct")
     Call<Product> addProduct(@Body AddProductView model);
+
+    @POST("/api/products/removeproduct")
+    Call<Product> removeProduct(@Body DishIngredientsView model);
+
+    @POST("/api/products/addproducttodish")
+    Call<Product> addProductToDish(@Body DishIngredientsView model);
+
+    @POST("/api/products/removeproductindish")
+    Call<Product> removeProductInDish(@Body DishIngredientsView model);
+
+    @GET("/api/dish/calculatedish")
+    Call<Dish> calculateDish();
+
+    @GET("/api/dish/productsindish")
+    Call<List<Ingredients>> getProductsinDish();
 //
 //    @POST("/api/profile/info")
 //    Call<UserView> profile();

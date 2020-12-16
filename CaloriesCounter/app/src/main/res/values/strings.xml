@@ -18,4 +18,5 @@
     <string name="Carbohydrate">Carbs: </string>
     <string name="Fat">Fat: </string>
     <string name="AddProduct">Add product</string>
+    <string name="newDish">New dish</string>
 </resources>

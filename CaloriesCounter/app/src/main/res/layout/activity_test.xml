@@ -1,66 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:nestedScrollingEnabled="false"
-android:id="@+id/generalLayout">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:fitsSystemWindows="true"
+    tools:ignore="ExtraText">
+    tools:context=".TestActivity">
 
-<LinearLayout
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="56dp"
-    android:gravity="center"
-    android:background="#7d65258a">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="FILL FIELDS"
-        android:id="@+id/textView" />
-</LinearLayout>
 
-<ScrollView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/subLayoutFields">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/txtName"
-            android:hint="name" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:ems="10"
-            android:id="@+id/txtPhone"
-            android:layout_gravity="center_horizontal"
-            android:hint="phone" />
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ADD"
-                android:id="@+id/btnAdd"
-                android:onClick="onClickAdd" />
-
-        </LinearLayout>
-    </LinearLayout>
 </ScrollView>
-</LinearLayout>

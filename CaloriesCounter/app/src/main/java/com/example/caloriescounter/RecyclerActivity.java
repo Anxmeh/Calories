@@ -1,59 +1,59 @@
 package com.example.caloriescounter;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.caloriescounter.adapters.ProductAdapter;
-import com.example.caloriescounter.models.AddProductView;
+import com.example.caloriescounter.adapters.ProductCardRecyclerViewAdapter;
+import com.example.caloriescounter.click_listeners.OnDeleteListener;
 import com.example.caloriescounter.models.Dish;
 import com.example.caloriescounter.models.DishIngredientsView;
+import com.example.caloriescounter.models.Ingredients;
 import com.example.caloriescounter.models.MyFragment;
 import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.utils.CommonUtils;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TestTestActivity extends AppCompatActivity {
+public class RecyclerActivity extends AppCompatActivity implements OnDeleteListener {
 
-    EditText textActivity;
-   // Button buttonSendToFragment;
-   // MyFragment myFragment;
-   private Product addedProduct;
+    private static final String TAG = RecyclerActivity.class.getSimpleName();
+    private RecyclerView recyclerView;
+    private List<Product> products;
+    private List<Ingredients> prodsindish;
+    private ProductCardRecyclerViewAdapter adapter;
+
+    private Product addedProduct;
 
     private ListView listView;
-    private List<Product> products;
     private Dish dish;
-   // private List<Product> addedProducts;
     private ArrayList<Product> addedProducts2 = new ArrayList<Product>();
     private double dishCalories = 0;
     private double dishWeight = 0;
@@ -64,53 +64,18 @@ public class TestTestActivity extends AppCompatActivity {
     final Context context = this;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_test_test);
-
-       // textActivity = (EditText) findViewById(R.id.activitytext);
-       // buttonSendToFragment = (Button) findViewById(R.id.sendtofragment);
+        setContentView(R.layout.activity_recycler);
+        recyclerView = findViewById(R.id.recycler_view);
 
         final TextView addedprod = findViewById(R.id.resultDish);
         listView = findViewById(R.id.listViewProducts);
         inputSearch = (EditText) findViewById(R.id.inputSearch);
 
-/////////////////////////////////////////
-//        CommonUtils.showLoading(this);
-//        NetworkService.getInstance()
-//                .getJSONApi()
-//                .calculateDish()
-//                .enqueue(new Callback<Dish>() {
-//                    @Override
-//                    public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response) {
-//                        CommonUtils.hideLoading();
-//                        if (response.errorBody() == null && response.isSuccessful()) {
-//                            assert response.body() != null;
-//                            dish = response.body();
-//                            addedprod.setText("Weight: " +dish.getDishWeight() + ", Calories: " + dish.getDishCalories());
-//
-//                        } else {
-//                            dish = null;
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t) {
-//                        CommonUtils.hideLoading();
-//                        dish = null;
-//                        t.printStackTrace();
-//                    }
-//                });
-
-//        ////////////////////////////////////////////////////////////////////
+        setRecyclerView();
 
 
-
-
-
-
-      //  CommonUtils.showLoading(this);
         NetworkService.getInstance()
                 .getJSONApi()
                 .getProducts()
@@ -121,16 +86,16 @@ public class TestTestActivity extends AppCompatActivity {
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             products = response.body();
-                            final ProductAdapter adapter = new ProductAdapter(products, TestTestActivity.this);
-                                                       listView.setAdapter(adapter);
+                            final ProductAdapter adapterP = new ProductAdapter(products, RecyclerActivity.this);
+                            listView.setAdapter(adapterP);
 
 
                             inputSearch.addTextChangedListener(new TextWatcher() {
 
                                 @Override
                                 public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                                                                    adapter.getFilter().filter(cs);
-                                                              }
+                                    adapterP.getFilter().filter(cs);
+                                }
 
                                 @Override
                                 public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
@@ -145,14 +110,14 @@ public class TestTestActivity extends AppCompatActivity {
                             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Product product = (Product) adapter.getItem(position);
-                                   // Product product2 = products.get(position);
+                                    Product product = (Product) adapterP.getItem(position);
+                                    // Product product2 = products.get(position);
                                     addedProducts2.add(product);
                                     //dishCalories = 0;
-                                   // caloriesInProduct =product.getCalories();
+                                    // caloriesInProduct =product.getCalories();
 
                                     //addedprod.append(product.getName() + " ");
-                                   // addedprod.setText(Integer.toString(addedProducts2.size()));
+                                    // addedprod.setText(Integer.toString(addedProducts2.size()));
 
 
                                     //Получаем вид с файла prompt.xml, который применим для диалогового окна:
@@ -177,22 +142,22 @@ public class TestTestActivity extends AppCompatActivity {
                                                             //Вводим текст и отображаем в строке ввода на основном экране:
                                                             caloriesInProduct = product.getCalories() * Double.parseDouble(userInput.getText().toString())/100;
                                                             dishCalories += caloriesInProduct;
-                                                           // addedprod.setText(Double.toString(dishCalories));
+                                                            // addedprod.setText(Double.toString(dishCalories));
 
                                                             // получим экземпляр FragmentTransaction из нашей Activity
-                                                            FragmentManager fragmentManager = getFragmentManager();
-                                                            FragmentTransaction fragmentTransaction = fragmentManager
-                                                                    .beginTransaction();
-
-                                                            // добавляем фрагмент
-                                                                                                                    MyFragment myFragment = MyFragment.newInstance(product.getName(), userInput.getText().toString(),
-                                                                    Double.toString(product.getProtein()), Double.toString(product.getFat()),
-                                                                    Double.toString(product.getCarbohydrate()), Double.toString(product.getCarbohydrate()));
-                                                            //fragmentTransaction.add(R.id.myfragment, myFragment);
-                                                            fragmentTransaction.add(R.id.container, myFragment);
-                                                            fragmentTransaction.commit();
-
-                                                           // CommonUtils.showLoading(this);
+//                                                            FragmentManager fragmentManager = getFragmentManager();
+//                                                            FragmentTransaction fragmentTransaction = fragmentManager
+//                                                                    .beginTransaction();
+//
+//                                                            // добавляем фрагмент
+//                                                            MyFragment myFragment = MyFragment.newInstance(product.getName(), userInput.getText().toString(),
+//                                                                    Double.toString(product.getProtein()), Double.toString(product.getFat()),
+//                                                                    Double.toString(product.getCarbohydrate()), Double.toString(product.getCarbohydrate()));
+//                                                            //fragmentTransaction.add(R.id.myfragment, myFragment);
+//                                                            fragmentTransaction.add(R.id.container, myFragment);
+//                                                            fragmentTransaction.commit();
+//
+//                                                            // CommonUtils.showLoading(this);this
 
                                                             final DishIngredientsView modelDish = new DishIngredientsView();
                                                             modelDish.setProductName(product.getName());
@@ -228,8 +193,41 @@ public class TestTestActivity extends AppCompatActivity {
                                                                                                 CommonUtils.hideLoading();
                                                                                                 if (response.errorBody() == null && response.isSuccessful()) {
                                                                                                     assert response.body() != null;
+
                                                                                                     dish = response.body();
                                                                                                     addedprod.setText("Weight: " +dish.getDishWeight() + ", Calories: " + dish.getDishCalories());
+
+                                                                                                    //////////////////////
+
+                                                                                                    NetworkService.getInstance()
+                                                                                                            .getJSONApi()
+                                                                                                            .getProductsinDish()
+                                                                                                            .enqueue(new Callback<List<Ingredients>>() {
+                                                                                                                @Override
+                                                                                                                public void onResponse(@NonNull Call<List<Ingredients>> call, @NonNull Response<List<Ingredients>> response) {
+                                                                                                                    CommonUtils.hideLoading();
+                                                                                                                    if (response.errorBody() == null && response.isSuccessful()) {
+                                                                                                                        assert response.body() != null;
+                                                                                                                        if (prodsindish != null)
+                                                                                                                        prodsindish.clear();
+                                                                                                                        prodsindish.addAll(0,response.body());
+                                                                                                                        adapter.notifyDataSetChanged();
+                                                                                                                    } else {
+                                                                                                                        prodsindish = null;
+                                                                                                                    }
+                                                                                                                }
+
+                                                                                                                @Override
+                                                                                                                public void onFailure(@NonNull Call<List<Ingredients>> call, @NonNull Throwable t) {
+                                                                                                                    CommonUtils.hideLoading();
+                                                                                                                    prodsindish = null;
+                                                                                                                    t.printStackTrace();
+                                                                                                                }
+                                                                                                            });
+                                                                                                    /////////////////////
+
+
+
 
                                                                                                 } else {
                                                                                                     dish = null;
@@ -305,8 +303,40 @@ public class TestTestActivity extends AppCompatActivity {
                 });
 
 
-        //// тут
 
 
+
+    }
+
+    private void setRecyclerView() {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1,
+                GridLayoutManager.VERTICAL, false));
+        prodsindish = new ArrayList<>();
+        adapter = new ProductCardRecyclerViewAdapter(prodsindish, this, this);
+
+        recyclerView.setAdapter(adapter);
+
+        int largePadding = 16;
+        int smallPadding = 4;
+       // recyclerView.addItemDecoration(new CategoryGridItemDecoration(largePadding, smallPadding));
+    }
+
+    @Override
+    public void deleteItem(final Ingredients product) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Видалення")
+                .setMessage("Ви дійсно бажаєте видалити \"" + product.getProductName() + "\"?")
+                .setNegativeButton("Скасувати", null)
+                .setPositiveButton("Видалити", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.e(TAG, "Delete product by name "+ product.getProductName());
+                        products.remove(product);
+                        adapter.notifyDataSetChanged();
+                        //deleteConfirm(productEntry);
+                    }
+                })
+                .show();
     }
 }

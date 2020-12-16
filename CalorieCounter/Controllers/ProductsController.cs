@@ -57,6 +57,7 @@ namespace CalorieCounter.Controllers
             };
             _context.Products.Add(product);
             _context.SaveChanges();
+              
             return Ok(new ProductViewModel
             {
                 Name = product.Name,
@@ -65,6 +66,57 @@ namespace CalorieCounter.Controllers
                 Carbohydrate = product.Carbohydrate,
                 Fat = product.Fat
             });
+        }
+
+        [HttpPost("removeproduct")]
+        public IActionResult RemoveProduct([FromBody] RemoveProductViewModel model)
+        {
+            var product = _context.Products.SingleOrDefault(p => p.Name == model.Name);
+            if (product == null)
+                return BadRequest(new { invalid = "Not found" });
+            
+            _context.Products.Remove(product);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost("addproducttodish")]
+        public IActionResult AddProductToDish([FromBody] AddDishViewModel model)
+        {
+            
+            var product =  new Dish
+            {
+                ProductName = model.ProductName,
+                ProductCalories = model.ProductCalories,
+                ProductProtein = model.ProductProtein,
+                ProductCarbohydrate = model.ProductCarbohydrate,
+                ProductFat = model.ProductFat,
+                ProductWeight = model.ProductWeight
+            };
+            _context.ProductsInDish.Add(product);
+            _context.SaveChanges();
+
+            return Ok(new DishViewModel
+            {
+                ProductName = product.ProductName,
+                ProductCalories = product.ProductCalories,
+                ProductProtein = product.ProductProtein,
+                ProductCarbohydrate = product.ProductCarbohydrate,
+                ProductFat = product.ProductFat,
+                ProductWeight = product.ProductWeight
+            });
+        }
+
+        [HttpPost("removeproductindish")]
+        public IActionResult RemoveProductInDish([FromBody] RemoveDishViewModel model)
+        {
+            var product = _context.ProductsInDish.FirstOrDefault(p => p.ProductName == model.ProductName);
+            if (product == null)
+                return BadRequest(new { invalid = "Not found" });
+
+            _context.ProductsInDish.Remove(product);
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }

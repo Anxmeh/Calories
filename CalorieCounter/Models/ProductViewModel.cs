@@ -23,4 +23,13 @@ namespace CalorieCounter.Models
         public double Carbohydrate { get; set; }
         public double Calories { get; set; }
     }
+
+    public class RemoveProductViewModel
+    {
+        public string Name { get; set; }
+        public double Protein { get; set; }
+        public double Fat { get; set; }
+        public double Carbohydrate { get; set; }
+        public double Calories { get; set; }
+    }
 }
