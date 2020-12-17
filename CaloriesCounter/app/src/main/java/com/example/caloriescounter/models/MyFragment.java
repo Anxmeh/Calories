@@ -163,43 +163,43 @@ public class MyFragment extends Fragment {
 
 
 
-        NetworkService.getInstance()
-                .getJSONApi()
-                .removeProductInDish(model)
-                .enqueue(new Callback<Product>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {
-                        CommonUtils.hideLoading();
-                        if (response.errorBody() == null && response.isSuccessful()) {
-                            assert response.body() != null;
-                            addedProduct = response.body();
-
-
-                        } else {
-                            String errorMessage;
-                            try {
-                                assert response.errorBody() != null;
-                                errorMessage = response.errorBody().string();
-                            } catch (IOException e) {
-                                errorMessage = response.message();
-                                e.printStackTrace();
-                            }
-//                            Toast toast = Toast.makeText(getApplicationContext(),
-//                                    errorMessage, Toast.LENGTH_LONG);
-//                            toast.show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<Product> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
-                        String error = "Error occurred while getting request!";
-//                        Toast toast = Toast.makeText(getApplicationContext(),
-//                                error, Toast.LENGTH_LONG);
-//                        toast.show();
-                        t.printStackTrace();
-                    }
-                });
+//        NetworkService.getInstance()
+//                .getJSONApi()
+//                .removeProductInDish(model)
+//                .enqueue(new Callback<Product>() {
+//                    @Override
+//                    public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {
+//                        CommonUtils.hideLoading();
+//                        if (response.errorBody() == null && response.isSuccessful()) {
+//                            assert response.body() != null;
+//                            addedProduct = response.body();
+//
+//
+//                        } else {
+//                            String errorMessage;
+//                            try {
+//                                assert response.errorBody() != null;
+//                                errorMessage = response.errorBody().string();
+//                            } catch (IOException e) {
+//                                errorMessage = response.message();
+//                                e.printStackTrace();
+//                            }
+////                            Toast toast = Toast.makeText(getApplicationContext(),
+////                                    errorMessage, Toast.LENGTH_LONG);
+////                            toast.show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NonNull Call<Product> call, @NonNull Throwable t) {
+//                        CommonUtils.hideLoading();
+//                        String error = "Error occurred while getting request!";
+////                        Toast toast = Toast.makeText(getApplicationContext(),
+////                                error, Toast.LENGTH_LONG);
+////                        toast.show();
+//                        t.printStackTrace();
+//                    }
+//                });
 
 
 

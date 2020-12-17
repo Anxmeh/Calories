@@ -66,4 +66,28 @@ public class Ingredients implements Serializable {
     public double getProductWeight() {
         return productWeight;
     }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setProductProtein(double productProtein) {
+        this.productProtein = productProtein;
+    }
+
+    public void setProductFat(double productFat) {
+        this.productFat = productFat;
+    }
+
+    public void setProductCarbohydrate(double productCarbohydrate) {
+        this.productCarbohydrate = productCarbohydrate;
+    }
+
+    public void setProductCalories(double productCalories) {
+        this.productCalories = productCalories;
+    }
+
+    public void setProductWeight(double productWeight) {
+        this.productWeight = productWeight;
+    }
 }

@@ -42,16 +42,28 @@ namespace CalorieCounter.Controllers
 
             double calories = 0;
             double weight = 0;
+            double proteins = 0;
+            double carbs = 0;
+            double fats = 0;
 
-            foreach(var item in ingredients)
+            foreach (var item in ingredients)
             {
                 double cal = item.ProductCalories * item.ProductWeight / 100;
+                double protein = item.ProductProtein * item.ProductWeight / 100;
+                double carb = item.ProductCarbohydrate * item.ProductWeight / 100;
+                double fat = item.ProductFat * item.ProductWeight / 100;
                 calories += cal;
+                proteins += protein;
+                carbs += carb;
+                fats += fat;
                 weight += item.ProductWeight;
             }
 
             return Ok(new ResultDishViewModel
             {
+                DishCarbohydrate = carbs,
+                DishFat = fats,
+                DishProtein = proteins,
                 DishCalories = calories,
                 DishWeight = weight
             });

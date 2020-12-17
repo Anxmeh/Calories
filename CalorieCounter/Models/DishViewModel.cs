@@ -38,6 +38,9 @@ namespace CalorieCounter.Models
 
     public class ResultDishViewModel
     {
+        public double DishProtein { get; set; }
+        public double DishFat { get; set; }
+        public double DishCarbohydrate { get; set; }
         public double DishCalories { get; set; }
         public double DishWeight { get; set; }
     }

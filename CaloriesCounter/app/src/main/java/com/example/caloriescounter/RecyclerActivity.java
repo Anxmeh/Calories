@@ -59,9 +59,18 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
     private double dishWeight = 0;
     private double caloriesInProduct = 0;
     EditText inputSearch;
+
+    TextView addedprod;
+
     ProductAdapter customAdapter;
 
     final Context context = this;
+
+    public TextView txtDishProtein;
+    public TextView txtDishFat;
+    public TextView txtDishCarbs;
+    public TextView txtDishWeight;
+    public TextView txtDishCalories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +78,16 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
         setContentView(R.layout.activity_recycler);
         recyclerView = findViewById(R.id.recycler_view);
 
-        final TextView addedprod = findViewById(R.id.resultDish);
+        addedprod = findViewById(R.id.resultDish);
+
+        // final TextView addedprod = findViewById(R.id.resultDish);
         listView = findViewById(R.id.listViewProducts);
         inputSearch = (EditText) findViewById(R.id.inputSearch);
+        txtDishProtein = findViewById(R.id.dishProtein);
+        txtDishFat = findViewById(R.id.dishFat);
+        txtDishCarbs = findViewById(R.id.dishCarbohydrate);
+        txtDishCalories = findViewById(R.id.dishCalories);
+        txtDishWeight = findViewById(R.id.dishWeight);
 
         setRecyclerView();
 
@@ -138,9 +154,9 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                             .setCancelable(false)
                                             .setPositiveButton("OK",
                                                     new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog,int id) {
+                                                        public void onClick(DialogInterface dialog, int id) {
                                                             //Вводим текст и отображаем в строке ввода на основном экране:
-                                                            caloriesInProduct = product.getCalories() * Double.parseDouble(userInput.getText().toString())/100;
+                                                            caloriesInProduct = product.getCalories() * Double.parseDouble(userInput.getText().toString()) / 100;
                                                             dishCalories += caloriesInProduct;
                                                             // addedprod.setText(Double.toString(dishCalories));
 
@@ -166,7 +182,6 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                                             modelDish.setProductFat(product.getFat());
                                                             modelDish.setProductCarbohydrate(product.getCarbohydrate());
                                                             modelDish.setProductWeight(Double.parseDouble(userInput.getText().toString()));
-
 
 
                                                             NetworkService.getInstance()
@@ -195,7 +210,13 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                                                                                     assert response.body() != null;
 
                                                                                                     dish = response.body();
-                                                                                                    addedprod.setText("Weight: " +dish.getDishWeight() + ", Calories: " + dish.getDishCalories());
+                                                                                                    addedprod.setText("Weight: " + dish.getDishWeight() + ", Calories: " + dish.getDishCalories());
+                                                                                                    txtDishCalories.setText(Double.toString(dish.getDishCalories()));
+                                                                                                    txtDishWeight.setText(Double.toString(dish.getDishWeight()));
+                                                                                                    txtDishProtein.setText(Double.toString(dish.getDishProtein()));
+                                                                                                    txtDishFat.setText(Double.toString(dish.getDishFat()));
+                                                                                                    txtDishCarbs.setText(Double.toString(dish.getDishCarbohydrate()));
+
 
                                                                                                     //////////////////////
 
@@ -209,8 +230,8 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                                                                                                     if (response.errorBody() == null && response.isSuccessful()) {
                                                                                                                         assert response.body() != null;
                                                                                                                         if (prodsindish != null)
-                                                                                                                        prodsindish.clear();
-                                                                                                                        prodsindish.addAll(0,response.body());
+                                                                                                                            prodsindish.clear();
+                                                                                                                        prodsindish.addAll(0, response.body());
                                                                                                                         adapter.notifyDataSetChanged();
                                                                                                                     } else {
                                                                                                                         prodsindish = null;
@@ -225,8 +246,6 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                                                                                                 }
                                                                                                             });
                                                                                                     /////////////////////
-
-
 
 
                                                                                                 } else {
@@ -277,7 +296,7 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                                     })
                                             .setNegativeButton("Отмена",
                                                     new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog,int id) {
+                                                        public void onClick(DialogInterface dialog, int id) {
                                                             dialog.cancel();
                                                         }
                                                     });
@@ -303,9 +322,6 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                 });
 
 
-
-
-
     }
 
     private void setRecyclerView() {
@@ -319,7 +335,7 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
 
         int largePadding = 16;
         int smallPadding = 4;
-       // recyclerView.addItemDecoration(new CategoryGridItemDecoration(largePadding, smallPadding));
+        // recyclerView.addItemDecoration(new CategoryGridItemDecoration(largePadding, smallPadding));
     }
 
     @Override
@@ -331,12 +347,75 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                 .setPositiveButton("Видалити", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.e(TAG, "Delete product by name "+ product.getProductName());
-                        products.remove(product);
-                        adapter.notifyDataSetChanged();
+                        Log.e(TAG, "Delete product by name " + product.getProductName());
+                        prodsindish.remove(product);
+
                         //deleteConfirm(productEntry);
+
+
+//                        final Ingredients model = new Ingredients();
+//                        model.setProductName(product.getProductName());
+//                        model.setProductCalories(Double.parseDouble(calories));
+//                        model.setProductProtein(Double.parseDouble(protein));
+//                        model.setProductFat(Double.parseDouble(fat));
+//                        model.setProductCarbohydrate(Double.parseDouble(carb));
+//                        model.setProductWeight(Double.parseDouble(weight));
+
+
+                        NetworkService.getInstance()
+                                .getJSONApi()
+                                .removeProductInDish(product)
+                                .enqueue(new Callback<Dish>() {
+                                    @Override
+                                    public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response) {
+                                        CommonUtils.hideLoading();
+                                        if (response.errorBody() == null && response.isSuccessful()) {
+                                            assert response.body() != null;
+                                           // addedProduct = response.body();
+                                            dish = response.body();
+                                            txtDishCalories.setText(Double.toString(dish.getDishCalories()));
+                                            txtDishWeight.setText(Double.toString(dish.getDishWeight()));
+                                            txtDishProtein.setText(Double.toString(dish.getDishProtein()));
+                                            txtDishFat.setText(Double.toString(dish.getDishFat()));
+                                            txtDishCarbs.setText(Double.toString(dish.getDishCarbohydrate()));
+
+
+                                        } else {
+                                            String errorMessage;
+                                            try {
+                                                assert response.errorBody() != null;
+                                                errorMessage = response.errorBody().string();
+                                            } catch (IOException e) {
+                                                errorMessage = response.message();
+                                                e.printStackTrace();
+                                            }
+//                            Toast toast = Toast.makeText(getApplicationContext(),
+//                                    errorMessage, Toast.LENGTH_LONG);
+//                            toast.show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t) {
+                                        CommonUtils.hideLoading();
+                                        String error = "Error occurred while getting request!";
+//                        Toast toast = Toast.makeText(getApplicationContext(),
+//                                error, Toast.LENGTH_LONG);
+//                        toast.show();
+                                        t.printStackTrace();
+                                    }
+                                });
+//
+                        addedprod.setText("After" + product.getProductName());
+
+                        adapter.notifyDataSetChanged();
+
+
                     }
                 })
                 .show();
+    }
+
+    public void onClickAddDish(View view) {
     }
 }

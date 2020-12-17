@@ -38,8 +38,11 @@ public interface JSONPlaceHolderApi {
     @POST("/api/products/addproducttodish")
     Call<Product> addProductToDish(@Body DishIngredientsView model);
 
+//    @POST("/api/products/removeproductindish")
+//    Call<Product> removeProductInDish(@Body Ingredients model);
+
     @POST("/api/products/removeproductindish")
-    Call<Product> removeProductInDish(@Body DishIngredientsView model);
+    Call<Dish> removeProductInDish(@Body Ingredients model);
 
     @GET("/api/dish/calculatedish")
     Call<Dish> calculateDish();

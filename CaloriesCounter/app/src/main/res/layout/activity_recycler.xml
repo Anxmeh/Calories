@@ -18,6 +18,107 @@
             android:hint="Products......."
             android:inputType="text" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/proteinLable"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text="Б: "
+                android:textColor="#1E90FF"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/dishProtein"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/fatLable"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text="Ж: "
+                android:textColor="#FFA500"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/dishFat"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/carbsLable"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text="В: "
+                android:textColor="#3CB371"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/dishCarbohydrate"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="17sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dishCalories"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/caloriesLable"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text=" ккал" />
+
+            <TextView
+                android:id="@+id/dishWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text=""
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/weightLable"
+                android:layout_width="19dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text=" г" />
+        </LinearLayout>
+        </LinearLayout>
+
         <EditText android:id="@+id/inputSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,7 +128,7 @@
         <ListView
             android:id="@+id/listViewProducts"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="70dp"
             android:layout_margin="10dp"
             android:horizontalSpacing="5dp"
             android:numColumns="1"
@@ -37,6 +138,14 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/AddDish"
+            android:onClick="onClickAddDish"
+            />
 
 
 

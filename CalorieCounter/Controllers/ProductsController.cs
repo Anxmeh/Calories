@@ -116,7 +116,58 @@ namespace CalorieCounter.Controllers
 
             _context.ProductsInDish.Remove(product);
             _context.SaveChanges();
-            return Ok();
+
+            //////////
+            var query = _context.ProductsInDish.AsQueryable();
+            ICollection<DishViewModel> ingredients;
+
+            ingredients = query.Select(d => new DishViewModel
+            {
+                Id = d.Id,
+                ProductName = d.ProductName,
+                ProductProtein = d.ProductProtein,
+                ProductFat = d.ProductFat,
+                ProductCarbohydrate = d.ProductCarbohydrate,
+                ProductCalories = d.ProductCalories,
+                ProductWeight = d.ProductWeight
+            }).ToList();
+
+            double calories = 0;
+            double weight = 0;
+            double proteins = 0;
+            double carbs = 0;
+            double fats = 0;
+
+            foreach (var item in ingredients)
+            {
+                double cal = item.ProductCalories * item.ProductWeight / 100;
+                double protein = item.ProductProtein * item.ProductWeight / 100;
+                double carb = item.ProductCarbohydrate * item.ProductWeight / 100;
+                double fat = item.ProductFat * item.ProductWeight / 100;
+                calories += cal;
+                proteins += protein;
+                carbs += carb;
+                fats += fat;
+                weight += item.ProductWeight;
+            }
+
+
+            return Ok(new ResultDishViewModel
+            {
+                DishCalories = calories,
+                DishWeight = weight,
+                DishCarbohydrate = carbs,
+                DishFat = fats,
+                DishProtein = proteins,
+            });
+
+/////////////////////////
+
+
+
+
+
+          //  return Ok();
         }
     }
 }

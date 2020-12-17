@@ -19,4 +19,6 @@
     <string name="Fat">Fat: </string>
     <string name="AddProduct">Add product</string>
     <string name="newDish">New dish</string>
+    <string name="weight">Вага</string>
+    <string name="AddDish">Додати страву</string>
 </resources>
