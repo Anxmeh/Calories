@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class Dish {
 
+    @SerializedName("dishName")
+    @Expose
+    private String DishName;
+
     @SerializedName("dishProtein")
     @Expose
     private double DishProtein;
@@ -28,12 +32,21 @@ public class Dish {
     public Dish() {
     }
 
-    public Dish(double dishProtein, double dishCarbohydrate, double dishFat, double dishCalories, double dishWeight) {
+    public Dish(String dishName, double dishProtein, double dishCarbohydrate, double dishFat, double dishCalories, double dishWeight) {
+        DishName = dishName;
         DishProtein = dishProtein;
         DishCarbohydrate = dishCarbohydrate;
         DishFat = dishFat;
         DishCalories = dishCalories;
         DishWeight = dishWeight;
+    }
+
+    public String getDishName() {
+        return DishName;
+    }
+
+    public void setDishName(String dishName) {
+        DishName = dishName;
     }
 
     public double getDishProtein() {

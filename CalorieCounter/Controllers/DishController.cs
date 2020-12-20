@@ -61,6 +61,7 @@ namespace CalorieCounter.Controllers
 
             return Ok(new ResultDishViewModel
             {
+                DishName = String.Empty,
                 DishCarbohydrate = carbs,
                 DishFat = fats,
                 DishProtein = proteins,

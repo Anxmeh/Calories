@@ -10,6 +10,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.example.caloriescounter.adapters.ProductAdapter;
 import com.example.caloriescounter.adapters.ProductCardRecyclerViewAdapter;
 import com.example.caloriescounter.click_listeners.OnDeleteListener;
+import com.example.caloriescounter.models.AddProductView;
 import com.example.caloriescounter.models.Dish;
 import com.example.caloriescounter.models.DishIngredientsView;
 import com.example.caloriescounter.models.Ingredients;
@@ -49,6 +51,7 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
     private List<Product> products;
     private List<Ingredients> prodsindish;
     private ProductCardRecyclerViewAdapter adapter;
+    public Product addedDish;
 
     private Product addedProduct;
 
@@ -213,9 +216,9 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                                                                                     addedprod.setText("Weight: " + dish.getDishWeight() + ", Calories: " + dish.getDishCalories());
                                                                                                     txtDishCalories.setText(Double.toString(dish.getDishCalories()));
                                                                                                     txtDishWeight.setText(Double.toString(dish.getDishWeight()));
-                                                                                                    txtDishProtein.setText(Double.toString(dish.getDishProtein()));
-                                                                                                    txtDishFat.setText(Double.toString(dish.getDishFat()));
-                                                                                                    txtDishCarbs.setText(Double.toString(dish.getDishCarbohydrate()));
+                                                                                                    txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
+                                                                                                    txtDishFat.setText(Double.toString(Math.round(dish.getDishFat()*100.0)/100.0));
+                                                                                                    txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate()*100.0)/100.0));
 
 
                                                                                                     //////////////////////
@@ -375,9 +378,10 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                             dish = response.body();
                                             txtDishCalories.setText(Double.toString(dish.getDishCalories()));
                                             txtDishWeight.setText(Double.toString(dish.getDishWeight()));
-                                            txtDishProtein.setText(Double.toString(dish.getDishProtein()));
-                                            txtDishFat.setText(Double.toString(dish.getDishFat()));
-                                            txtDishCarbs.setText(Double.toString(dish.getDishCarbohydrate()));
+                                          // double n= Math.round(dish.getDishProtein()*100.0)/100.0;
+                                            txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
+                                            txtDishFat.setText(Double.toString(Math.round(dish.getDishFat()*100.0)/100.0));
+                                            txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate()*100.0)/100.0));
 
 
                                         } else {
@@ -417,5 +421,100 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
     }
 
     public void onClickAddDish(View view) {
+
+       // long id, String name, double protein, double fat, double carbohydrate, double calories
+
+        AddProductView model = new AddProductView();
+         model.setProtein(dish.getDishProtein()*100/dish.getDishWeight());
+        model.setFat(dish.getDishFat()*100/dish.getDishWeight());
+        model.setCarbohydrate(dish.getDishCarbohydrate()*100/dish.getDishWeight());
+        model.setCalories(dish.getDishCalories()*100/dish.getDishWeight());
+
+//        addedDish.setName(dish.getDishName());
+//        addedDish.setCalories(dish.getDishCalories()*100/dish.getDishWeight());
+//        addedDish.setCarbohydrate(dish.getDishCarbohydrate()*100/dish.getDishWeight());
+//        addedDish.setProtein(dish.getDishProtein()*100/dish.getDishWeight());
+//        addedDish.setFat(dish.getDishFat()*100/dish.getDishWeight());
+
+        //Получаем вид с файла prompt.xml, который применим для диалогового окна:
+        LayoutInflater li = LayoutInflater.from(context);
+        View promptsView = li.inflate(R.layout.dish_name, null);
+
+        //Создаем AlertDialog
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(context);
+
+        //Настраиваем prompt.xml для нашего AlertDialog:
+        mDialogBuilder.setView(promptsView);
+
+        //Настраиваем отображение поля для ввода текста в открытом диалоге:
+        final EditText userInputDishName = (EditText) promptsView.findViewById(R.id.inputDishName);
+
+        //Настраиваем сообщение в диалоговом окне:
+        mDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Вводим текст и отображаем в строке ввода на основном экране:
+                                //addedDish.setName(userInput.toString());
+                                model.setName(userInputDishName.getText().toString());
+
+                                NetworkService.getInstance()
+                                        .getJSONApi()
+                                        .addProduct(model)
+                                        .enqueue(new Callback<Product>() {
+                                            @Override
+                                            public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {
+                                                CommonUtils.hideLoading();
+                                                if (response.errorBody() == null && response.isSuccessful()) {
+                                                    assert response.body() != null;
+                                                    addedProduct = response.body();
+
+                                                    String succeed = "Add succeed";
+                                                    Toast toast = Toast.makeText(getApplicationContext(),
+                                                            succeed, Toast.LENGTH_LONG);
+                                                    toast.show();
+                                                    Intent intent = new Intent(RecyclerActivity.this, ProductsActivity.class);
+                                                    startActivity(intent);
+                                                } else {
+                                                    String errorMessage;
+                                                    try {
+                                                        assert response.errorBody() != null;
+                                                        errorMessage = response.errorBody().string();
+                                                    } catch (IOException e) {
+                                                        errorMessage = response.message();
+                                                        e.printStackTrace();
+                                                    }
+                                                    Toast toast = Toast.makeText(getApplicationContext(),
+                                                            errorMessage, Toast.LENGTH_LONG);
+                                                    toast.show();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(@NonNull Call<Product> call, @NonNull Throwable t) {
+                                                CommonUtils.hideLoading();
+                                                String error = "Error occurred while getting request!";
+                                                Toast toast = Toast.makeText(getApplicationContext(),
+                                                        error, Toast.LENGTH_LONG);
+                                                toast.show();
+                                                t.printStackTrace();
+                                            }
+                                        });
+                            }
+                        })
+                .setNegativeButton("Отмена",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        //Создаем AlertDialog:
+        AlertDialog alertDialog = mDialogBuilder.create();
+        //и отображаем его:
+        alertDialog.show();
+
+
     }
 }

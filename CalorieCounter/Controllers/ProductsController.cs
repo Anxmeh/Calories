@@ -154,12 +154,13 @@ namespace CalorieCounter.Controllers
 
             return Ok(new ResultDishViewModel
             {
+                DishName = String.Empty,
                 DishCalories = calories,
                 DishWeight = weight,
                 DishCarbohydrate = carbs,
                 DishFat = fats,
                 DishProtein = proteins,
-            });
+            }); ;
 
 /////////////////////////
 

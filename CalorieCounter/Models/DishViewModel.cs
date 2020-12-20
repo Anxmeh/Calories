@@ -43,5 +43,9 @@ namespace CalorieCounter.Models
         public double DishCarbohydrate { get; set; }
         public double DishCalories { get; set; }
         public double DishWeight { get; set; }
+
+        //
+        public string DishName { get; set; }
+        //
     }
 }
