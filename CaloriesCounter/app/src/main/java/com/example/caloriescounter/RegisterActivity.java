@@ -45,9 +45,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-//        imageRequester = ImageRequester.getInstance();
-//        editImage = findViewById(R.id.chooseImageRegister);
-//        imageRequester.setImageFromUrl(editImage, BASE_URL + "/images/testAvatarHen.jpg");
+        imageRequester = ImageRequester.getInstance();
+        editImage = findViewById(R.id.chooseImageRegister);
+        imageRequester.setImageFromUrl(editImage, BASE_URL + "/images/testAvatarHen.jpg");
     }
 
     public void onClickRegister(View view) {
@@ -110,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
                             sessionManager.saveJWTToken(token.getToken());
                             sessionManager.saveUserLogin(model.getEmail());
 
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
                             startActivity(intent);
                         } else {
                             String errorMessage;

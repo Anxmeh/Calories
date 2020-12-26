@@ -142,6 +142,20 @@ namespace CalorieCounter.Entities
                 _context.SaveChanges();
             }
         }
+        //public static void SeedMeal(EFContext _context)
+        //{
+        //    if (_context.DailyMenus.Count() <= 0)
+        //    {
+        //        var meal = new DailyMenu{
+        //            DateOfMeal = DateTime.Now,
+        //            ProductWeight = 300,
+        //            ProductId = 1,
+        //            UserId = 2 };
+                
+        //        _context.DailyMenus.Add(meal);
+        //        _context.SaveChanges();
+        //    }
+        //}
 
         public static void SeedDataByAS(IServiceProvider services)
         {
@@ -152,6 +166,7 @@ namespace CalorieCounter.Entities
                 var context = scope.ServiceProvider.GetRequiredService<EFContext>();
                 SeederDB.SeedData(manager, managerRole);
                 SeederDB.SeedProducts(context);
+                //SeederDB.SeedMeal(context);
 
             }
         }

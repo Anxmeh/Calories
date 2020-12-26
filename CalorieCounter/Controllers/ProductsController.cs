@@ -3,15 +3,18 @@ using CalorieCounter.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CalorieCounter.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class ProductsController : ControllerBase
     {
         private readonly EFContext _context;
@@ -25,6 +28,8 @@ namespace CalorieCounter.Controllers
          [HttpGet("products")]
         public IActionResult GetAllProducts()
         {
+           
+
             var query = _context.Products.AsQueryable();
 
             ICollection<ProductViewModel> result;
@@ -57,7 +62,36 @@ namespace CalorieCounter.Controllers
             };
             _context.Products.Add(product);
             _context.SaveChanges();
-              
+            _context.ProductsInDish.RemoveRange(_context.ProductsInDish);
+            _context.SaveChanges();
+
+            //  _context.Database.ExecuteStoreCommand("TRUNCATE TABLE [\"ProcutsInDish\"]");
+            // _context.Database.ExecuteSqlCommand("TRUNCATE TABLE [\"ProcutsInDish\"]");
+            //using (var context = new DataDb())
+            //{
+            //    var ctx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)context).ObjectContext;
+            //    ctx.ExecuteStoreCommand("DELETE FROM [TableName] WHERE Name= {0}", Name);
+            //}
+
+            //using (var cont = new EFContext(DbContextOptions<EFContext> options))
+            //{
+
+            //}
+
+            // var books = _context.Products.FromSqlRaw("SELECT BookId, Title, AuthorId, Isbn FROM Books").ToList();
+            //string tblNames = "ProductsInDish";
+
+            //var commandText = "INSERT Categories (CategoryName) VALUES (@CategoryName)";
+            //var name = new SqlParameter("@CategoryName", "Test");
+            //_context.Database.ExecuteSqlCommand(commandText, name);
+            // _context.Database.ExecuteSqlRaw("TRUNCATE TABLE [" + tblNames+"]");
+
+
+
+
+
+
+
             return Ok(new ProductViewModel
             {
                 Name = product.Name,
@@ -68,17 +102,17 @@ namespace CalorieCounter.Controllers
             });
         }
 
-        [HttpPost("removeproduct")]
-        public IActionResult RemoveProduct([FromBody] RemoveProductViewModel model)
-        {
-            var product = _context.Products.SingleOrDefault(p => p.Name == model.Name);
-            if (product == null)
-                return BadRequest(new { invalid = "Not found" });
+        //[HttpPost("removeproduct")]
+        //public IActionResult RemoveProduct([FromBody] RemoveProductViewModel model)
+        //{
+        //    var product = _context.Products.SingleOrDefault(p => p.Name == model.Name);
+        //    if (product == null)
+        //        return BadRequest(new { invalid = "Not found" });
             
-            _context.Products.Remove(product);
-            _context.SaveChanges();
-            return Ok();
-        }
+        //    _context.Products.Remove(product);
+        //    _context.SaveChanges();
+        //    return Ok();
+        //}
 
         [HttpPost("addproducttodish")]
         public IActionResult AddProductToDish([FromBody] AddDishViewModel model)
@@ -105,6 +139,20 @@ namespace CalorieCounter.Controllers
                 ProductFat = product.ProductFat,
                 ProductWeight = product.ProductWeight
             });
+        }
+        [HttpPost("removeproduct")]
+        public IActionResult RemoveProduct([FromBody]int productId)
+        {
+            var product = _context.Products.SingleOrDefault(p => p.Id == productId);
+            if (product != null)
+            {
+                _context.Products.Remove(product);
+                _context.SaveChanges();
+            }
+            else
+                return BadRequest(new { invalid = "Не знайдено" });
+
+            return Ok();
         }
 
         [HttpPost("removeproductindish")]
@@ -163,12 +211,66 @@ namespace CalorieCounter.Controllers
             }); ;
 
 /////////////////////////
+        }
+
+        [HttpGet("testtest")]
+        public IActionResult TestDaily()
+        {
+            var res = _context.DailyMeals.Where(u => u.UserId == 2);
+            var res2 = _context.DailyMeals.AsQueryable();
+
+            ICollection<TesttViewModel> daily;
+            daily = res2.Select(d => new TesttViewModel
+            {
+                Id = d.Id,
+                UserId = d.UserId,
+                ProductWeight = d.ProductWeight,
+                ProductId = d.ProductId,
+            }).Where(u => u.UserId == 2).ToList();
+
+
+
+            var query = _context.Products.AsQueryable();
+                        ICollection<ProductViewModel> products;
+
+            products = query.Select(p => new ProductViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Protein = p.Protein,
+                Fat = p.Fat,
+                Carbohydrate = p.Carbohydrate,
+                Calories = p.Calories,
+            }).ToList();
+
+            var result = from d in daily
+                         join p in products on d.ProductId equals p.Id
+                         select new { UserId = d.UserId, Weight = d.ProductWeight, ProdName = p.Name };
+
+            
+
+          
+
+            var result4 = daily.Join(products, // второй набор
+             d => d.ProductId, // свойство-селектор объекта из первого набора
+             p => p.Id, // свойство-селектор объекта из второго набора
+             (d, p) => new { UserId = d.UserId, Weight = d.ProductWeight, ProdName = p.Name }); // результат
+
+            var result5 = daily.Join(products, 
+             d => d.ProductId,
+             p => p.Id, 
+             (d, p) => new TestJoinViewModel
+             { 
+                 UserId = d.UserId,
+                 ProductWeight = d.ProductWeight, 
+                 ProductName = p.Name,
+                 ProductProtein = p.Protein
+             }); // результат
 
 
 
 
-
-          //  return Ok();
+            return Ok();
         }
     }
 }

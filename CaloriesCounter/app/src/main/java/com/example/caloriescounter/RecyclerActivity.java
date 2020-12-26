@@ -93,6 +93,7 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
         txtDishWeight = findViewById(R.id.dishWeight);
 
         setRecyclerView();
+        loadList();
 
 
         NetworkService.getInstance()
@@ -220,34 +221,34 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                                                                                     txtDishFat.setText(Double.toString(Math.round(dish.getDishFat()*100.0)/100.0));
                                                                                                     txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate()*100.0)/100.0));
 
-
+                                                                                                    loadList();
                                                                                                     //////////////////////
 
-                                                                                                    NetworkService.getInstance()
-                                                                                                            .getJSONApi()
-                                                                                                            .getProductsinDish()
-                                                                                                            .enqueue(new Callback<List<Ingredients>>() {
-                                                                                                                @Override
-                                                                                                                public void onResponse(@NonNull Call<List<Ingredients>> call, @NonNull Response<List<Ingredients>> response) {
-                                                                                                                    CommonUtils.hideLoading();
-                                                                                                                    if (response.errorBody() == null && response.isSuccessful()) {
-                                                                                                                        assert response.body() != null;
-                                                                                                                        if (prodsindish != null)
-                                                                                                                            prodsindish.clear();
-                                                                                                                        prodsindish.addAll(0, response.body());
-                                                                                                                        adapter.notifyDataSetChanged();
-                                                                                                                    } else {
-                                                                                                                        prodsindish = null;
-                                                                                                                    }
-                                                                                                                }
-
-                                                                                                                @Override
-                                                                                                                public void onFailure(@NonNull Call<List<Ingredients>> call, @NonNull Throwable t) {
-                                                                                                                    CommonUtils.hideLoading();
-                                                                                                                    prodsindish = null;
-                                                                                                                    t.printStackTrace();
-                                                                                                                }
-                                                                                                            });
+//                                                                                                    NetworkService.getInstance()
+//                                                                                                            .getJSONApi()
+//                                                                                                            .getProductsinDish()
+//                                                                                                            .enqueue(new Callback<List<Ingredients>>() {
+//                                                                                                                @Override
+//                                                                                                                public void onResponse(@NonNull Call<List<Ingredients>> call, @NonNull Response<List<Ingredients>> response) {
+//                                                                                                                    CommonUtils.hideLoading();
+//                                                                                                                    if (response.errorBody() == null && response.isSuccessful()) {
+//                                                                                                                        assert response.body() != null;
+//                                                                                                                        if (prodsindish != null)
+//                                                                                                                            prodsindish.clear();
+//                                                                                                                        prodsindish.addAll(0, response.body());
+//                                                                                                                        adapter.notifyDataSetChanged();
+//                                                                                                                    } else {
+//                                                                                                                        prodsindish = null;
+//                                                                                                                    }
+//                                                                                                                }
+//
+//                                                                                                                @Override
+//                                                                                                                public void onFailure(@NonNull Call<List<Ingredients>> call, @NonNull Throwable t) {
+//                                                                                                                    CommonUtils.hideLoading();
+//                                                                                                                    prodsindish = null;
+//                                                                                                                    t.printStackTrace();
+//                                                                                                                }
+//                                                                                                            });
                                                                                                     /////////////////////
 
 
@@ -424,11 +425,13 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
 
        // long id, String name, double protein, double fat, double carbohydrate, double calories
 
+       // txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
+
         AddProductView model = new AddProductView();
-         model.setProtein(dish.getDishProtein()*100/dish.getDishWeight());
-        model.setFat(dish.getDishFat()*100/dish.getDishWeight());
-        model.setCarbohydrate(dish.getDishCarbohydrate()*100/dish.getDishWeight());
-        model.setCalories(dish.getDishCalories()*100/dish.getDishWeight());
+        model.setProtein(Math.round(dish.getDishProtein()*100/dish.getDishWeight()*100.0)/100.0);
+        model.setFat(Math.round(dish.getDishFat()*100/dish.getDishWeight()*100.0)/100.0);
+        model.setCarbohydrate(Math.round(dish.getDishCarbohydrate()*100/dish.getDishWeight()*100.0)/100.0);
+        model.setCalories(Math.round(dish.getDishCalories()*100/dish.getDishWeight()*100.0)/100.0);
 
 //        addedDish.setName(dish.getDishName());
 //        addedDish.setCalories(dish.getDishCalories()*100/dish.getDishWeight());
@@ -516,5 +519,33 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
         alertDialog.show();
 
 
+    }
+
+    public void loadList() {
+        NetworkService.getInstance()
+                .getJSONApi()
+                .getProductsinDish()
+                .enqueue(new Callback<List<Ingredients>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<Ingredients>> call, @NonNull Response<List<Ingredients>> response) {
+                        CommonUtils.hideLoading();
+                        if (response.errorBody() == null && response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (prodsindish != null)
+                                prodsindish.clear();
+                            prodsindish.addAll(0, response.body());
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            prodsindish = null;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<List<Ingredients>> call, @NonNull Throwable t) {
+                        CommonUtils.hideLoading();
+                        prodsindish = null;
+                        t.printStackTrace();
+                    }
+                });
     }
 }

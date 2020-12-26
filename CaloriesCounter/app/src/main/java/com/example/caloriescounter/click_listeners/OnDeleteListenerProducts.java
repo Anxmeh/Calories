@@ -1,0 +1,7 @@
+package com.example.caloriescounter.click_listeners;
+
+import com.example.caloriescounter.models.Product;
+
+public interface OnDeleteListenerProducts {
+    void deleteItem(Product product);
+}

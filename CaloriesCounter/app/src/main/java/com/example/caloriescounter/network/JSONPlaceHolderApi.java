@@ -1,13 +1,18 @@
 package com.example.caloriescounter.network;
 
 import com.example.caloriescounter.models.AddProductView;
+import com.example.caloriescounter.models.DailyMenuView;
 import com.example.caloriescounter.models.Dish;
 import com.example.caloriescounter.models.DishIngredientsView;
 import com.example.caloriescounter.models.Ingredients;
 import com.example.caloriescounter.models.LoginView;
+import com.example.caloriescounter.models.Photo;
 import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.models.RegisterView;
+import com.example.caloriescounter.models.RemoveDailyView;
+import com.example.caloriescounter.models.UserView;
 
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -32,8 +37,14 @@ public interface JSONPlaceHolderApi {
     @POST("/api/products/addproduct")
     Call<Product> addProduct(@Body AddProductView model);
 
-    @POST("/api/products/removeproduct")
-    Call<Product> removeProduct(@Body DishIngredientsView model);
+
+
+
+
+    /////////
+//    @POST("/api/products/removeproduct")
+//    Call<List<Product>> removeProduct(@Body DishIngredientsView model);
+    ////////
 
     @POST("/api/products/addproducttodish")
     Call<Product> addProductToDish(@Body DishIngredientsView model);
@@ -44,22 +55,34 @@ public interface JSONPlaceHolderApi {
     @POST("/api/products/removeproductindish")
     Call<Dish> removeProductInDish(@Body Ingredients model);
 
+    @POST("/api/products/removeproduct")
+    Call<List<Product>> removeProduct(@Body long productId);
+
     @GET("/api/dish/calculatedish")
     Call<Dish> calculateDish();
 
     @GET("/api/dish/productsindish")
     Call<List<Ingredients>> getProductsinDish();
 
+    @POST("/api/daily/dailymenu")
+    Call<List<DailyMenuView>> getProductsDailyMenu(@Body Date dateOfMeal);
+
+    @POST("/api/daily/adddailyproduct")
+    Call<DailyMenuView> addDailyProduct(@Body DailyMenuView model);
+
+    @POST("/api/daily/removedailyproduct")
+    Call<DailyMenuView> removeDailyProduct(@Body RemoveDailyView model );
+
 
 //
-//    @POST("/api/profile/info")
-//    Call<UserView> profile();
+    @POST("/api/profile/info")
+    Call<UserView> profile();
 //
-//    @POST("/api/profile/update")
-//    Call<UserView> update(@Body UserView profile);
+    @POST("/api/profile/update")
+    Call<UserView> update(@Body UserView profile);
 //
-//    @POST("/api/profile/update-photo")
-//    Call<UserView> updatePhoto(@Body Photo photo);
+    @POST("/api/profile/update-photo")
+    Call<UserView> updatePhoto(@Body Photo photo);
 //
 
 //

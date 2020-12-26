@@ -7,3 +7,4 @@ import com.example.caloriescounter.models.Product;
 public interface OnDeleteListener {
     void deleteItem(Ingredients product);
 }
+

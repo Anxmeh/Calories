@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -97,14 +96,18 @@ namespace CalorieCounter
                 .AddDefaultTokenProviders();
 
             services.AddTransient<IJwtTokenService, JwtTokenService>();
-           // services.AddTransient<FileService, FileService>(); //!!!!!!!
-            //var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Kesha-kapitan-krasavchik"));
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("SecretPhrase")));
-
+            // services.AddTransient<FileService, FileService>(); //!!!!!!!
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("SecretPhrase").Value));
+         
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+
+                //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(cfg =>
             {
                 cfg.RequireHttpsMetadata = false;

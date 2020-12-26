@@ -46,10 +46,12 @@ public class ProductCardRecyclerViewAdapter extends RecyclerView.Adapter<Product
             holder.product_name.setText(product.getProductName());
            // holder.product_protein.setText("Б: " + product.getProductProtein());
             //holder.product_protein.setText(product.getProductProtein());
-            holder.product_protein.setText(Double.toString(product.getProductProtein()*product.getProductWeight()/100));
-            holder.product_fat.setText(Double.toString(product.getProductFat()*product.getProductWeight()/100));
-            holder.product_carbs.setText(Double.toString(product.getProductCarbohydrate()*product.getProductWeight()/100));
-            holder.product_calories.setText(Double.toString(product.getProductCalories()*product.getProductWeight()/100));
+
+           // txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
+            holder.product_protein.setText(Double.toString(Math.round(product.getProductProtein()*product.getProductWeight()/100*100.0)/100.0));
+            holder.product_fat.setText(Double.toString(Math.round(product.getProductFat()*product.getProductWeight()/100*100.0)/100.0));
+            holder.product_carbs.setText(Double.toString(Math.round(product.getProductCarbohydrate()*product.getProductWeight()/100*100.0)/100.0));
+            holder.product_calories.setText(Double.toString(Math.round(product.getProductCalories()*product.getProductWeight()/100*100.0)/100.0));
             holder.product_weight.setText(Double.toString(product.getProductWeight()));
 
             holder.delete.setOnClickListener(new View.OnClickListener() {

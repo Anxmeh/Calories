@@ -5,20 +5,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.caloriescounter.R;
 import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.network.ImageRequester;
 import com.example.caloriescounter.network.NetworkService;
+import com.example.caloriescounter.network.utils.CommonUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ProductAdapter extends BaseAdapter  implements Filterable {
+    private List<Product> products2;
     private List<Product> products;
     private List<Product> filteredProducts;
     private LayoutInflater layoutInflater;
@@ -80,22 +90,17 @@ public class ProductAdapter extends BaseAdapter  implements Filterable {
         TextView tvProductProtein = convertView.findViewById(R.id.productProtein);
        // NetworkImageView imageCategory = convertView.findViewById(R.id.categoryImage);
 
-
-//        tvProductName.setText(products.get(position).getName());
-//        tvProductCalories.setText("Calories: " + Double.toString(products.get(position).getCalories()));
-//        tvProductFat.setText("Fat: " + Double.toString(products.get(position).getFat()));
-//        tvProductCarbohydrate.setText("Carbs: " + Double.toString(products.get(position).getCarbohydrate()));
-//        tvProductProtein.setText("Protein: " + Double.toString(products.get(position).getProtein()));
-
         tvProductName.setText(filteredProducts.get(position).getName());
         tvProductCalories.setText("Calories: " + Double.toString(filteredProducts.get(position).getCalories()));
         tvProductFat.setText("Fat: " + Double.toString(filteredProducts.get(position).getFat()));
         tvProductCarbohydrate.setText("Carbs: " + Double.toString(filteredProducts.get(position).getCarbohydrate()));
         tvProductProtein.setText("Protein: " + Double.toString(filteredProducts.get(position).getProtein()));
-
         //imageRequester.setImageFromUrl(imageCategory, BASE_URL + "/images/" + products.get(position).getImage());
 
         return convertView;
+
+
+
     }
 
     @Override
@@ -137,6 +142,50 @@ public class ProductAdapter extends BaseAdapter  implements Filterable {
             }
         };
         return filter;
+    }
+
+    public void removeProduct(long id) {
+
+      // private List<Product> newList;
+
+        NetworkService.getInstance()
+                .getJSONApi()
+                .removeProduct(id)
+                .enqueue(new Callback<List<Product>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
+                        CommonUtils.hideLoading();
+                        if (response.errorBody() == null && response.isSuccessful()) {
+                            assert response.body() != null;
+                            products2 = response.body();
+
+
+                        } else {
+                            String errorMessage;
+                            try {
+                                assert response.errorBody() != null;
+                                errorMessage = response.errorBody().string();
+                            } catch (IOException e) {
+                                errorMessage = response.message();
+                                e.printStackTrace();
+                            }
+//                            Toast toast = Toast.makeText(getApplicationContext(),
+//                                    errorMessage, Toast.LENGTH_LONG);
+//                            toast.show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
+                        CommonUtils.hideLoading();
+                        String error = "Error occurred while getting request!";
+//                        Toast toast = Toast.makeText(getApplicationContext(),
+//                                error, Toast.LENGTH_LONG);
+//                        toast.show();
+                        t.printStackTrace();
+                    }
+                });
+
     }
 
 

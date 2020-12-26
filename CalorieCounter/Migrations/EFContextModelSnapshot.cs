@@ -19,6 +19,58 @@ namespace CalorieCounter.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
+            modelBuilder.Entity("CalorieCounter.Entities.DailyMeal", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<DateTime>("DateOfMeal")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("ProductWeight")
+                        .HasColumnType("double precision");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("DailyMeals");
+                });
+
+            modelBuilder.Entity("CalorieCounter.Entities.DailyMenu", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<DateTime>("DateOfMeal")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("ProductWeight")
+                        .HasColumnType("double precision");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("DailyMenus");
+                });
+
             modelBuilder.Entity("CalorieCounter.Entities.DbRole", b =>
                 {
                     b.Property<long>("Id")
@@ -311,6 +363,28 @@ namespace CalorieCounter.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("CalorieCounter.Entities.DailyMeal", b =>
+                {
+                    b.HasOne("CalorieCounter.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("CalorieCounter.Entities.DailyMenu", b =>
+                {
+                    b.HasOne("CalorieCounter.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("CalorieCounter.Entities.DbUserRole", b =>
