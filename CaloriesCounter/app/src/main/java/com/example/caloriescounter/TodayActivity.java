@@ -6,10 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,7 +21,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,6 +40,7 @@ import com.example.caloriescounter.models.Dish;
 import com.example.caloriescounter.models.DishIngredientsView;
 import com.example.caloriescounter.models.Ingredients;
 import com.example.caloriescounter.models.Product;
+import com.example.caloriescounter.models.ProgressTextView;
 import com.example.caloriescounter.models.RemoveDailyView;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.utils.CommonUtils;
@@ -62,8 +69,10 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
     private List<DailyMenuView> dailyMenu;
     private DailyMenuRecyclerAdapter adapter;
     public Product addedDish;
-    Calendar c = Calendar.getInstance();
+   // Calendar c = Calendar.getInstance();
     //  c.set(2020, 12, 22);
+
+    private final Calendar calendar = Calendar.getInstance();
 
     private Product addedProduct;
     private DailyMenuView addedProduct2;
@@ -77,6 +86,10 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
     EditText inputSearch;
 
     TextView addedprod;
+    ProgressTextView progressCalories;
+    ProgressTextView progressFat;
+    ProgressTextView progressCarbs;
+    ProgressTextView progressProtein;
 
 
     ProductAdapter customAdapter;
@@ -108,11 +121,24 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
         txtDishCalories = findViewById(R.id.dishCalories);
         txtDishWeight = findViewById(R.id.dishWeight);
         txtDate = findViewById(R.id.dateAct);
-
+        progressCalories = (ProgressTextView) findViewById(R.id.progressCalories);
+        progressFat = (ProgressTextView) findViewById(R.id.progressFat);
+        progressCarbs = (ProgressTextView) findViewById(R.id.progressCarbs);
+        progressProtein = (ProgressTextView) findViewById(R.id.progressProtein);
         Date currentTime = Calendar.getInstance().getTime();
         txtDate.setText(currentTime.toString());
+        txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get((Calendar.YEAR)));
+       // txtDate.setText(daySelect + "/" + (monthSelect + 1) + "/" + yearSelect);
+        txtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker(v);
+            }
+        });
 
-
+        progressFat.setMaxValue(30);
+        progressCarbs.setMaxValue(50);
+        progressProtein.setMaxValue(50);
 
         setRecyclerView();
         loadListPr();
@@ -398,12 +424,16 @@ loadListPr();
                         NetworkService.getInstance()
                                 .getJSONApi()
                                 .removeDailyProduct(product)
-                                .enqueue(new Callback<DailyMenuView>() {
+                                .enqueue(new Callback<List<DailyMenuView>>() {
                                     @Override
-                                    public void onResponse(@NonNull Call<DailyMenuView> call, @NonNull Response<DailyMenuView> response) {
+                                    public void onResponse(@NonNull Call<List<DailyMenuView>> call, @NonNull Response<List<DailyMenuView>> response) {
                                         CommonUtils.hideLoading();
                                         if (response.errorBody() == null && response.isSuccessful()) {
                                             assert response.body() != null;
+                                            loadListPr();
+                                            Toast toast = Toast.makeText(getApplicationContext(),
+                                                    "hello", Toast.LENGTH_LONG);
+                            toast.show();
                                             // addedProduct = response.body();
                                           //  dish = response.body();
 //                                            txtDishCalories.setText(Double.toString(dish.getDishCalories()));
@@ -430,7 +460,7 @@ loadListPr();
                                     }
 
                                     @Override
-                                    public void onFailure(@NonNull Call<DailyMenuView> call, @NonNull Throwable t) {
+                                    public void onFailure(@NonNull Call<List<DailyMenuView>> call, @NonNull Throwable t) {
                                         CommonUtils.hideLoading();
                                         String error = "Error occurred while getting request!";
 //                        Toast toast = Toast.makeText(getApplicationContext(),
@@ -443,9 +473,9 @@ loadListPr();
 //
                         addedprod.setText("After" + product.getProductId());
 
-                    //    loadListPr();
+
                         adapter.notifyDataSetChanged();
-                       // loadListPr();
+                        //loadListPr();
 
 
                     }
@@ -456,7 +486,7 @@ loadListPr();
     public void loadListPr() {
         NetworkService.getInstance()
                 .getJSONApi()
-                .getProductsDailyMenu(c.getTime())
+                .getProductsDailyMenu(calendar.getTime())
                 .enqueue(new Callback<List<DailyMenuView>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<DailyMenuView>> call, @NonNull Response<List<DailyMenuView>> response) {
@@ -466,6 +496,31 @@ loadListPr();
                             if (dailyMenu != null)
                                 dailyMenu.clear();
                             dailyMenu.addAll(0, response.body());
+
+                            double totalWeight = 0;
+                            double totalCalories = 0;
+                            double totalFat = 0;
+                            double totalProtein = 0;
+                            double totalCarbs = 0;
+
+                            for (DailyMenuView item : dailyMenu) {
+                                totalWeight +=item.getProductWeight();
+                                totalCalories +=item.getProductCalories();
+                                totalFat += item.getProductFat();
+                                totalProtein += item.getProductProtein();
+                                totalCarbs += item.getProductCarbohydrate();
+                            }
+
+                            txtDishCalories.setText(Double.toString(totalCalories));
+                            txtDishWeight.setText(Double.toString(totalWeight));
+                            progressCalories.setValue((int) totalCalories);
+                            progressCalories.setTextColor(Color.parseColor("#000000"));
+                            progressFat.setValue((int)totalFat);
+                            progressFat.setTextColor(Color.parseColor("#000000"));
+                            progressCarbs.setValue((int)totalCarbs);
+                            progressCarbs.setTextColor(Color.parseColor("#000000"));
+                            progressProtein.setValue((int)totalProtein);
+                            progressProtein.setTextColor(Color.parseColor("#000000"));
                             adapter.notifyDataSetChanged();
                         } else {
                             dailyMenu = null;
@@ -481,47 +536,86 @@ loadListPr();
                 });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void onClickPreviousDate (View view) throws ParseException {
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public void onClickPreviousDate (View view) throws ParseException {
+//
+//        Date currentTime = c.getTime();
+//
+//        SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String ymd = dmyFormat.format(currentTime);
+//
+//       // String currStr = currentTime.toString();
+//        LocalDate now = LocalDate.parse(ymd); //2015-11-24
+//        LocalDate yesterday = now.minusDays(1);
+//        txtDate.setText(yesterday.toString());
+//
+//
+//        java.util.Date d = new SimpleDateFormat("yyyy-MM-dd").parse(yesterday.toString());
+//       // c.set(d);
+//        c.setTime(d);
+//       // c.getTime();
+//        loadListPr();
+//
+//    }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public void onClickNextDate(View view) throws ParseException {
+//        Date currentTime = c.getTime();
+//
+//        SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String ymd = dmyFormat.format(currentTime);
+//
+//        // String currStr = currentTime.toString();
+//        LocalDate now = LocalDate.parse(ymd); //2015-11-24
+//        LocalDate tomorrow = now.plusDays(1);
+//        txtDate.setText(tomorrow.toString());
+//
+//
+//        java.util.Date d = new SimpleDateFormat("yyyy-MM-dd").parse(tomorrow.toString());
+//        // c.set(d);
+//        c.setTime(d);
+//        // c.getTime();
+//        loadListPr();
+//    }
 
-        Date currentTime = c.getTime();
+    private void showDatePicker(View view) {
+        //hide keyboard
+        InputMethodManager imm = (InputMethodManager) TodayActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-        SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String ymd = dmyFormat.format(currentTime);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        // date picker dialog
+        DatePickerDialog datePicker = new DatePickerDialog(TodayActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDateSet(DatePicker view, int yearSelect, int monthSelect, int daySelect) {
+                        calendar.set(yearSelect, monthSelect, daySelect);
 
-       // String currStr = currentTime.toString();
-        LocalDate now = LocalDate.parse(ymd); //2015-11-24
-        LocalDate yesterday = now.minusDays(1);
-        txtDate.setText(yesterday.toString());
-
-
-        java.util.Date d = new SimpleDateFormat("yyyy-MM-dd").parse(yesterday.toString());
-       // c.set(d);
-        c.setTime(d);
-       // c.getTime();
+                        txtDate.setText(daySelect + "/" + (monthSelect + 1) + "/" + yearSelect);
+                        loadListPr();
+                    }
+                }, year, month, day);
+        datePicker.show();
         loadListPr();
-
+    }
+     public void onClickPreviousDate (View view) {
+        calendar.add(Calendar.DATE, -1);
+         int month = calendar.get(Calendar.MONTH)+1;
+        txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + calendar.get((Calendar.YEAR)));
+        loadListPr();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void onClickNextDate(View view) throws ParseException {
-        Date currentTime = c.getTime();
-
-        SimpleDateFormat dmyFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String ymd = dmyFormat.format(currentTime);
-
-        // String currStr = currentTime.toString();
-        LocalDate now = LocalDate.parse(ymd); //2015-11-24
-        LocalDate tomorrow = now.plusDays(1);
-        txtDate.setText(tomorrow.toString());
+    public void onClickNextDate(View view) {
 
 
-        java.util.Date d = new SimpleDateFormat("yyyy-MM-dd").parse(tomorrow.toString());
-        // c.set(d);
-        c.setTime(d);
-        // c.getTime();
+
+        calendar.add(Calendar.DATE, 1);
+        int month = calendar.get(Calendar.MONTH)+1;
+        txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + calendar.get((Calendar.YEAR)));
         loadListPr();
     }
-
 
 }

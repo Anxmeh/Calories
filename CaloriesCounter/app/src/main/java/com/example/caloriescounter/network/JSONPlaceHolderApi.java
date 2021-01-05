@@ -70,8 +70,11 @@ public interface JSONPlaceHolderApi {
     @POST("/api/daily/adddailyproduct")
     Call<DailyMenuView> addDailyProduct(@Body DailyMenuView model);
 
+//    @POST("/api/daily/removedailyproduct")
+//    Call<DailyMenuView> removeDailyProduct(@Body RemoveDailyView model );
+
     @POST("/api/daily/removedailyproduct")
-    Call<DailyMenuView> removeDailyProduct(@Body RemoveDailyView model );
+    Call<List<DailyMenuView>> removeDailyProduct(@Body RemoveDailyView model );
 
 
 //

@@ -259,7 +259,69 @@ namespace CalorieCounter.Controllers
             else
                 return BadRequest(new { invalid = "Не знайдено" });
 
-            return Ok();
+            //////////
+            var queryMenu = _context.DailyMeals.AsQueryable();
+
+            ICollection<TesttViewModel> daily;
+            daily = queryMenu.Select(d => new TesttViewModel
+            {
+                Id = d.Id,
+                UserId = d.UserId,
+                ProductWeight = d.ProductWeight,
+                ProductId = d.ProductId,
+                Date = d.DateOfMeal
+            }).Where(u => u.UserId == user.Id).ToList();
+
+            var queryProducts = _context.Products.AsQueryable();
+
+            ICollection<ProductViewModel> products;
+
+            products = queryProducts.Select(p => new ProductViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Protein = p.Protein,
+                Fat = p.Fat,
+                Carbohydrate = p.Carbohydrate,
+                Calories = p.Calories,
+            }).ToList();
+
+            var result5 = daily.Join(products,
+             d => d.ProductId,
+             p => p.Id,
+             (d, p) => new DailyMenuViewModel
+             {
+                 UserId = d.UserId,
+                 ProductWeight = d.ProductWeight,
+                 ProductName = p.Name,
+                 ProductProtein = p.Protein * d.ProductWeight / 100,
+                 ProductCalories = p.Calories * d.ProductWeight / 100,
+                 ProductCarbohydrate = p.Carbohydrate * d.ProductWeight / 100,
+                 ProductFat = p.Fat * d.ProductWeight / 100,
+                 ProductId = p.Id,
+                 DateOfMeal = d.Date
+                 //TotalWeight = 0,
+                 //TotalCalories = 0
+             }); // результат
+
+            CalculateDailyViewModel dailyMenu = new CalculateDailyViewModel();
+
+            foreach (var item in result5)
+            {
+                dailyMenu.TotalWeight += item.ProductWeight;
+                dailyMenu.TotalCalories += item.ProductCalories;
+            }
+
+
+            return Ok(result5);
+            /////////////
+
+
+
+
+
+
+          //  return Ok();
         }
     }
 }

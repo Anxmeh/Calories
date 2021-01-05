@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar homeToolbar = findViewById(R.id.home_toolbar);
+        setSupportActionBar(homeToolbar);
         ImageRequester imageRequester = ImageRequester.getInstance();
         NetworkImageView editImage = findViewById(R.id.chooseImage);
         imageRequester.setImageFromUrl(editImage, NetworkService.getBaseUrl() + "/images/testAvatarHen.jpg");
@@ -83,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.dailyMenu:
                 intent = new Intent(this, TodayActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.click:
+                intent = new Intent(this, ClickedProductActivity.class);
                 startActivity(intent);
                 break;
             case R.id.login:

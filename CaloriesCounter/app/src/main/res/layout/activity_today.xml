@@ -14,7 +14,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <Button
             android:id="@+id/btnPrevious"
@@ -38,7 +39,10 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:drawableRight="@drawable/ic_next"
-            android:onClick="onClickNextDate"/>
+            android:onClick="onClickNextDate"
+            android:gravity="start"
+            android:textAlignment="textStart"/>
+
     </LinearLayout>
 
         <EditText
@@ -48,6 +52,43 @@
             android:hint="Products......."
             android:inputType="text" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <com.example.caloriescounter.models.ProgressTextView
+             android:id="@+id/progressCalories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/background_calories_bar"
+            android:gravity="center" />
+
+        <com.example.caloriescounter.models.ProgressTextView
+            android:id="@+id/progressProtein"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/background_protein_bar"
+            android:gravity="center" />
+        <com.example.caloriescounter.models.ProgressTextView
+            android:id="@+id/progressFat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/background_fat_bar"
+            android:gravity="center" />
+        <com.example.caloriescounter.models.ProgressTextView
+            android:id="@+id/progressCarbs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/background_carbs_bar"
+            android:gravity="center" />
+    </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
