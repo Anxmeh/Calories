@@ -45,6 +45,7 @@ namespace CalorieCounter.Models
     {
         public long ProductId { get; set; }
        public DateTime DateOfMeal { get; set; }
+        public double ProductWeight { get; set; }
 
     }
 }

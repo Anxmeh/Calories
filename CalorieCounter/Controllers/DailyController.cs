@@ -250,7 +250,8 @@ namespace CalorieCounter.Controllers
             long ids = user.Id;
             UserProfileView userProfile = new UserProfileView(user);
             
-            var product = _context.DailyMeals.SingleOrDefault(p => p.ProductId == model.ProductId && p.DateOfMeal.Date == model.DateOfMeal.Date && p.UserId == user.Id);
+            var product = _context.DailyMeals.SingleOrDefault(p => p.ProductId == model.ProductId && 
+            p.DateOfMeal.Date == model.DateOfMeal.Date && p.UserId == user.Id && p.ProductWeight == model.ProductWeight);
             if (product != null)
             {
                 _context.DailyMeals.Remove(product);

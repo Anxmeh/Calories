@@ -137,7 +137,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@color/design_default_color_primary"
+            android:background="@drawable/home_toolbar_gradient"
             android:text="changeProfile"
             android:onClick="onClickUpdate"/>
     </LinearLayout>

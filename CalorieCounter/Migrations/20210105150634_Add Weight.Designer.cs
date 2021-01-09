@@ -3,15 +3,17 @@ using System;
 using CalorieCounter.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CalorieCounter.Migrations
 {
     [DbContext(typeof(EFContext))]
-    partial class EFContextModelSnapshot : ModelSnapshot
+    [Migration("20210105150634_Add Weight")]
+    partial class AddWeight
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,79 +272,12 @@ namespace CalorieCounter.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("UserProfile");
-                });
-
-            modelBuilder.Entity("CalorieCounter.Entities.UserSettings", b =>
-                {
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
-                    b.Property<double>("Activity")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Age")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Bmi")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Calories")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Chest")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("FatPercentage")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Forearm")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Height")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Hip")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Hips")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Neck")
-                        .HasColumnType("double precision");
-
-                    b.Property<bool>("Sex")
-                        .HasColumnType("boolean");
-
-                    b.Property<double>("Shin")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("UserCalories")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("UserCarbohydrate")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("UserFat")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("UserProtein")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Waist")
-                        .HasColumnType("double precision");
-
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("Wrist")
-                        .HasColumnType("double precision");
-
                     b.HasKey("Id");
 
-                    b.ToTable("UserSettings");
+                    b.ToTable("UserProfile");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -487,17 +422,6 @@ namespace CalorieCounter.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CalorieCounter.Entities.UserSettings", b =>
-                {
-                    b.HasOne("CalorieCounter.Entities.DbUser", "User")
-                        .WithOne("UserSettings")
-                        .HasForeignKey("CalorieCounter.Entities.UserSettings", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
                     b.HasOne("CalorieCounter.Entities.DbRole", null)
@@ -544,8 +468,6 @@ namespace CalorieCounter.Migrations
                     b.Navigation("UserProfile");
 
                     b.Navigation("UserRoles");
-
-                    b.Navigation("UserSettings");
                 });
 #pragma warning restore 612, 618
         }

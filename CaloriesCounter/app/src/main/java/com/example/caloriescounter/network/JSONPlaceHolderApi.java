@@ -10,6 +10,7 @@ import com.example.caloriescounter.models.Photo;
 import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.models.RegisterView;
 import com.example.caloriescounter.models.RemoveDailyView;
+import com.example.caloriescounter.models.UserSettingsView;
 import com.example.caloriescounter.models.UserView;
 
 import java.util.Date;
@@ -87,7 +88,14 @@ public interface JSONPlaceHolderApi {
     @POST("/api/profile/update-photo")
     Call<UserView> updatePhoto(@Body Photo photo);
 //
+@POST("/api/settings/settings")
+Call<UserSettingsView> settings();
 
+    @POST("/api/settings/updatesettings")
+    Call<UserSettingsView> updateSettings(@Body UserSettingsView userSettings);
+
+    @POST("/api/settings/setusercalories")
+    Call<UserSettingsView> updateCalories(@Body double userCalories);
 //
 //    @POST("/api/library/addbook")
 //    Call<Book> addBook(@Body Book book);

@@ -46,6 +46,7 @@ namespace CalorieCounter.Entities
         /// </summary>
         public DateTime RegistrationDate { get; set; }
 
+       
         public virtual DbUser User { get; set; }
     }
 }

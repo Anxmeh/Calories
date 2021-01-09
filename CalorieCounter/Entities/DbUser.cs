@@ -10,5 +10,6 @@ namespace CalorieCounter.Entities
     {
         public virtual ICollection<DbUserRole> UserRoles { get; set; }
         public virtual UserProfile UserProfile { get; set; }
+        public virtual UserSettings UserSettings { get; set; }
     }
 }

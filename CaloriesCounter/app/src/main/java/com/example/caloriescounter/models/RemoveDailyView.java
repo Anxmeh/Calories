@@ -15,9 +15,14 @@ public class RemoveDailyView implements Serializable {
     @Expose
     private Date dateOfMeal;
 
-    public RemoveDailyView(long productId, Date dateOfMeal) {
+    @SerializedName("productWeight")
+    @Expose
+    private double productWeight;
+
+    public RemoveDailyView(long productId, Date dateOfMeal, double productWeight) {
         this.productId = productId;
         this.dateOfMeal = dateOfMeal;
+        this.productWeight = productWeight;
     }
 
     public RemoveDailyView() {
@@ -37,5 +42,13 @@ public class RemoveDailyView implements Serializable {
 
     public void setDateOfMeal(Date dateOfMeal) {
         this.dateOfMeal = dateOfMeal;
+    }
+
+    public double getProductWeight() {
+        return productWeight;
+    }
+
+    public void setProductWeight(double productWeight) {
+        this.productWeight = productWeight;
     }
 }

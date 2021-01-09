@@ -42,6 +42,7 @@ import com.example.caloriescounter.models.Ingredients;
 import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.models.ProgressTextView;
 import com.example.caloriescounter.models.RemoveDailyView;
+import com.example.caloriescounter.models.UserSettingsView;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.utils.CommonUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -69,6 +70,7 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
     private List<DailyMenuView> dailyMenu;
     private DailyMenuRecyclerAdapter adapter;
     public Product addedDish;
+    private UserSettingsView userSettings;
    // Calendar c = Calendar.getInstance();
     //  c.set(2020, 12, 22);
 
@@ -136,12 +138,13 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
             }
         });
 
-        progressFat.setMaxValue(30);
-        progressCarbs.setMaxValue(50);
-        progressProtein.setMaxValue(50);
-
+//        progressFat.setMaxValue(30);
+//        progressCarbs.setMaxValue(50);
+//        progressProtein.setMaxValue(50);
+        setUserData();
         setRecyclerView();
         loadListPr();
+
 
 
         NetworkService.getInstance()
@@ -269,6 +272,7 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
                                                                                                     txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate()*100.0)/100.0));
 
 loadListPr();
+
                                                                                                     adapter.notifyDataSetChanged();
                                                                                                     //////////////////////
 
@@ -484,6 +488,7 @@ loadListPr();
     }
 
     public void loadListPr() {
+
         NetworkService.getInstance()
                 .getJSONApi()
                 .getProductsDailyMenu(calendar.getTime())
@@ -536,6 +541,48 @@ loadListPr();
                 });
     }
 
+
+    public void setUserData() {
+
+        CommonUtils.showLoading(this);
+        NetworkService.getInstance()
+                .getJSONApi()
+                .settings()
+                .enqueue(new Callback<UserSettingsView>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onResponse(@NonNull Call<UserSettingsView> call, @NonNull Response<UserSettingsView> response) {
+                        CommonUtils.hideLoading();
+                        if (response.errorBody() == null && response.isSuccessful()) {
+                            assert response.body() != null;
+                            userSettings = response.body();
+                            progressCalories.setMaxValue((int) userSettings.getUserCalories());
+                            progressCarbs.setMaxValue((int) userSettings.getUserCarbohydrate());
+                            progressProtein.setMaxValue((int) userSettings.getUserProtein());
+                            progressFat.setMaxValue((int) userSettings.getUserFat());
+
+
+                            //  double heigh = userSettings.getHeight();
+                            // int heightM = (int) userSettings.getHeight() / 100;
+                            //  int heightCm = (int) userSettings.getHeight() - (100 * heightM);
+
+
+
+
+                        } else {
+                            userSettings = null;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<UserSettingsView> call, @NonNull Throwable t) {
+                        CommonUtils.hideLoading();
+                        userSettings = null;
+                        t.printStackTrace();
+                    }
+                });
+
+    }
 //    @RequiresApi(api = Build.VERSION_CODES.O)
 //    public void onClickPreviousDate (View view) throws ParseException {
 //

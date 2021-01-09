@@ -90,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, TodayActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.click:
-                intent = new Intent(this, ClickedProductActivity.class);
+            case R.id.userSettings:
+                intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.login:

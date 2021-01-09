@@ -21,4 +21,27 @@
     <string name="newDish">Нова страва</string>
     <string name="weight">Вага</string>
     <string name="AddDish">Додати страву</string>
+    <string name="CaloriesLimit">Ваша норма калорій</string>
+    <string name="height">Зріст, см</string>
+    <string name="waist">Талія, см</string>
+    <string name="hips">Бедра, см</string>
+    <string name="chest">Груди, см</string>
+    <string name="wrist">Запястя, см</string>
+    <string name="calculate">Обрахувати</string>
+    <string name="male">Чол</string>
+    <string name="female">Жін</string>
+    <string name="minimumActivity">Мінімальна</string>
+    <string name="lowActivity">Низька</string>
+    <string name="mediumActivity">Середня</string>
+    <string name="highActivity">Висока</string>
+    <string name="veryHighActivity">Дуже висока</string>
+    <string name="userActivity">Рівень активності</string>
+    <string name="userSex">Стать</string>
+    <string name="fatPercentage">Ваш відсоток жиру</string>
+    <string name="hip">Бедро, см</string>
+    <string name="forearm">Передпліччя, см</string>
+    <string name="neck">Шия, см</string>
+    <string name="shin">Гомілка, см</string>
+    <string name="Cm">см</string>
+    <string name="userCalories">Бажана калорійність в день</string>
 </resources>

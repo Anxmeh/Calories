@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 public class ProgressTextView extends androidx.appcompat.widget.AppCompatTextView {
     // Максимальное значение шкалы
-    private int mMaxValue = 1500;
+    private int mMaxValue = 1200;
 
     // Конструкторы
     public ProgressTextView(Context context, AttributeSet attrs, int defStyle) {
@@ -31,7 +31,8 @@ public class ProgressTextView extends androidx.appcompat.widget.AppCompatTextVie
     // Установка значения
     public synchronized void setValue(int value) {
         // Установка новой надписи
-        this.setText(String.valueOf(value));
+      //  this.setText(String.valueOf(value));
+        this.setText(String.valueOf(value) + "/" + String.valueOf(mMaxValue));
 
         // Drawable, отвечающий за фон
         LayerDrawable background = (LayerDrawable) this.getBackground();

@@ -57,6 +57,7 @@ public class DailyMenuRecyclerAdapter extends RecyclerView.Adapter<ProductCardVi
             final RemoveDailyView model = new RemoveDailyView();
             model.setProductId(product.getProductId());
             model.setDateOfMeal(product.getDateOfMeal());
+            model.setProductWeight(product.getProductWeight());
 
             holder.delete.setOnClickListener(new View.OnClickListener() {
                 @Override

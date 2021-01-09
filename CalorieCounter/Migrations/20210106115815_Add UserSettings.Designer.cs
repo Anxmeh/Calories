@@ -3,15 +3,17 @@ using System;
 using CalorieCounter.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CalorieCounter.Migrations
 {
     [DbContext(typeof(EFContext))]
-    partial class EFContextModelSnapshot : ModelSnapshot
+    [Migration("20210106115815_Add UserSettings")]
+    partial class AddUserSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,9 +282,6 @@ namespace CalorieCounter.Migrations
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
 
-                    b.Property<double>("Activity")
-                        .HasColumnType("double precision");
-
                     b.Property<double>("Age")
                         .HasColumnType("double precision");
 
@@ -313,22 +312,7 @@ namespace CalorieCounter.Migrations
                     b.Property<double>("Neck")
                         .HasColumnType("double precision");
 
-                    b.Property<bool>("Sex")
-                        .HasColumnType("boolean");
-
                     b.Property<double>("Shin")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("UserCalories")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("UserCarbohydrate")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("UserFat")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("UserProtein")
                         .HasColumnType("double precision");
 
                     b.Property<double>("Waist")
@@ -490,8 +474,8 @@ namespace CalorieCounter.Migrations
             modelBuilder.Entity("CalorieCounter.Entities.UserSettings", b =>
                 {
                     b.HasOne("CalorieCounter.Entities.DbUser", "User")
-                        .WithOne("UserSettings")
-                        .HasForeignKey("CalorieCounter.Entities.UserSettings", "Id")
+                        .WithMany()
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -544,8 +528,6 @@ namespace CalorieCounter.Migrations
                     b.Navigation("UserProfile");
 
                     b.Navigation("UserRoles");
-
-                    b.Navigation("UserSettings");
                 });
 #pragma warning restore 612, 618
         }
