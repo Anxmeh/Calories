@@ -44,4 +44,7 @@
     <string name="shin">Гомілка, см</string>
     <string name="Cm">см</string>
     <string name="userCalories">Бажана калорійність в день</string>
+    <string name="dailyHeader">Меню на сьогодні</string>
+    <string name="CaloriesLable">К:</string>
+    <string name="proteinLable">Б:</string>
 </resources>

@@ -2,7 +2,10 @@ package com.example.caloriescounter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +23,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -44,8 +48,10 @@ import com.example.caloriescounter.models.ProgressTextView;
 import com.example.caloriescounter.models.RemoveDailyView;
 import com.example.caloriescounter.models.UserSettingsView;
 import com.example.caloriescounter.network.NetworkService;
+import com.example.caloriescounter.network.SessionManager;
 import com.example.caloriescounter.network.utils.CommonUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationView;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -56,6 +62,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,6 +72,9 @@ import retrofit2.Response;
 public class TodayActivity extends AppCompatActivity implements OnDeleteListenerDailyMenu {
 
     private static final String TAG = TodayActivity.class.getSimpleName();
+    private ActionBarDrawerToggle mToggle;
+    private DrawerLayout drawerLayout;
+    private SessionManager sessionManager;
     private RecyclerView recyclerView;
     private List<Product> products;
     private List<Ingredients> prodsindish;
@@ -75,6 +86,7 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
     //  c.set(2020, 12, 22);
 
     private final Calendar calendar = Calendar.getInstance();
+    SimpleDateFormat formatDate = new SimpleDateFormat("MMM d, yyyy",  new Locale("uk","UA"));
 
     private Product addedProduct;
     private DailyMenuView addedProduct2;
@@ -87,7 +99,7 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
     private double caloriesInProduct = 0;
     EditText inputSearch;
 
-    TextView addedprod;
+
     ProgressTextView progressCalories;
     ProgressTextView progressFat;
     ProgressTextView progressCarbs;
@@ -101,8 +113,6 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
     public TextView txtDishProtein;
     public TextView txtDishFat;
     public TextView txtDishCarbs;
-    public TextView txtDishWeight;
-    public TextView txtDishCalories;
     public TextView txtDate;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -110,9 +120,30 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today);
+
+        Toolbar homeToolbar = findViewById(R.id.home_toolbar);
+        homeToolbar.setTitle("Меню на сьогодні");
+        setSupportActionBar(homeToolbar);
+
+        drawerLayout = findViewById(R.id.drawerLayout);
+        NavigationView navigationView = findViewById(R.id.navigation);
+        navigationView.bringToFront();
+        mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return onNavItemSelected(item);
+            }
+        });
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        sessionManager = SessionManager.getInstance(this);
+
         recyclerView = findViewById(R.id.recycler_view);
 
-        addedprod = findViewById(R.id.resultDish);
+
 
         // final TextView addedprod = findViewById(R.id.resultDish);
         listView = findViewById(R.id.listViewProducts);
@@ -120,8 +151,6 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
         txtDishProtein = findViewById(R.id.dishProtein);
         txtDishFat = findViewById(R.id.dishFat);
         txtDishCarbs = findViewById(R.id.dishCarbohydrate);
-        txtDishCalories = findViewById(R.id.dishCalories);
-        txtDishWeight = findViewById(R.id.dishWeight);
         txtDate = findViewById(R.id.dateAct);
         progressCalories = (ProgressTextView) findViewById(R.id.progressCalories);
         progressFat = (ProgressTextView) findViewById(R.id.progressFat);
@@ -129,7 +158,10 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
         progressProtein = (ProgressTextView) findViewById(R.id.progressProtein);
         Date currentTime = Calendar.getInstance().getTime();
         txtDate.setText(currentTime.toString());
-        txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get((Calendar.YEAR)));
+        int monthShow = calendar.get(Calendar.MONTH)+1;
+
+        txtDate.setText(formatDate.format(currentTime));
+        //txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + monthShow + "/" + calendar.get((Calendar.YEAR)));
        // txtDate.setText(daySelect + "/" + (monthSelect + 1) + "/" + yearSelect);
         txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,12 +296,11 @@ public class TodayActivity extends AppCompatActivity implements OnDeleteListener
                                                                                                     assert response.body() != null;
 
                                                                                                     dish = response.body();
-                                                                                                    addedprod.setText("Weight: " + dish.getDishWeight() + ", Calories: " + dish.getDishCalories());
-                                                                                                    txtDishCalories.setText(Double.toString(dish.getDishCalories()));
-                                                                                                    txtDishWeight.setText(Double.toString(dish.getDishWeight()));
-                                                                                                    txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
-                                                                                                    txtDishFat.setText(Double.toString(Math.round(dish.getDishFat()*100.0)/100.0));
-                                                                                                    txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate()*100.0)/100.0));
+
+
+                                                                                                  //  txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
+                                                                                                    //txtDishFat.setText(Double.toString(Math.round(dish.getDishFat()*100.0)/100.0));
+                                                                                                 //   txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate()*100.0)/100.0));
 
 loadListPr();
 
@@ -475,7 +506,7 @@ loadListPr();
                                 });
                         /////////////////////////////////////////////////
 //
-                        addedprod.setText("After" + product.getProductId());
+
 
 
                         adapter.notifyDataSetChanged();
@@ -516,8 +547,7 @@ loadListPr();
                                 totalCarbs += item.getProductCarbohydrate();
                             }
 
-                            txtDishCalories.setText(Double.toString(totalCalories));
-                            txtDishWeight.setText(Double.toString(totalWeight));
+
                             progressCalories.setValue((int) totalCalories);
                             progressCalories.setTextColor(Color.parseColor("#000000"));
                             progressFat.setValue((int)totalFat);
@@ -651,7 +681,10 @@ loadListPr();
      public void onClickPreviousDate (View view) {
         calendar.add(Calendar.DATE, -1);
          int month = calendar.get(Calendar.MONTH)+1;
-        txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + calendar.get((Calendar.YEAR)));
+
+         Date currentTime =  calendar.getTime();;
+         txtDate.setText(formatDate.format(currentTime));
+        //txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + calendar.get((Calendar.YEAR)));
         loadListPr();
     }
 
@@ -661,8 +694,81 @@ loadListPr();
 
         calendar.add(Calendar.DATE, 1);
         int month = calendar.get(Calendar.MONTH)+1;
-        txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + calendar.get((Calendar.YEAR)));
+        Date currentTime = calendar.getTime();
+        //currentTime = calendar.getTime();
+        txtDate.setText(formatDate.format(currentTime));
+        //txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + calendar.get((Calendar.YEAR)));
         loadListPr();
     }
+
+    @SuppressLint("NonConstantResourceId")
+    public boolean onNavItemSelected(MenuItem menuItem) {
+        Intent intent;
+        Toast toast;
+        // Handle item selection
+        switch (menuItem.getItemId()) {
+            case R.id.main:
+                drawerLayout.closeDrawers();
+                break;
+            case R.id.products:
+                intent = new Intent(this, ProductsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.newDish:
+                intent = new Intent(this, RecyclerActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.newProduct:
+                intent = new Intent(this, AddProductActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.dailyMenu:
+                intent = new Intent(this, TodayActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.userSettings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.login:
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.register:
+                intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.profile:
+                if (!sessionManager.isLogged) {
+                    intent = new Intent(this, LoginActivity.class);
+                } else {
+                    intent = new Intent(this, ProfileActivity.class);
+                }
+                startActivity(intent);
+                break;
+            case R.id.logout:
+                sessionManager = SessionManager.getInstance(this);
+                String message = "See you later!";
+//                textView.setText(message);
+                sessionManager.logout();
+                toast = Toast.makeText(getApplicationContext(),
+                        "You have been signed out successfully", Toast.LENGTH_LONG);
+                toast.show();
+                drawerLayout.closeDrawers();
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }

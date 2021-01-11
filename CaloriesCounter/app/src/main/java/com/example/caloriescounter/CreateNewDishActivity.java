@@ -1,16 +1,22 @@
 package com.example.caloriescounter;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -22,9 +28,12 @@ import android.widget.Toast;
 import com.example.caloriescounter.adapters.ProductAdapter;
 import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.network.NetworkService;
+import com.example.caloriescounter.network.SessionManager;
 import com.example.caloriescounter.network.utils.CommonUtils;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +46,9 @@ public class CreateNewDishActivity extends AppCompatActivity {
     private List<Product> products;
     EditText inputSearch;
     ProductAdapter customAdapter;
+    private ActionBarDrawerToggle mToggle;
+    private DrawerLayout drawerLayout;
+    private SessionManager sessionManager;
 
     final Context context = this;
 
@@ -44,6 +56,27 @@ public class CreateNewDishActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_dish);
+
+        Toolbar homeToolbar = findViewById(R.id.home_toolbar);
+        homeToolbar.setTitle("Меню на сьогодні");
+        setSupportActionBar(homeToolbar);
+
+        drawerLayout = findViewById(R.id.drawerLayout);
+        NavigationView navigationView = findViewById(R.id.navigation);
+        navigationView.bringToFront();
+        mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return onNavItemSelected(item);
+            }
+        });
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        sessionManager = SessionManager.getInstance(this);
+
 
         final TextView addedprod = findViewById(R.id.tvListProducts);
         listView = findViewById(R.id.listViewProducts);
@@ -209,5 +242,72 @@ public class CreateNewDishActivity extends AppCompatActivity {
                         t.printStackTrace();
                     }
                 });
+    }
+    @SuppressLint("NonConstantResourceId")
+    public boolean onNavItemSelected(MenuItem menuItem) {
+        Intent intent;
+        Toast toast;
+        // Handle item selection
+        switch (menuItem.getItemId()) {
+            case R.id.main:
+                drawerLayout.closeDrawers();
+                break;
+            case R.id.products:
+                intent = new Intent(this, ProductsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.newDish:
+                intent = new Intent(this, RecyclerActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.newProduct:
+                intent = new Intent(this, AddProductActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.dailyMenu:
+                intent = new Intent(this, TodayActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.userSettings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.login:
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.register:
+                intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.profile:
+                if (!sessionManager.isLogged) {
+                    intent = new Intent(this, LoginActivity.class);
+                } else {
+                    intent = new Intent(this, ProfileActivity.class);
+                }
+                startActivity(intent);
+                break;
+            case R.id.logout:
+                sessionManager = SessionManager.getInstance(this);
+                String message = "See you later!";
+                                sessionManager.logout();
+                toast = Toast.makeText(getApplicationContext(),
+                        "You have been signed out successfully", Toast.LENGTH_LONG);
+                toast.show();
+                drawerLayout.closeDrawers();
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

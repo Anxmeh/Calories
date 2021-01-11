@@ -1,20 +1,30 @@
 package com.example.caloriescounter;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.caloriescounter.models.UserSettingsView;
 import com.example.caloriescounter.models.UserView;
 import com.example.caloriescounter.network.NetworkService;
+import com.example.caloriescounter.network.SessionManager;
 import com.example.caloriescounter.network.utils.CommonUtils;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -25,6 +35,9 @@ import retrofit2.Response;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private ActionBarDrawerToggle mToggle;
+    private DrawerLayout drawerLayout;
+    private SessionManager sessionManager;
     private EditText txtHeight;
     private EditText txtHeightCm;
     private EditText txtWeight;
@@ -43,6 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText txtUserCalories;
     private RadioGroup radioGroupActivity;
     private RadioGroup radioGroupSex;
+    private String requiredFieldError = "Заповніть поле";
 
     private UserSettingsView userSettings;
     boolean sex;
@@ -53,6 +67,25 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        Toolbar homeToolbar = findViewById(R.id.home_toolbar);
+        homeToolbar.setTitle("Параметри");
+        setSupportActionBar(homeToolbar);
+
+        drawerLayout = findViewById(R.id.drawerLayout);
+        NavigationView navigationView = findViewById(R.id.navigation);
+        navigationView.bringToFront();
+        mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                return onNavItemSelected(item);
+            }
+        });
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        sessionManager = SessionManager.getInstance(this);
 
         txtCalories = findViewById(R.id.txtCalories);
         txtHeight = findViewById(R.id.txtHeight);
@@ -161,6 +194,25 @@ public class SettingsActivity extends AppCompatActivity {
                             else
                                 radioGroupSex.check(R.id.radioFemale);
 
+                            switch (String.valueOf(userSettings.getActivity())) {
+                                case "1.2":
+                                radioGroupActivity.check(R.id.radioMinimum);
+                                break;
+                                case "1.375":
+                                    radioGroupActivity.check(R.id.radioLow);
+                                    break;
+                                case "1.55":
+                                    radioGroupActivity.check(R.id.radioMedium);
+                                    break;
+                                case "1.725":
+                                    radioGroupActivity.check(R.id.radioHigh);
+                                    break;
+                                case "1.9":
+                                    radioGroupActivity.check(R.id.radioVeryHigh);
+                                    break;
+                            }
+
+
 
                         } else {
                             userSettings = null;
@@ -180,20 +232,108 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void onClickSave(View view) {
         final UserSettingsView settingsUpdate = new UserSettingsView();
-        settingsUpdate.setWeight(Objects.requireNonNull(Double.parseDouble(txtWeight.getText().toString())));
-         settingsUpdate.setHeight(Objects.requireNonNull(Double.parseDouble(txtHeight.getText().toString())));
-        settingsUpdate.setChest(Objects.requireNonNull(Double.parseDouble(txtChest.getText().toString())));
-        settingsUpdate.setWaist(Objects.requireNonNull(Double.parseDouble(txtWaist.getText().toString())));
-        settingsUpdate.setHips(Objects.requireNonNull(Double.parseDouble(txtHips.getText().toString())));
-        settingsUpdate.setHip(Objects.requireNonNull(Double.parseDouble(txtHip.getText().toString())));
-        settingsUpdate.setWrist(Objects.requireNonNull(Double.parseDouble(txtWrist.getText().toString())));
-        settingsUpdate.setAge(30);
-        settingsUpdate.setHeight(160);
-        settingsUpdate.setShin(Objects.requireNonNull(Double.parseDouble(txtShin.getText().toString())));
-        settingsUpdate.setForearm(Objects.requireNonNull(Double.parseDouble(txtForearm.getText().toString())));
-        settingsUpdate.setNeck(Objects.requireNonNull(Double.parseDouble(txtNeck.getText().toString())));
-        settingsUpdate.setUserCalories(Objects.requireNonNull(Double.parseDouble(txtUserCalories.getText().toString())));
+        boolean isCorrect = true;
 
+
+
+       // final TextInputEditText email = findViewById(R.id.input_emailRegister);
+
+        final TextInputLayout heightlLayout = findViewById(R.id.heightLayout);
+        final TextInputLayout weightLayout = findViewById(R.id.weightLayout);
+        final TextInputLayout chestLayout = findViewById(R.id.chestLayout);
+        final TextInputLayout waistLayout = findViewById(R.id.waistLayout);
+        final TextInputLayout hipsLayout = findViewById(R.id.hipsLayout);
+        final TextInputLayout hipLayout = findViewById(R.id.hipLayout);
+        final TextInputLayout wristLayout = findViewById(R.id.wristLayout);
+       // final TextInputLayout ageLayout = findViewById(R.id.ageLayout); !!!!!!!
+        final TextInputLayout shinLayout = findViewById(R.id.shinLayout);
+        final TextInputLayout forearmLayout = findViewById(R.id.forearmLayout);
+        final TextInputLayout neckLayout = findViewById(R.id.neckLayout);
+        final TextInputLayout userCaloriesLayout = findViewById(R.id.userCaloriesLayout);
+
+        if (Objects.requireNonNull(txtHeight.getText()).toString().equals("")) {
+            heightlLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            heightlLayout.setError(null);
+        }
+        if (Objects.requireNonNull(txtWeight.getText()).toString().equals("")) {
+            weightLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            weightLayout.setError(null);
+        }
+        if (Objects.requireNonNull(txtChest.getText()).toString().equals("")) {
+            chestLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            chestLayout.setError(null);
+        }
+        if (Objects.requireNonNull(txtWaist.getText()).toString().equals("")) {
+            waistLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            waistLayout.setError(null);
+        }
+        if (Objects.requireNonNull(txtHips.getText()).toString().equals("")) {
+            hipsLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            hipsLayout.setError(null);
+        }
+        if (Objects.requireNonNull(txtHip.getText()).toString().equals("")) {
+            hipLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            hipLayout.setError(null);
+        }
+        if (Objects.requireNonNull(txtWrist.getText()).toString().equals("")) {
+            wristLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            wristLayout.setError(null);
+        }
+        if (Objects.requireNonNull(txtShin.getText()).toString().equals("")) {
+            shinLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            shinLayout.setError(null);
+        }
+        if (Objects.requireNonNull(txtForearm.getText()).toString().equals("")) {
+            forearmLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            forearmLayout.setError(null);
+        }
+        if (Objects.requireNonNull(txtNeck.getText()).toString().equals("")) {
+            neckLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            neckLayout.setError(null);
+        }
+
+        if (Objects.requireNonNull(txtUserCalories.getText()).toString().equals("")) {
+            userCaloriesLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            userCaloriesLayout.setError(null);
+        }
+
+        if (!isCorrect)
+            return;
+
+ settingsUpdate.setWeight(Double.parseDouble(txtWeight.getText().toString()));
+         settingsUpdate.setHeight(Double.parseDouble(txtHeight.getText().toString()));
+        settingsUpdate.setChest(Double.parseDouble(txtChest.getText().toString()));
+        settingsUpdate.setWaist(Double.parseDouble(txtWaist.getText().toString()));
+        settingsUpdate.setHips(Double.parseDouble(txtHips.getText().toString()));
+        settingsUpdate.setHip(Double.parseDouble(txtHip.getText().toString()));
+        settingsUpdate.setWrist(Double.parseDouble(txtWrist.getText().toString()));
+        settingsUpdate.setAge(30);
+        settingsUpdate.setShin(Double.parseDouble(txtShin.getText().toString()));
+        settingsUpdate.setForearm(Double.parseDouble(txtForearm.getText().toString()));
+        settingsUpdate.setNeck(Double.parseDouble(txtNeck.getText().toString()));
+        settingsUpdate.setUserCalories(Double.parseDouble(txtUserCalories.getText().toString()));
 
         RadioGroup radioGroupSex = (RadioGroup) findViewById(R.id.radioGroupSex);
         radioGroupSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -356,5 +496,72 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
+    }
+    @SuppressLint("NonConstantResourceId")
+    public boolean onNavItemSelected(MenuItem menuItem) {
+        Intent intent;
+        Toast toast;
+        // Handle item selection
+        switch (menuItem.getItemId()) {
+            case R.id.main:
+                drawerLayout.closeDrawers();
+                break;
+            case R.id.products:
+                intent = new Intent(this, ProductsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.newDish:
+                intent = new Intent(this, RecyclerActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.newProduct:
+                intent = new Intent(this, AddProductActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.dailyMenu:
+                intent = new Intent(this, TodayActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.userSettings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.login:
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.register:
+                intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.profile:
+                if (!sessionManager.isLogged) {
+                    intent = new Intent(this, LoginActivity.class);
+                } else {
+                    intent = new Intent(this, ProfileActivity.class);
+                }
+                startActivity(intent);
+                break;
+            case R.id.logout:
+                sessionManager = SessionManager.getInstance(this);
+                String message = "See you later!";
+                sessionManager.logout();
+                toast = Toast.makeText(getApplicationContext(),
+                        "You have been signed out successfully", Toast.LENGTH_LONG);
+                toast.show();
+                drawerLayout.closeDrawers();
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

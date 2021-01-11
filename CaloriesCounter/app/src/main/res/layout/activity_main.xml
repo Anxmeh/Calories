@@ -19,7 +19,8 @@
         android:layout_height="match_parent"
         android:background="@drawable/background"
         android:orientation="vertical"
-        android:padding="20dp">
+        >
+<!--                android:padding="20dp"-->
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/home_toolbar"
@@ -27,7 +28,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/home_toolbar_gradient"
             android:elevation="4dp"
-            android:minHeight="70dp"
+            android:minHeight="60dp"
             android:theme="@style/customToolbar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             tools:targetApi="lollipop">
@@ -38,8 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                                android:gravity="center"
-                android:text="home"
-                android:textAlignment="center"
+                                android:textAlignment="center"
                 android:textColor="@android:color/white" />
         </androidx.appcompat.widget.Toolbar>
 

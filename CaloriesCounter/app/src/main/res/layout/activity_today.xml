@@ -1,225 +1,236 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical"
     tools:context=".TodayActivity">
 
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/main_menu" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <Button
-            android:id="@+id/btnPrevious"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:drawableRight="@drawable/ic_previous"
-            android:onClick="onClickPreviousDate"/>
-
-        <TextView
-            android:id="@+id/dateAct"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
-            android:text="Date"
-            android:textSize="17sp" />
-
-        <Button
-            android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:drawableRight="@drawable/ic_next"
-            android:onClick="onClickNextDate"
-            android:gravity="start"
-            android:textAlignment="textStart"/>
-
-    </LinearLayout>
-
-        <EditText
-            android:id="@+id/resultDish"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/home_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Products......."
-            android:inputType="text" />
+            android:background="@drawable/home_toolbar_gradient"
+            android:elevation="4dp"
+            android:minHeight="60dp"
+            android:theme="@style/customToolbar"
+            tools:targetApi="lollipop">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+            <TextView
+                android:id="@+id/title_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:gravity="start"
 
-        <com.example.caloriescounter.models.ProgressTextView
-             android:id="@+id/progressCalories"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:background="@drawable/background_calories_bar"
-            android:gravity="center" />
+                android:textAlignment="textStart"
+                android:textColor="@color/Indigo"
 
-        <com.example.caloriescounter.models.ProgressTextView
-            android:id="@+id/progressProtein"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:background="@drawable/background_protein_bar"
-            android:gravity="center" />
-        <com.example.caloriescounter.models.ProgressTextView
-            android:id="@+id/progressFat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:background="@drawable/background_fat_bar"
-            android:gravity="center" />
-        <com.example.caloriescounter.models.ProgressTextView
-            android:id="@+id/progressCarbs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:background="@drawable/background_carbs_bar"
-            android:gravity="center" />
-    </LinearLayout>
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <Button
+                android:id="@+id/btnPrevious"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableRight="@drawable/ic_previous"
+                android:onClick="onClickPreviousDate" />
 
-                <TextView
-                    android:id="@+id/proteinLable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:text="Б: "
-                    android:textColor="#1E90FF"
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:id="@+id/dishProtein"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:id="@+id/fatLable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:text="Ж: "
-                    android:textColor="#FFA500"
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:id="@+id/dishFat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:id="@+id/carbsLable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:text="В: "
-                    android:textColor="#3CB371"
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:id="@+id/dishCarbohydrate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="17sp" />
-            </LinearLayout>
-            <LinearLayout
+            <TextView
+                android:id="@+id/dateAct"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text="Date"
+                android:textColor="@color/Indigo"
+                android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/dishCalories"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="17sp" />
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/ic_next"
+                android:gravity="start"
+                android:onClick="onClickNextDate"
+                android:textAlignment="textStart" />
 
-                <TextView
-                    android:id="@+id/caloriesLable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:text=" ккал" />
-
-                <TextView
-                    android:id="@+id/dishWeight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:text=""
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:id="@+id/weightLable"
-                    android:layout_width="19dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
-                    android:text=" г" />
-            </LinearLayout>
         </LinearLayout>
 
-        <EditText android:id="@+id/inputSearch"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Search..."
-            android:inputType="text"/>
+            android:layout_height="wrap_content">
 
-        <ListView
-            android:id="@+id/listViewProducts"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_margin="10dp"
-            android:horizontalSpacing="5dp"
-            android:numColumns="1"
-            android:verticalSpacing="5dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-<!--        <Button-->
-<!--            android:id="@+id/btnAddProduct"-->
-<!--            android:layout_width="200dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_horizontal"-->
-<!--            android:text="@string/AddProduct"-->
-<!--            android:onClick="onClickAddProduct"-->
-<!--            />-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:id="@+id/caloriesLable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="K:  "
+                            android:textColor="#8B0000"
+                            android:layout_gravity="center"
+                            android:textSize="17sp" />
+
+                    <com.example.caloriescounter.models.ProgressTextView
+                        android:id="@+id/progressCalories"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/background_calories_bar"
+                        android:gravity="center"
+                       />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/proteinLable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Б:  "
+                            android:textColor="#1E90FF"
+                            android:textSize="17sp"
+                            android:layout_gravity="center"
+                             />
+
+                    <com.example.caloriescounter.models.ProgressTextView
+                        android:id="@+id/progressProtein"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/background_protein_bar"
+                        android:gravity="center" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/fatLable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Ж: "
+                            android:textColor="#FFA500"
+                            android:textSize="17sp"
+                            android:layout_gravity="center"/>
+
+                    <com.example.caloriescounter.models.ProgressTextView
+                        android:id="@+id/progressFat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/background_fat_bar"
+                        android:gravity="center" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/carbsLable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="В:  "
+                            android:textColor="#3CB371"
+                            android:textSize="17sp"
+                            android:layout_gravity="center"/>
+                    <com.example.caloriescounter.models.ProgressTextView
+                        android:id="@+id/progressCarbs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/background_carbs_bar"
+                        android:gravity="center" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
+                <!--        <ScrollView-->
+                <!--            android:layout_width="match_parent"-->
+                <!--            android:layout_height="wrap_content">-->
+
+                <!--            <LinearLayout-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:orientation="vertical">-->
+
+
+                <EditText
+                    android:id="@+id/inputSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Пошук..."
+                    android:inputType="text" />
+
+                <ListView
+                    android:id="@+id/listViewProducts"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_margin="10dp"
+                    android:horizontalSpacing="5dp"
+                    android:numColumns="1"
+                    android:verticalSpacing="5dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
-</ScrollView>
+
+</androidx.drawerlayout.widget.DrawerLayout>
