@@ -381,7 +381,7 @@ loadListPr();
 
                                                         }
                                                     })
-                                            .setNegativeButton("Отмена",
+                                            .setNegativeButton("Відміна",
                                                     new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int id) {
                                                             dialog.cancel();

@@ -21,6 +21,10 @@
         android:icon="@drawable/ic_new_daily"
         android:title="Сьогодні" />
     <item
+        android:id="@+id/dailyWater"
+        android:icon="@drawable/ic_water"
+        android:title="Лічильник води" />
+    <item
         android:id="@+id/userSettings"
         android:icon="@drawable/ic_settings"
         android:title="Налаштування профілю" />

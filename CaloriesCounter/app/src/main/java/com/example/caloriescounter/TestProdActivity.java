@@ -1,36 +1,38 @@
-//package com.example.caloriescounter;
-//
-//import androidx.annotation.NonNull;
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//import android.app.AlertDialog;
-//import android.content.Context;
-//import android.content.DialogInterface;
-//import android.os.Bundle;
-//import android.text.Editable;
-//import android.text.TextWatcher;
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.widget.AdapterView;
-//import android.widget.Button;
-//import android.widget.EditText;
-//import android.widget.LinearLayout;
-//import android.widget.ListView;
-//import android.widget.TextView;
-//import android.widget.Toast;
-//
-//import com.example.caloriescounter.adapters.ProductAdapter;
-//import com.example.caloriescounter.models.Product;
-//import com.example.caloriescounter.network.NetworkService;
-//import com.example.caloriescounter.network.utils.CommonUtils;
-//
-//import java.util.List;
-//
-//import retrofit2.Call;
-//import retrofit2.Callback;
-//import retrofit2.Response;
-//
-//public class TestProdActivity extends AppCompatActivity {
+package com.example.caloriescounter;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.caloriescounter.adapters.ProductAdapter;
+import com.example.caloriescounter.models.Product;
+import com.example.caloriescounter.network.NetworkService;
+import com.example.caloriescounter.network.utils.CommonUtils;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class TestProdActivity extends AppCompatActivity {
+
+}
 //
 //    private ListView listView;
 //    private List<Product> products;

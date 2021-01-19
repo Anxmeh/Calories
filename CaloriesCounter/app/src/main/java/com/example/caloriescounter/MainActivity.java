@@ -13,7 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.work.Constraints;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.android.volley.toolbox.NetworkImageView;
 
@@ -21,15 +26,20 @@ import com.example.caloriescounter.models.AddProductView;
 import com.example.caloriescounter.network.ImageRequester;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.SessionManager;
+//import com.example.caloriescounter.network.utils.MyWorker;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
+import static androidx.work.PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS;
 
 public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private DrawerLayout drawerLayout;
     private SessionManager sessionManager;
     private TextView textView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         sessionManager = SessionManager.getInstance(this);
         textView = findViewById(R.id.textMainActivity);
 
+
         if (sessionManager.isLogged) {
             String message = "Hello, dear friend! Nice to see you again!";
             textView.setText(message);
@@ -53,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawerLayout);
         NavigationView navigationView = findViewById(R.id.navigation);
         navigationView.bringToFront();
-
+        View headerView = navigationView.getHeaderView(0);
+        TextView nav_user = (TextView)headerView.findViewById(R.id.header);
+        nav_user.setText("NEWHEADER");
+        
         mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -65,6 +79,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+
+        //OneTimeWorkRequest myWorkRequest = new OneTimeWorkRequest.Builder(MyWorker.class).build();
+       // WorkManager.getInstance().enqueue(myWorkRequest);
+
+
+
+        ////////////////
+      //PeriodicWorkRequest myWorkRequest = new PeriodicWorkRequest.Builder(MyWorker.class, 16, TimeUnit.MINUTES).build();
+//
+       // WorkManager.getInstance(getApplicationContext()).enqueue(myWorkRequest);
+
+        ///////////////////
+
+
+
+
+       // PeriodicWorkRequest worker = new PeriodicWorkRequest.Builder(MyWorker.class, MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS).setConstraints(Constraints.NONE).build();
+       // WorkManager.getInstance(getApplicationContext()).enqueue(worker);
+//        PeriodicWorkRequest worker = new PeriodicWorkRequest.Builder(TestWorker.class, MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS).setConstraints(Constraints.NONE).addTag(TAG_PERIODIC_WORK_REQUEST).build();
+//        WorkManager.getInstance().enqueue(worker);
+
+
+
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -90,6 +128,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.dailyMenu:
                 intent = new Intent(this, TodayActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.dailyWater:
+                intent = new Intent(this, WaterActivity.class);
                 startActivity(intent);
                 break;
             case R.id.userSettings:

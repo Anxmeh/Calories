@@ -7,7 +7,7 @@
                <item name="colorPrimary">@color/BlueViolet</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
-
+        <item name="colorAccent">@color/DarkOrchid</item>
         <item name="colorSurface">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/DarkOrchid</item>

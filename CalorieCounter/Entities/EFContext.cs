@@ -20,6 +20,8 @@ namespace CalorieCounter.Entities
         //////////
         public virtual DbSet<DailyMenu> DailyMenus { get; set; }
         public virtual DbSet<DailyMeal> DailyMeals { get; set; }
+        public virtual DbSet<WaterCounter> WaterCounters { get; set; }
+        public virtual DbSet<WaterSetting> WaterSettings { get; set; }
 
         public EFContext(DbContextOptions<EFContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder)

@@ -12,6 +12,8 @@ import com.example.caloriescounter.models.RegisterView;
 import com.example.caloriescounter.models.RemoveDailyView;
 import com.example.caloriescounter.models.UserSettingsView;
 import com.example.caloriescounter.models.UserView;
+import com.example.caloriescounter.models.WaterSettingsView;
+import com.example.caloriescounter.models.WaterView;
 
 import java.util.Date;
 import java.util.List;
@@ -34,9 +36,19 @@ public interface JSONPlaceHolderApi {
 
        @GET("/api/products/products")
    Call<List<Product>> getProducts();
-
     @POST("/api/products/addproduct")
     Call<Product> addProduct(@Body AddProductView model);
+
+    @POST("/api/water/dailywater")
+    Call<WaterView> getWater(@Body Date dateOfDrink);
+
+    @POST("/api/water/addwater")
+    Call<WaterView> addWater(@Body WaterView model);
+
+    @GET("/api/watersettings/watersettings")
+    Call<WaterSettingsView> getWaterSettings();
+
+
 
 
 

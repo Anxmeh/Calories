@@ -47,4 +47,7 @@
     <string name="dailyHeader">Меню на сьогодні</string>
     <string name="CaloriesLable">К:</string>
     <string name="proteinLable">Б:</string>
+
+    <string name="alarm_service_label">AlarmLabel:</string>
+    <string name="AddWater">Випити</string>
 </resources>

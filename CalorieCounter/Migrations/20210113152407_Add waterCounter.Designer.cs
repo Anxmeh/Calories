@@ -3,15 +3,17 @@ using System;
 using CalorieCounter.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CalorieCounter.Migrations
 {
     [DbContext(typeof(EFContext))]
-    partial class EFContextModelSnapshot : ModelSnapshot
+    [Migration("20210113152407_Add waterCounter")]
+    partial class AddwaterCounter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,48 +349,18 @@ namespace CalorieCounter.Migrations
 
             modelBuilder.Entity("CalorieCounter.Entities.WaterCounter", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .UseIdentityByDefaultColumn();
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateOfDrink")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("WaterVolume")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId");
 
                     b.ToTable("WaterCounters");
-                });
-
-            modelBuilder.Entity("CalorieCounter.Entities.WaterSetting", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .UseIdentityByDefaultColumn();
-
-                    b.Property<int>("Begin")
-                        .HasColumnType("integer");
-
-                    b.Property<long>("End")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("WaterSettings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
@@ -545,17 +517,6 @@ namespace CalorieCounter.Migrations
                 });
 
             modelBuilder.Entity("CalorieCounter.Entities.WaterCounter", b =>
-                {
-                    b.HasOne("CalorieCounter.Entities.DbUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CalorieCounter.Entities.WaterSetting", b =>
                 {
                     b.HasOne("CalorieCounter.Entities.DbUser", "User")
                         .WithMany()
