@@ -3,7 +3,9 @@ package com.example.caloriescounter.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Dish {
+import java.io.Serializable;
+
+public class Dish implements Serializable {
 
     @SerializedName("dishName")
     @Expose

@@ -1,48 +1,22 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerLayout"
+    android:id="@+id/drawerLayoutToday"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical"
     tools:context=".TodayActivity">
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/main_menu" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/home_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/home_toolbar_gradient"
-            android:elevation="4dp"
-            android:minHeight="60dp"
-            android:theme="@style/customToolbar"
-            tools:targetApi="lollipop">
-
-            <TextView
-                android:id="@+id/title_home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:gravity="start"
-
-                android:textAlignment="textStart"
-                android:textColor="@color/Indigo"
-
-                android:textSize="20dp"
-                android:textStyle="bold" />
-        </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,7 +55,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,27 +74,25 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        >
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/caloriesLable"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
                             android:text="K:  "
                             android:textColor="#8B0000"
-                            android:layout_gravity="center"
                             android:textSize="17sp" />
 
-                    <com.example.caloriescounter.models.ProgressTextView
-                        android:id="@+id/progressCalories"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:background="@drawable/background_calories_bar"
-                        android:gravity="center"
-                       />
+                        <com.example.caloriescounter.models.ProgressTextView
+                            android:id="@+id/progressCalories"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/background_calories_bar"
+                            android:gravity="center" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -131,44 +104,45 @@
                             android:id="@+id/proteinLable"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
                             android:text="Б:  "
                             android:textColor="#1E90FF"
-                            android:textSize="17sp"
-                            android:layout_gravity="center"
-                             />
+                            android:textSize="17sp" />
 
-                    <com.example.caloriescounter.models.ProgressTextView
-                        android:id="@+id/progressProtein"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:background="@drawable/background_protein_bar"
-                        android:gravity="center" />
+                        <com.example.caloriescounter.models.ProgressTextView
+                            android:id="@+id/progressProtein"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/background_protein_bar"
+                            android:gravity="center" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/fatLable"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
                             android:text="Ж: "
                             android:textColor="#FFA500"
-                            android:textSize="17sp"
-                            android:layout_gravity="center"/>
+                            android:textSize="17sp" />
 
-                    <com.example.caloriescounter.models.ProgressTextView
-                        android:id="@+id/progressFat"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:background="@drawable/background_fat_bar"
-                        android:gravity="center" />
+                        <com.example.caloriescounter.models.ProgressTextView
+                            android:id="@+id/progressFat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/background_fat_bar"
+                            android:gravity="center" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -178,22 +152,21 @@
                             android:id="@+id/carbsLable"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
+                            android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
                             android:text="В:  "
                             android:textColor="#3CB371"
-                            android:textSize="17sp"
-                            android:layout_gravity="center"/>
-                    <com.example.caloriescounter.models.ProgressTextView
-                        android:id="@+id/progressCarbs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:background="@drawable/background_carbs_bar"
-                        android:gravity="center" />
+                            android:textSize="17sp" />
+
+                        <com.example.caloriescounter.models.ProgressTextView
+                            android:id="@+id/progressCarbs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/background_carbs_bar"
+                            android:gravity="center" />
                     </LinearLayout>
                 </LinearLayout>
-
-
 
 
                 <!--        <ScrollView-->
@@ -221,6 +194,7 @@
                     android:horizontalSpacing="5dp"
                     android:numColumns="1"
                     android:verticalSpacing="5dp" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"

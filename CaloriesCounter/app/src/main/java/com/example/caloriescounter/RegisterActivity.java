@@ -32,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
     //Людина обрала файл
     public static final int PICKFILE_RESULT_CODE = 1;
     private ImageRequester imageRequester;
@@ -43,7 +43,10 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        super.addContentView(R.layout.activity_register);
+
+
+        this.getSupportActionBar().setTitle("Реєстрація");
 
         imageRequester = ImageRequester.getInstance();
         editImage = findViewById(R.id.chooseImageRegister);

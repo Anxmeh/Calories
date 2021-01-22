@@ -43,7 +43,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
     private static final int PICKFILE_RESULT_CODE = 1;
     private ImageRequester imageRequester;
     private NetworkImageView editImage;
@@ -190,7 +190,8 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        super.addContentView(R.layout.activity_profile);
+        this.getSupportActionBar().setTitle("Нова страва");
         sessionManager = SessionManager.getInstance(ProfileActivity.this);
         imageRequester = ImageRequester.getInstance();
 

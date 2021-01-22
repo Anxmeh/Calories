@@ -41,7 +41,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddProductActivity extends AppCompatActivity {
+public class AddProductActivity extends BaseActivity {
 
      private final String BASE_URL = NetworkService.getBaseUrl();
      private Product addedProduct;
@@ -52,26 +52,28 @@ public class AddProductActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_product);
-        Toolbar homeToolbar = findViewById(R.id.home_toolbar);
-        homeToolbar.setTitle("Новий продукт");
-        setSupportActionBar(homeToolbar);
-
-        drawerLayout = findViewById(R.id.drawerLayout);
-        NavigationView navigationView = findViewById(R.id.navigation);
-        navigationView.bringToFront();
-        mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return onNavItemSelected(item);
-            }
-        });
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        sessionManager = SessionManager.getInstance(this);
+        super.addContentView(R.layout.activity_add_product);
+        this.getSupportActionBar().setTitle("Новий продукт");
+      //  setContentView(R.layout.activity_add_product);
+//        Toolbar homeToolbar = findViewById(R.id.home_toolbar);
+//        homeToolbar.setTitle("Новий продукт");
+//        setSupportActionBar(homeToolbar);
+//
+//        drawerLayout = findViewById(R.id.drawerLayout);
+//        NavigationView navigationView = findViewById(R.id.navigation);
+//        navigationView.bringToFront();
+//        mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+//        drawerLayout.addDrawerListener(mToggle);
+//        mToggle.syncState();
+//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                return onNavItemSelected(item);
+//            }
+//        });
+//
+//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//        sessionManager = SessionManager.getInstance(this);
     }
 
     public void onClickAddProduct(View view) {
@@ -183,72 +185,72 @@ public class AddProductActivity extends AppCompatActivity {
                     }
                 });
     }
-    @SuppressLint("NonConstantResourceId")
-    public boolean onNavItemSelected(MenuItem menuItem) {
-        Intent intent;
-        Toast toast;
-        // Handle item selection
-        switch (menuItem.getItemId()) {
-            case R.id.main:
-                drawerLayout.closeDrawers();
-                break;
-            case R.id.products:
-                intent = new Intent(this, ProductsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.newDish:
-                intent = new Intent(this, RecyclerActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.newProduct:
-                intent = new Intent(this, AddProductActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.dailyMenu:
-                intent = new Intent(this, TodayActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.userSettings:
-                intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.login:
-                intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.register:
-                intent = new Intent(this, RegisterActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.profile:
-                if (!sessionManager.isLogged) {
-                    intent = new Intent(this, LoginActivity.class);
-                } else {
-                    intent = new Intent(this, ProfileActivity.class);
-                }
-                startActivity(intent);
-                break;
-            case R.id.logout:
-                sessionManager = SessionManager.getInstance(this);
-                String message = "See you later!";
-                sessionManager.logout();
-                toast = Toast.makeText(getApplicationContext(),
-                        "You have been signed out successfully", Toast.LENGTH_LONG);
-                toast.show();
-                drawerLayout.closeDrawers();
-                break;
-            default:
-                return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (mToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @SuppressLint("NonConstantResourceId")
+//    public boolean onNavItemSelected(MenuItem menuItem) {
+//        Intent intent;
+//        Toast toast;
+//        // Handle item selection
+//        switch (menuItem.getItemId()) {
+//            case R.id.main:
+//                drawerLayout.closeDrawers();
+//                break;
+//            case R.id.products:
+//                intent = new Intent(this, ProductsActivity.class);
+//                startActivity(intent);
+//                break;
+//            case R.id.newDish:
+//                intent = new Intent(this, RecyclerActivity.class);
+//                startActivity(intent);
+//                break;
+//            case R.id.newProduct:
+//                intent = new Intent(this, AddProductActivity.class);
+//                startActivity(intent);
+//                break;
+//            case R.id.dailyMenu:
+//                intent = new Intent(this, TodayActivity.class);
+//                startActivity(intent);
+//                break;
+//            case R.id.userSettings:
+//                intent = new Intent(this, SettingsActivity.class);
+//                startActivity(intent);
+//                break;
+//            case R.id.login:
+//                intent = new Intent(this, LoginActivity.class);
+//                startActivity(intent);
+//                break;
+//            case R.id.register:
+//                intent = new Intent(this, RegisterActivity.class);
+//                startActivity(intent);
+//                break;
+//            case R.id.profile:
+//                if (!sessionManager.isLogged) {
+//                    intent = new Intent(this, LoginActivity.class);
+//                } else {
+//                    intent = new Intent(this, ProfileActivity.class);
+//                }
+//                startActivity(intent);
+//                break;
+//            case R.id.logout:
+//                sessionManager = SessionManager.getInstance(this);
+//                String message = "See you later!";
+//                sessionManager.logout();
+//                toast = Toast.makeText(getApplicationContext(),
+//                        "You have been signed out successfully", Toast.LENGTH_LONG);
+//                toast.show();
+//                drawerLayout.closeDrawers();
+//                break;
+//            default:
+//                return false;
+//        }
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (mToggle.onOptionsItemSelected(item)) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
 }

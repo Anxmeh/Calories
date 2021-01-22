@@ -34,8 +34,9 @@ public interface JSONPlaceHolderApi {
     @POST("/api/account/register")
     Call<Tokens> register(@Body RegisterView model);
 
-       @GET("/api/products/products")
-   Call<List<Product>> getProducts();
+    @GET("/api/products/products")
+    Call<List<Product>> getProducts();
+
     @POST("/api/products/addproduct")
     Call<Product> addProduct(@Body AddProductView model);
 
@@ -47,11 +48,6 @@ public interface JSONPlaceHolderApi {
 
     @GET("/api/watersettings/watersettings")
     Call<WaterSettingsView> getWaterSettings();
-
-
-
-
-
 
 
     /////////
@@ -87,21 +83,24 @@ public interface JSONPlaceHolderApi {
 //    Call<DailyMenuView> removeDailyProduct(@Body RemoveDailyView model );
 
     @POST("/api/daily/removedailyproduct")
-    Call<List<DailyMenuView>> removeDailyProduct(@Body RemoveDailyView model );
+    Call<List<DailyMenuView>> removeDailyProduct(@Body RemoveDailyView model);
 
 
-//
+    //
     @POST("/api/profile/info")
     Call<UserView> profile();
-//
+
+    //
     @POST("/api/profile/update")
     Call<UserView> update(@Body UserView profile);
-//
+
+    //
     @POST("/api/profile/update-photo")
     Call<UserView> updatePhoto(@Body Photo photo);
-//
-@POST("/api/settings/settings")
-Call<UserSettingsView> settings();
+
+    //
+    @POST("/api/settings/settings")
+    Call<UserSettingsView> settings();
 
     @POST("/api/settings/updatesettings")
     Call<UserSettingsView> updateSettings(@Body UserSettingsView userSettings);

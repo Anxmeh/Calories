@@ -38,7 +38,7 @@ android:layout_height="match_parent"
     <TextView
         android:id="@+id/productName"
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="@string/productName" />
 
@@ -54,28 +54,28 @@ android:layout_height="match_parent"
     <TextView
         android:id="@+id/productCalories"
         android:layout_width="wrap_content"
-        android:layout_height="43dp"
+        android:layout_height="wrap_content"
         android:layout_marginRight = "8dp"
         android:text="@string/Calories" />
 
     <TextView
         android:id="@+id/productFat"
         android:layout_width="wrap_content"
-        android:layout_height="43dp"
+        android:layout_height="wrap_content"
         android:layout_marginRight = "8dp"
         android:text="@string/Fat" />
 
     <TextView
         android:id="@+id/productCarbohydrate"
         android:layout_width="wrap_content"
-        android:layout_height="43dp"
+        android:layout_height="wrap_content"
         android:layout_marginRight = "8dp"
         android:text="@string/Carbohydrate" />
 
     <TextView
         android:id="@+id/productProtein"
         android:layout_width="wrap_content"
-        android:layout_height="43dp"
+        android:layout_height="wrap_content"
         android:text="@string/Protein" />
 </LinearLayout>
 </LinearLayout>

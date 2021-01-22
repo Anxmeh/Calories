@@ -24,6 +24,7 @@ import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.utils.CommonUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,20 +34,32 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductsActivity extends AppCompatActivity implements OnDeleteListenerProducts {
+public class ProductsActivity extends BaseActivity implements OnDeleteListenerProducts {
 
     private static final String TAG = ProductsActivity.class.getSimpleName();
     private RecyclerView recyclerView;
     private List<Product> products;
     private ProductListRecyclerAdapter adapter;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_products);
+        super.addContentView(R.layout.activity_products);
+                this.getSupportActionBar().setTitle("Мої продукти");
         recyclerView = findViewById(R.id.recycler_view);
+        fab = findViewById(R.id.floating_action_button);
 
         setRecyclerView();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+                                   @Override
+                                   public void onClick(View v) {
+                                       Intent intent = new Intent(ProductsActivity.this, AddProductActivity.class);
+                                       startActivity(intent);
+                                   }
+
+        });
 
         CommonUtils.showLoading(this);
         NetworkService.getInstance()

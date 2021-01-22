@@ -65,7 +65,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WaterActivity extends AppCompatActivity {
+public class WaterActivity extends BaseActivity {
 
     private static final String TAG = WaterActivity.class.getSimpleName();
     private static final int ONE_SECOND_IN_MS = 1000;
@@ -95,8 +95,11 @@ public class WaterActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_water);
+        super.addContentView(R.layout.activity_water);
+        this.getSupportActionBar().setTitle("Лічильник води");
+      //  setContentView(R.layout.activity_water);
         txtWaterCount = findViewById(R.id.txtWaterCount);
         currentTime = Calendar.getInstance().getTime();
 

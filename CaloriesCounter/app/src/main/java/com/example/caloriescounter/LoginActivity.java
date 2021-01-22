@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     private ImageRequester imageRequester;
     private NetworkImageView editImage;
     private final String BASE_URL = NetworkService.getBaseUrl();
@@ -33,7 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        super.addContentView(R.layout.activity_login);
+        this.getSupportActionBar().setTitle("Вхід");
 
 //        imageRequester = ImageRequester.getInstance();
 //        editImage = findViewById(R.id.chooseImageLogin);

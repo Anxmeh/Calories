@@ -50,4 +50,7 @@
 
     <string name="alarm_service_label">AlarmLabel:</string>
     <string name="AddWater">Випити</string>
+    <string name="Dish">Разом інгредієнти:</string>
+    <string name="search">Пошук</string>
+    <string name="addFab">+</string>
 </resources>

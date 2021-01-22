@@ -52,7 +52,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecyclerActivity extends AppCompatActivity implements OnDeleteListener {
+public class RecyclerActivity extends BaseActivity implements OnDeleteListener {
 
     private static final String TAG = RecyclerActivity.class.getSimpleName();
     private ActionBarDrawerToggle mToggle;
@@ -68,13 +68,14 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
 
     private ListView listView;
     private Dish dish;
+
     private ArrayList<Product> addedProducts2 = new ArrayList<Product>();
     private double dishCalories = 0;
     private double dishWeight = 0;
     private double caloriesInProduct = 0;
     EditText inputSearch;
 
-    TextView addedprod;
+
 
     ProductAdapter customAdapter;
 
@@ -89,10 +90,11 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler);
+        super.addContentView(R.layout.activity_recycler);
+        this.getSupportActionBar().setTitle("Нова страва");
         recyclerView = findViewById(R.id.recycler_view);
 
-        addedprod = findViewById(R.id.resultDish);
+
 
         // final TextView addedprod = findViewById(R.id.resultDish);
         listView = findViewById(R.id.listViewProducts);
@@ -103,27 +105,24 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
         txtDishCalories = findViewById(R.id.dishCalories);
         txtDishWeight = findViewById(R.id.dishWeight);
 
-        Toolbar homeToolbar = findViewById(R.id.home_toolbar);
-        homeToolbar.setTitle("Нова страва");
-        setSupportActionBar(homeToolbar);
-
-        drawerLayout = findViewById(R.id.drawerLayout);
-        NavigationView navigationView = findViewById(R.id.navigation);
-        navigationView.bringToFront();
-        mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                return onNavItemSelected(item);
-            }
-        });
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+      //  drawerLayout = findViewById(R.id.drawerLayout);
+//        NavigationView navigationView = findViewById(R.id.navigation);
+//        navigationView.bringToFront();
+//        mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+//        drawerLayout.addDrawerListener(mToggle);
+//        mToggle.syncState();
+//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                return onNavItemSelected(item);
+//            }
+//        });
+//
+//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         sessionManager = SessionManager.getInstance(this);
         setRecyclerView();
         loadList();
+        calculate();
 
 
         NetworkService.getInstance()
@@ -244,12 +243,12 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                                                                                     assert response.body() != null;
 
                                                                                                     dish = response.body();
-                                                                                                    addedprod.setText("Weight: " + dish.getDishWeight() + ", Calories: " + dish.getDishCalories());
+
                                                                                                     txtDishCalories.setText(Double.toString(dish.getDishCalories()));
                                                                                                     txtDishWeight.setText(Double.toString(dish.getDishWeight()));
-                                                                                                    txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
-                                                                                                    txtDishFat.setText(Double.toString(Math.round(dish.getDishFat()*100.0)/100.0));
-                                                                                                    txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate()*100.0)/100.0));
+                                                                                                    txtDishProtein.setText(Double.toString(dish.getDishProtein())) ;
+                                                                                                    txtDishFat.setText(Double.toString(dish.getDishFat() ));
+                                                                                                    txtDishCarbs.setText(Double.toString(dish.getDishCarbohydrate() ));
 
                                                                                                     loadList();
                                                                                                     //////////////////////
@@ -405,14 +404,14 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                         CommonUtils.hideLoading();
                                         if (response.errorBody() == null && response.isSuccessful()) {
                                             assert response.body() != null;
-                                           // addedProduct = response.body();
+                                            // addedProduct = response.body();
                                             dish = response.body();
                                             txtDishCalories.setText(Double.toString(dish.getDishCalories()));
                                             txtDishWeight.setText(Double.toString(dish.getDishWeight()));
-                                          // double n= Math.round(dish.getDishProtein()*100.0)/100.0;
-                                            txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
-                                            txtDishFat.setText(Double.toString(Math.round(dish.getDishFat()*100.0)/100.0));
-                                            txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate()*100.0)/100.0));
+                                            // double n= Math.round(dish.getDishProtein()*100.0)/100.0;
+                                            txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein() * 100.0) / 100.0));
+                                            txtDishFat.setText(Double.toString(Math.round(dish.getDishFat() * 100.0) / 100.0));
+                                            txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate() * 100.0) / 100.0));
 
 
                                         } else {
@@ -441,7 +440,6 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                                     }
                                 });
 //
-                        addedprod.setText("After" + product.getProductName());
 
                         adapter.notifyDataSetChanged();
 
@@ -453,15 +451,41 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
 
     public void onClickAddDish(View view) {
 
-       // long id, String name, double protein, double fat, double carbohydrate, double calories
+        // long id, String name, double protein, double fat, double carbohydrate, double calories
 
-       // txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
+        // txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
+
+//        NetworkService.getInstance()
+//                .getJSONApi()
+//                .calculateDish()
+//                .enqueue(new Callback<Dish>() {
+//                    @Override
+//                    public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response) {
+//                        CommonUtils.hideLoading();
+//                        if (response.errorBody() == null && response.isSuccessful()) {
+////                                assert response.body() != null;
+//
+//                            dish = response.body();
+//                            dish2 = response.body();
+//                        } else {
+//                            dish2 = null;
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t) {
+//                        CommonUtils.hideLoading();
+//                        dish2 = null;
+//                        t.printStackTrace();
+//                    }
+//                });
+
 
         AddProductView model = new AddProductView();
-        model.setProtein(Math.round(dish.getDishProtein()*100/dish.getDishWeight()*100.0)/100.0);
-        model.setFat(Math.round(dish.getDishFat()*100/dish.getDishWeight()*100.0)/100.0);
-        model.setCarbohydrate(Math.round(dish.getDishCarbohydrate()*100/dish.getDishWeight()*100.0)/100.0);
-        model.setCalories(Math.round(dish.getDishCalories()*100/dish.getDishWeight()*100.0)/100.0);
+        model.setProtein(Math.round(dish.getDishProtein() * 100 / dish.getDishWeight() * 100.0) / 100.0);
+        model.setFat(Math.round(dish.getDishFat() * 100 / dish.getDishWeight() * 100.0) / 100.0);
+        model.setCarbohydrate(Math.round(dish.getDishCarbohydrate() * 100 / dish.getDishWeight() * 100.0) / 100.0);
+        model.setCalories(Math.round(dish.getDishCalories() * 100 / dish.getDishWeight() * 100.0) / 100.0);
 
 //        addedDish.setName(dish.getDishName());
 //        addedDish.setCalories(dish.getDishCalories()*100/dish.getDishWeight());
@@ -479,7 +503,7 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
         //Настраиваем prompt.xml для нашего AlertDialog:
         mDialogBuilder.setView(promptsView);
 
-        //Настраиваем отображение поля для ввода текста в открытом диалоге:
+//Настраиваем отображение поля для ввода текста в открытом диалоге:
         final EditText userInputDishName = (EditText) promptsView.findViewById(R.id.inputDishName);
 
         //Настраиваем сообщение в диалоговом окне:
@@ -578,71 +602,38 @@ public class RecyclerActivity extends AppCompatActivity implements OnDeleteListe
                     }
                 });
     }
-    @SuppressLint("NonConstantResourceId")
-    public boolean onNavItemSelected(MenuItem menuItem) {
-        Intent intent;
-        Toast toast;
-        // Handle item selection
-        switch (menuItem.getItemId()) {
-            case R.id.main:
-                drawerLayout.closeDrawers();
-                break;
-            case R.id.products:
-                intent = new Intent(this, ProductsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.newDish:
-                intent = new Intent(this, RecyclerActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.newProduct:
-                intent = new Intent(this, AddProductActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.dailyMenu:
-                intent = new Intent(this, TodayActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.userSettings:
-                intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.login:
-                intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.register:
-                intent = new Intent(this, RegisterActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.profile:
-                if (!sessionManager.isLogged) {
-                    intent = new Intent(this, LoginActivity.class);
-                } else {
-                    intent = new Intent(this, ProfileActivity.class);
-                }
-                startActivity(intent);
-                break;
-            case R.id.logout:
-                sessionManager = SessionManager.getInstance(this);
-                String message = "See you later!";
-                sessionManager.logout();
-                toast = Toast.makeText(getApplicationContext(),
-                        "You have been signed out successfully", Toast.LENGTH_LONG);
-                toast.show();
-                drawerLayout.closeDrawers();
-                break;
-            default:
-                return false;
-        }
-        return true;
+
+    public void calculate() {
+        NetworkService.getInstance()
+                .getJSONApi()
+                .calculateDish()
+                .enqueue(new Callback<Dish>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response) {
+                        CommonUtils.hideLoading();
+                        if (response.errorBody() == null && response.isSuccessful()) {
+//                                assert response.body() != null;
+
+                            dish = response.body();
+                            txtDishCalories.setText(Double.toString(dish.getDishCalories()));
+                            txtDishWeight.setText(Double.toString(dish.getDishWeight()));
+
+                            txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein() * 100.0) / 100.0));
+                            txtDishFat.setText(Double.toString(Math.round(dish.getDishFat() * 100.0) / 100.0));
+                            txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate() * 100.0) / 100.0));
+
+                        } else {
+                            dish = null;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t) {
+                        CommonUtils.hideLoading();
+                        dish = null;
+                        t.printStackTrace();
+                    }
+                });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (mToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
