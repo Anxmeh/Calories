@@ -91,10 +91,15 @@ public class ProductAdapter extends BaseAdapter  implements Filterable {
        // NetworkImageView imageCategory = convertView.findViewById(R.id.categoryImage);
 
         tvProductName.setText(filteredProducts.get(position).getName());
-        tvProductCalories.setText("Calories: " + Double.toString(filteredProducts.get(position).getCalories()));
-        tvProductFat.setText("Fat: " + Double.toString(filteredProducts.get(position).getFat()));
-        tvProductCarbohydrate.setText("Carbs: " + Double.toString(filteredProducts.get(position).getCarbohydrate()));
-        tvProductProtein.setText("Protein: " + Double.toString(filteredProducts.get(position).getProtein()));
+//        tvProductCalories.setText("Calories: " + Double.toString(filteredProducts.get(position).getCalories()));
+//        tvProductFat.setText("Fat: " + Double.toString(filteredProducts.get(position).getFat()));
+//        tvProductCarbohydrate.setText("Carbs: " + Double.toString(filteredProducts.get(position).getCarbohydrate()));
+//        tvProductProtein.setText("Protein: " + Double.toString(filteredProducts.get(position).getProtein()));
+
+        tvProductCalories.setText(Double.toString(filteredProducts.get(position).getCalories()));
+        tvProductFat.setText(Double.toString(filteredProducts.get(position).getFat()));
+        tvProductCarbohydrate.setText( Double.toString(filteredProducts.get(position).getCarbohydrate()));
+        tvProductProtein.setText(Double.toString(filteredProducts.get(position).getProtein()));
         //imageRequester.setImageFromUrl(imageCategory, BASE_URL + "/images/" + products.get(position).getImage());
 
         return convertView;

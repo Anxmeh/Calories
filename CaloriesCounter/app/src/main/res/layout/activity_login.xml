@@ -11,15 +11,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp">
 
-        <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/chooseImageLogin"
-            android:layout_width="200dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="20dp"
-            android:layout_gravity="center_horizontal" />
+<!--        <com.android.volley.toolbox.NetworkImageView-->
+<!--            android:id="@+id/chooseImageLogin"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:layout_marginTop="25dp"-->
+<!--            android:layout_marginBottom="20dp"-->
+<!--            android:layout_gravity="center_horizontal" />-->
 
         <!-- Email Label -->
         <com.google.android.material.textfield.TextInputLayout
@@ -69,27 +72,61 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/buttonLogin"
-                android:layout_width="300dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonLogin"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/button_gradient"
+                    android:onClick="onClickSignIn"
+                    android:text="@string/signIn" />
+
+                <Button
+                    android:id="@+id/buttonSignUp"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:onClick="onClickSignUp"
+                    android:background="@drawable/button_gradient"
+                    android:text="@string/signUp" />
+
+            </LinearLayout>
+
+
+            <com.google.android.gms.common.SignInButton
+                android:layout_width="260dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center_horizontal"
-                android:onClick="onClickSignIn"
-                android:background="@drawable/home_toolbar_gradient"
-                android:text="@string/signIn" />
+                android:id="@+id/sign_in_button"
+                />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
 
             <Button
-                android:id="@+id/buttonSignUp"
-                android:layout_width="150dp"
+                android:id="@+id/sign_out_button"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:layout_gravity="center_horizontal"
-                android:onClick="onClickSignUp"
-                android:background="@drawable/home_toolbar_gradient"
-                android:text="@string/signUp" />
+                android:background="@drawable/button_gradient"
+                android:onClick="onClickSignOut"
+                android:text="@string/SignOut" />
 
         </LinearLayout>
 

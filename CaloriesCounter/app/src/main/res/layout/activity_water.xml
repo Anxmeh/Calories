@@ -1,156 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:caloriescounter="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:fitsSystemWindows="true"
-    tools:ignore="ExtraText"
-    tools:context=".WaterActivity">
+    tools:context=".WaterActivity"
+    tools:ignore="ExtraText">
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="65dp"        >
+        android:layout_height="match_parent">
 
-        <RadioGroup
-            android:id="@+id/radioGroupWater"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="65dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/lblActivity"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="Об'єм"
-                android:textColor="#000000"
-                android:textSize="17sp" />
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/radio100"
+                <Button
+                    android:id="@+id/btnAdd100"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/glass222"
+                    android:onClick="onClickAddWater1"
+                    android:text="100 мл" />
 
+                <Button
+                    android:id="@+id/btnAdd200"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/glass222"
+                    android:onClick="onClickAddWater1"
+                    android:text="200 мл" />
+
+                <Button
+                    android:id="@+id/btnAdd300"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/glass222"
+                    android:onClick="onClickAddWater1"
+                    android:text="300 мл" />
+
+                <Button
+                    android:id="@+id/btnAdd400"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/glass222"
+                    android:onClick="onClickAddWater1"
+                    android:text="400 мл" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnAdd500"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/glass222"
+                    android:onClick="onClickAddWater1"
+                    android:text="500 мл" />
+
+                <Button
+                    android:id="@+id/btnAdd600"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/glass222"
+                    android:onClick="onClickAddWater1"
+                    android:text="600 мл" />
+
+                <Button
+                    android:id="@+id/btnAddX"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:drawableTop="@drawable/glass222"
+                    android:onClick="onClickAddWater1"
+                    android:text="X мл" />
+            </LinearLayout>
+
+
+            <!--            <RadioGroup-->
+            <!--                android:id="@+id/radioGroupWater"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:orientation="vertical">-->
+
+            <!--                <TextView-->
+            <!--                    android:id="@+id/lblActivity"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:gravity="center_vertical"-->
+            <!--                    android:text="Об'єм"-->
+            <!--                    android:textColor="#000000"-->
+            <!--                    android:textSize="17sp" />-->
+
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/radio100"-->
+
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+
+            <!--                    android:layout_marginLeft="24dp"-->
+            <!--                    android:background="@android:color/transparent"-->
+            <!--                    android:drawableLeft="@drawable/glass222"-->
+
+            <!--                    android:text="100" />-->
+
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/radio200"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+
+            <!--                    android:layout_marginLeft="24dp"-->
+            <!--                    android:drawableLeft="@drawable/glass222"-->
+            <!--                    android:text="200" />-->
+
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/radio300"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+
+            <!--                    android:layout_marginLeft="24dp"-->
+            <!--                    android:drawableLeft="@drawable/glass222"-->
+            <!--                    android:text="300" />-->
+
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/radio400"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginLeft="24dp"-->
+            <!--                    android:drawableLeft="@drawable/glass222"-->
+            <!--                    android:text="400" />-->
+
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/radio500"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginLeft="24dp"-->
+            <!--                    android:drawableLeft="@drawable/glass222"-->
+            <!--                    android:text="500" />-->
+            <!--            </RadioGroup>-->
+
+
+            <com.example.caloriescounter.elements.CircularProgressBar
+                android:id="@+id/countup_bar2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-                android:layout_marginLeft="24dp"
-                android:text="100"
-                android:drawableLeft="@drawable/glass222"
-
-                android:background="@android:color/transparent"
-                />
-
-            <RadioButton
-                android:id="@+id/radio200"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginLeft="24dp"
-                android:drawableLeft="@drawable/glass222"
-                android:text="200" />
-
-            <RadioButton
-                android:id="@+id/radio300"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginLeft="24dp"
-                android:drawableLeft="@drawable/glass222"
-                android:text="300" />
-
-            <RadioButton
-                android:id="@+id/radio400"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/glass222"
-                android:layout_marginLeft="24dp"
-                android:text="400" />
-
-            <RadioButton
-                android:id="@+id/radio500"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/glass222"
-                android:layout_marginLeft="24dp"
-                android:text="500" />
-        </RadioGroup>
-
-        <Button
-            android:id="@+id/buttonAddWater"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/home_toolbar_gradient"
-            android:onClick="onClickAddWater1"
-            android:text="@string/AddWater"
-             />
-        <TextView
-            android:id="@+id/txtWaterCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Вода: "           />
-
-        <Button
-            android:id="@+id/buttonAddProduct"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/home_toolbar_gradient"
-            android:onClick="onClickAddWater"
-            android:text="Тест таймер"
-            tools:ignore="OnClick" />
-
-        <Button
-            android:id="@+id/buttonAddProduct2"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/home_toolbar_gradient"
-            android:onClick="onClickAddWater"
-            android:text="Тест таймер"
-            tools:ignore="OnClick" />
-        <Button
-            android:id="@+id/buttonAddProduct3"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/home_toolbar_gradient"
-            android:onClick="onClickAddWater"
-            android:text="Тест таймер"
-            tools:ignore="OnClick" />
-
-        <com.example.caloriescounter.elements.CircularProgressBar
-            android:id="@+id/countup_bar2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="22dp"
-            android:layout_marginRight="22dp"
-            android:textColor="@color/Indigo"
-            android:textSize="30sp"
-            caloriescounter:bgColor="#33FFFFFF"
-            caloriescounter:bgStrokeWidth="2dp"
-            caloriescounter:diameter="200dp"
-            caloriescounter:max="30"
-            caloriescounter:progressColor="@color/purple_200"
-            caloriescounter:progressStrokeWidth="6dp"
-            caloriescounter:showText="true" />
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="22dp"
+                android:textColor="#780000"
+                android:textSize="30sp"
+                caloriescounter:bgColor="#33FFFFFF"
+                caloriescounter:bgStrokeWidth="2dp"
+                caloriescounter:diameter="200dp"
+                caloriescounter:max="30"
+                caloriescounter:progressColor="#780000"
+                caloriescounter:progressStrokeWidth="6dp"
+                caloriescounter:showText="true" />
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
 </ScrollView>

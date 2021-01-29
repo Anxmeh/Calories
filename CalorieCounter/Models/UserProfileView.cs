@@ -22,6 +22,7 @@ namespace CalorieCounter.Models
         public string Email { get; set; }
 
         public DateTime RegistrationDate { get; set; }
+        public bool FromGoogleLogin { get; set; }
 
         public UserProfileView() { }
 
@@ -35,6 +36,7 @@ namespace CalorieCounter.Models
             DateOfBirth = profile.DateOfBirth;
             Phone = profile.Phone;
             RegistrationDate = profile.RegistrationDate;
+            FromGoogleLogin = profile.FromGoogleLogin;
         }
     }
 }

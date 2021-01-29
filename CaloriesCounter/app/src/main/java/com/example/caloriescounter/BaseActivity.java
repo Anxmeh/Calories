@@ -140,6 +140,10 @@ public class BaseActivity extends AppCompatActivity {
                 toast.show();
                 drawerLayout.closeDrawers();
                 break;
+            case R.id.choose:
+                intent = new Intent(this, VitaminSettingsActivity.class);
+                startActivity(intent);
+                break;
             default:
                 return false;
         }

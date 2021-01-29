@@ -28,4 +28,10 @@ namespace CalorieCounter.Models
     {
         public ICollection<GetUserViewModel> AllUsers { get; set; }
     }
+
+    public class LoginGoogleViewModel
+    {
+        public string IdToken { get; set; }
+      
+    }
 }

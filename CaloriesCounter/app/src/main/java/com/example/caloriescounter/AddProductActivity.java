@@ -153,7 +153,7 @@ public class AddProductActivity extends BaseActivity {
                             assert response.body() != null;
                             addedProduct = response.body();
 
-                            String succeed = "Add succeed";
+                            String succeed = "Успішно";
                             Toast toast = Toast.makeText(getApplicationContext(),
                                     succeed, Toast.LENGTH_LONG);
                             toast.show();

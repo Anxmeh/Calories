@@ -98,7 +98,7 @@ namespace CalorieCounter
             services.AddTransient<IJwtTokenService, JwtTokenService>();
             // services.AddTransient<FileService, FileService>(); //!!!!!!!
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("SecretPhrase").Value));
-         
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -108,7 +108,8 @@ namespace CalorieCounter
 
                 //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 //options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(cfg =>
+            })
+                  .AddJwtBearer(cfg =>
             {
                 cfg.RequireHttpsMetadata = false;
                 cfg.SaveToken = true;
@@ -122,6 +123,13 @@ namespace CalorieCounter
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            
+            //.AddGoogle(opts =>
+            //{
+            //    opts.ClientId = "951922290898-tcl5ru7u75skn3cr52rfjnq98lc6n4ln.apps.googleusercontent.com";
+            //    opts.ClientSecret = "3wYt99Y94rB0jzqIB66V7bXA";
+            //    opts.SignInScheme = IdentityConstants.ExternalScheme;
+            //});
             services.AddControllers();
         }
 

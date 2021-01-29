@@ -44,5 +44,9 @@
         android:id="@+id/logout"
         android:icon="@drawable/ic_exit"
         android:title="Вихід" />
+             <item
+                android:id="@+id/choose"
+                android:icon="@drawable/ic_vitamins"
+                android:title="choose" />
 
 </menu>

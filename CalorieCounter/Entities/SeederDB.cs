@@ -142,6 +142,39 @@ namespace CalorieCounter.Entities
                 _context.SaveChanges();
             }
         }
+
+        public static void SeedVitamins(EFContext _context)
+        {
+            if (_context.Vitamins.Count() <= 0)
+            {
+                var vitamins = new List<Vitamin>();
+                vitamins.Add(new Vitamin
+                {
+                    VitaminName = "Вітамін D 500МО",
+                });
+                vitamins.Add(new Vitamin
+                {
+                    VitaminName = "Вітамін D 2000МО",
+                });
+                vitamins.Add(new Vitamin
+                {
+                    VitaminName = "Омега 3 180/120",
+                });
+                vitamins.Add(new Vitamin
+                {
+                    VitaminName = "Кальцій 400мг",
+                });
+                vitamins.Add(new Vitamin
+                {
+                    VitaminName = "Магній 400мг",
+                });
+
+
+                foreach (var vitamin in vitamins)
+                    _context.Vitamins.Add(vitamin);
+                _context.SaveChanges();
+            }
+        }
         //public static void SeedMeal(EFContext _context)
         //{
         //    if (_context.DailyMenus.Count() <= 0)
@@ -151,7 +184,7 @@ namespace CalorieCounter.Entities
         //            ProductWeight = 300,
         //            ProductId = 1,
         //            UserId = 2 };
-                
+
         //        _context.DailyMenus.Add(meal);
         //        _context.SaveChanges();
         //    }
@@ -166,7 +199,7 @@ namespace CalorieCounter.Entities
                 var context = scope.ServiceProvider.GetRequiredService<EFContext>();
                 SeederDB.SeedData(manager, managerRole);
                 SeederDB.SeedProducts(context);
-                //SeederDB.SeedMeal(context);
+                SeederDB.SeedVitamins(context);
 
             }
         }

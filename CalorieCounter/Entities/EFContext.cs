@@ -23,6 +23,13 @@ namespace CalorieCounter.Entities
         public virtual DbSet<WaterCounter> WaterCounters { get; set; }
         public virtual DbSet<WaterSetting> WaterSettings { get; set; }
 
+        public virtual DbSet<Vitamin> Vitamins { get; set; }
+
+
+        public virtual DbSet<UserVitamins> UserVitamins { get; set; }
+        public virtual DbSet<VitaminSettings> VitaminSettings { get; set; }
+
+
         public EFContext(DbContextOptions<EFContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder)
         {

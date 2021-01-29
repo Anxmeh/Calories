@@ -2,15 +2,19 @@
 using CalorieCounter.Helpers;
 using CalorieCounter.Models;
 using CalorieCounter.Services;
+using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -38,6 +42,42 @@ namespace CalorieCounter.Controllers
             _IJwtTokenService = IJwtTokenService;
             _env = env;
         }
+        //[HttpPost("logingoogle")]
+        //public async Task<IActionResult> Login([FromBody] string email)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest("Bad Model");
+        //    }
+
+        //    var user = _context.Users.FirstOrDefault(u => u.Email == email);
+        //    if (user == null)
+        //    {
+        //        return BadRequest("Даний користувач не знайденний!");
+        //    }
+
+        //   // var result = _signInManager
+        //   //     .PasswordSignInAsync(user, model.Password, false, false).Result;
+
+        //    await _signInManager.SignInAsync(user, isPersistent: false);
+        //    return Ok(
+        //         new
+        //         {
+        //             token = _IJwtTokenService.CreateToken(user)
+        //         });
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginViewModel model)
         {
@@ -51,6 +91,21 @@ namespace CalorieCounter.Controllers
             {
                 return BadRequest("Даний користувач не знайденний!");
             }
+
+            var queryUser = _context.Users.Include(x => x.UserProfile).AsQueryable();
+            var user1 = queryUser.FirstOrDefault(c => c.UserName == user.UserName);
+
+            if (user1 == null)
+            {
+                return BadRequest("Поганий запит!");
+            }
+            long ids = user1.Id;
+            UserProfileView userProfile = new UserProfileView(user1);
+
+
+            //UserProfileView prof = new UserProfileView(user) ;
+            if (userProfile.FromGoogleLogin)
+                return BadRequest("Ви зареєстровані через Google. Скористайтесь відповідною кнопкою для входу");
 
             var result = _signInManager
                 .PasswordSignInAsync(user, model.Password, false, false).Result;
@@ -105,6 +160,9 @@ namespace CalorieCounter.Controllers
             string ext = ".jpg";
             string fileName = Path.GetRandomFileName() + ext;
 
+            user.UserSettings = new UserSettings();
+
+
             user.UserProfile = new UserProfile()
             {
                 Name = "Empty",
@@ -129,7 +187,7 @@ namespace CalorieCounter.Controllers
                 }
 
                 string filePathSave = Path.Combine(path, fileName);
-             //   bmp.Save(filePathSave, ImageFormat.Jpeg);
+                //   bmp.Save(filePathSave, ImageFormat.Jpeg);
             }
 
             var res = _userManager.CreateAsync(user, model.Password).Result;
@@ -153,6 +211,140 @@ namespace CalorieCounter.Controllers
                      token = _IJwtTokenService.CreateToken(user)
                  });
         }
-    }
+
+
+        [HttpPost("logingoogle")]
+        public async Task<IActionResult> LoginGoogle([FromBody] LoginGoogleViewModel model)
+        {
+            var validPayload = await GoogleJsonWebSignature.ValidateAsync(model.IdToken);
+          //  will throw an InvalidJwtException
+            if (validPayload == null)
+                return BadRequest("Поганий запит");
+            //Assert.NotNull(validPayload);
+            // validPayload.Email;
+           // validPayload.FamilyName;
+            //validPayload.GivenName;
+
+            var user = _context.Users.FirstOrDefault(u => u.Email == validPayload.Email);
+            if (user == null)
+            {
+                var roleName = "User";
+                var userReg = _context.Users.FirstOrDefault(x => x.Email == validPayload.Email);
+
+                DbUser dbUser = new DbUser
+                {
+                    Email = validPayload.Email,
+                    UserName = validPayload.Email
+                };
+              
+                dbUser.UserSettings = new UserSettings()
+                {
+                    Calories = 1500,
+                    UserCalories = 1500,
+                    UserCarbohydrate = 150,
+                    UserFat = 50,
+                    UserProtein = 113
+                };
+                dbUser.UserProfile = new UserProfile()
+                {
+                    Name = validPayload.GivenName,
+                    Surname = validPayload.FamilyName,
+                    DateOfBirth = new DateTime(2000, 1, 1),
+                    Phone = "+380000000000",
+                    RegistrationDate = DateTime.Now,
+                    Photo = null,
+                    FromGoogleLogin = true
+                };
+
+                string password = Guid.NewGuid().ToString();
+                string resP = password.Insert(2, "G");
+
+                var res = _userManager.CreateAsync(dbUser, resP).Result;
+                if (!res.Succeeded)
+                {
+                    return BadRequest("Код доступу має складатись з 8 символів, містити мінімум одну велику літеру!");
+                }
+
+                res = _userManager.AddToRoleAsync(dbUser, roleName).Result;
+
+                if (!res.Succeeded)
+                {
+                    return BadRequest("Поганий запит!");
+                }
+
+                await _signInManager.SignInAsync(dbUser, isPersistent: false);
+
+                return Ok(
+                     new
+                     {
+                         token = _IJwtTokenService.CreateToken(dbUser)
+                     });
+            }
+
+
+            // var result = _signInManager
+            //     .PasswordSignInAsync(user, model.Password, false, false).Result;
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return Ok(
+                 new
+                 {
+                     token = _IJwtTokenService.CreateToken(user)
+                 });
+        }
+
+      
+    
+
+
+
+
+
+
+    //[AllowAnonymous]
+    //[HttpPost("glogin")]
+    //public IActionResult GoogleLogin()
+    //{
+    //    string redirectUrl = Url.Action("GoogleResponse", "Account");
+    //    var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+    //    return new ChallengeResult("Google", properties);
+    //}
+
+    //[AllowAnonymous]
+    //public async Task<IActionResult> GoogleResponse()
+    //{
+    //    ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+    //    if (info == null)
+    //        return RedirectToAction(nameof(Login));
+
+    //    var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+    //    string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value };
+    //    if (result.Succeeded)
+    //        //  return View(userInfo);
+    //        return Ok();
+    //    else
+    //    {
+    //        DbUser user = new DbUser
+    //        {
+    //            Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
+    //            UserName = info.Principal.FindFirst(ClaimTypes.Email).Value
+    //        };
+
+    //        IdentityResult identResult = await _userManager.CreateAsync(user);
+    //        if (identResult.Succeeded)
+    //        {
+    //            identResult = await _userManager.AddLoginAsync(user, info);
+    //            if (identResult.Succeeded)
+    //            {
+    //                await _signInManager.SignInAsync(user, false);
+    //                // return View(userInfo);
+    //                return Ok();
+    //            }
+    //        }
+    //        // return AccessDenied();
+    //        return BadRequest("Поганий запит!");
+    //    }
+    //}
+}
 }
 

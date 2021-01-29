@@ -11,7 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="65dp">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -29,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/chooseImageProfile"
-                android:src="@drawable/ic_brush"
+                app:srcCompat="@drawable/ic_brush"
                 android:layout_alignBottom="@id/chooseImageProfile"
                 android:contentDescription="change_photo"
                 android:layout_toRightOf="@id/chooseImageProfile" />
@@ -41,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:hint="name"
+            android:hint="Ім'я"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -61,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:hint="surname"
+            android:hint="Прізвище"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -80,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:hint="birth_date"
+            android:hint="Дата народження"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -100,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:hint="phone"
+            android:hint="Телефон"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -137,8 +138,8 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/home_toolbar_gradient"
-            android:text="changeProfile"
+            android:background="@drawable/button_gradient"
+            android:text="@string/changeProfile"
             android:onClick="onClickUpdate"/>
     </LinearLayout>
 </ScrollView>

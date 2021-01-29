@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChooseProductActivity"></activity>
+        <activity android:name=".VitaminSettingsActivity"></activity>
+        <activity android:name=".ChooseProductActivity" />
         <activity android:name=".BaseActivity" />
         <activity android:name=".ResultActivity" />
         <activity android:name=".SettingsActivity" />

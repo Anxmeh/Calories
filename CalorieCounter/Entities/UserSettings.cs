@@ -33,5 +33,10 @@ namespace CalorieCounter.Entities
         public double UserProtein { get; set; }
         public double UserCarbohydrate { get; set; }
 
+        public UserSettings()
+        {
+
+        }
+
     }
 }

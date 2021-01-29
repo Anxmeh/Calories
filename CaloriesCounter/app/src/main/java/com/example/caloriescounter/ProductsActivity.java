@@ -46,18 +46,18 @@ public class ProductsActivity extends BaseActivity implements OnDeleteListenerPr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.addContentView(R.layout.activity_products);
-                this.getSupportActionBar().setTitle("Мої продукти");
+        this.getSupportActionBar().setTitle("Мої продукти");
         recyclerView = findViewById(R.id.recycler_view);
         fab = findViewById(R.id.floating_action_button);
 
         setRecyclerView();
 
         fab.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View v) {
-                                       Intent intent = new Intent(ProductsActivity.this, AddProductActivity.class);
-                                       startActivity(intent);
-                                   }
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductsActivity.this, AddProductActivity.class);
+                startActivity(intent);
+            }
 
         });
 
@@ -72,7 +72,7 @@ public class ProductsActivity extends BaseActivity implements OnDeleteListenerPr
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             products.clear();
-                            products.addAll(0,response.body());
+                            products.addAll(0, response.body());
                             adapter.notifyDataSetChanged();
                         } else {
                             products = null;
@@ -100,7 +100,7 @@ public class ProductsActivity extends BaseActivity implements OnDeleteListenerPr
 
         int largePadding = 16;
         int smallPadding = 4;
-      //  recyclerView.addItemDecoration(new CategoryGridItemDecoration(largePadding, smallPadding));
+        //  recyclerView.addItemDecoration(new CategoryGridItemDecoration(largePadding, smallPadding));
     }
 
     @Override
@@ -112,10 +112,8 @@ public class ProductsActivity extends BaseActivity implements OnDeleteListenerPr
                 .setPositiveButton("Видалити", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.e(TAG, "Delete category by Id "+ product.getId());
+                        Log.e(TAG, "Delete category by Id " + product.getId());
                         products.remove(product);
-
-
 
 
                         adapter.notifyDataSetChanged();
@@ -171,15 +169,7 @@ public class ProductsActivity extends BaseActivity implements OnDeleteListenerPr
     }
 
 
-
 ////////////////////
-
-
-
-
-
-
-
 
 
 //    private GridView gridView;

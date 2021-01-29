@@ -191,7 +191,7 @@ public class ProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.addContentView(R.layout.activity_profile);
-        this.getSupportActionBar().setTitle("Нова страва");
+        this.getSupportActionBar().setTitle("Профіль");
         sessionManager = SessionManager.getInstance(ProfileActivity.this);
         imageRequester = ImageRequester.getInstance();
 

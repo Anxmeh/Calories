@@ -1,4 +1,4 @@
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayoutToday"
@@ -38,7 +38,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
                 android:text="Date"
-                android:textColor="@color/Indigo"
+                android:textColor="#743000"
                 android:textSize="20sp" />
 
             <Button
@@ -131,7 +131,7 @@
                             android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
                             android:text="Ж: "
-                            android:textColor="#FFA500"
+                            android:textColor="#e76600"
                             android:textSize="17sp" />
 
                         <com.example.caloriescounter.models.ProgressTextView
@@ -179,21 +179,21 @@
                 <!--                android:orientation="vertical">-->
 
 
-                <EditText
-                    android:id="@+id/inputSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Пошук..."
-                    android:inputType="text" />
+<!--                <EditText-->
+<!--                    android:id="@+id/inputSearch"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:hint="Пошук..."-->
+<!--                    android:inputType="text" />-->
 
-                <ListView
-                    android:id="@+id/listViewProducts"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_margin="10dp"
-                    android:horizontalSpacing="5dp"
-                    android:numColumns="1"
-                    android:verticalSpacing="5dp" />
+<!--                <ListView-->
+<!--                    android:id="@+id/listViewProducts"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="70dp"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:horizontalSpacing="5dp"-->
+<!--                    android:numColumns="1"-->
+<!--                    android:verticalSpacing="5dp" />-->
 
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -201,10 +201,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/floating_action_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/home_toolbar_gradient"
+                    android:contentDescription="@string/addFab"
+                    app:srcCompat="@drawable/ic_plus_24"/>
+
 
             </LinearLayout>
+
+
+
         </ScrollView>
 
     </LinearLayout>
 
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

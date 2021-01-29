@@ -1,11 +1,13 @@
 <resources>
+
     <string name="app_name">CaloriesCounter</string>
+    <string name="default_web_client_id">298295942811-anchflotednvh5kqga7voln2eu01mbca.apps.googleusercontent.com</string>
     <string name="login">Login</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="passwordConfirm">Confirm Password</string>
-    <string name="signIn">Sign In</string>
-    <string name="signUp">Sign Up</string>
+    <string name="email">Електронна пошта</string>
+    <string name="password">Пароль</string>
+    <string name="passwordConfirm">Підтвердіть пароль</string>
+    <string name="signIn">Вхід</string>
+    <string name="signUp">Реєстрація</string>
     <string name="empty">Empty</string>
     <string name="selectImage">Оберіть фото</string>
     <string name="editProfile">Оедагувати профіль</string>
@@ -53,4 +55,6 @@
     <string name="Dish">Разом інгредієнти:</string>
     <string name="search">Пошук</string>
     <string name="addFab">+</string>
+    <string name="SignOut">Вихід</string>
+    <string name="changeProfile">Змінити дані</string>
 </resources>

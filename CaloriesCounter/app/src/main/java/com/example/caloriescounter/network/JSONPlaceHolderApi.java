@@ -5,6 +5,7 @@ import com.example.caloriescounter.models.DailyMenuView;
 import com.example.caloriescounter.models.Dish;
 import com.example.caloriescounter.models.DishIngredientsView;
 import com.example.caloriescounter.models.Ingredients;
+import com.example.caloriescounter.models.LoginGoogleView;
 import com.example.caloriescounter.models.LoginView;
 import com.example.caloriescounter.models.Photo;
 import com.example.caloriescounter.models.Product;
@@ -12,6 +13,8 @@ import com.example.caloriescounter.models.RegisterView;
 import com.example.caloriescounter.models.RemoveDailyView;
 import com.example.caloriescounter.models.UserSettingsView;
 import com.example.caloriescounter.models.UserView;
+import com.example.caloriescounter.models.UserVitaminsView;
+import com.example.caloriescounter.models.Vitamin;
 import com.example.caloriescounter.models.WaterSettingsView;
 import com.example.caloriescounter.models.WaterView;
 
@@ -30,6 +33,9 @@ import retrofit2.http.Part;
 public interface JSONPlaceHolderApi {
     @POST("/api/account/login")
     Call<Tokens> login(@Body LoginView model);
+
+    @POST("/api/account/logingoogle")
+    Call<Tokens> loginGoogle(@Body LoginGoogleView model);
 
     @POST("/api/account/register")
     Call<Tokens> register(@Body RegisterView model);
@@ -107,6 +113,18 @@ public interface JSONPlaceHolderApi {
 
     @POST("/api/settings/setusercalories")
     Call<UserSettingsView> updateCalories(@Body double userCalories);
+
+
+    @GET("/api/vitamins/allvitamins")
+    Call<List<Vitamin>> getAllVitamins();
+    @GET("/api/vitamins/myvitamins")
+    Call<List<UserVitaminsView>> getUserVitamins();
+    @POST("/api/vitamins/addmyvitamin")
+    Call<UserVitaminsView> addUserVitamin(@Body UserVitaminsView model);
+    @POST("/api/vitamins/сhangemyvitamin")
+    Call<UserVitaminsView> changeUserVitamin(@Body UserVitaminsView model);
+
+
 //
 //    @POST("/api/library/addbook")
 //    Call<Book> addBook(@Body Book book);

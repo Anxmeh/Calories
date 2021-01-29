@@ -294,6 +294,8 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
                     234324243, intent2, 0);
             Calendar now = Calendar.getInstance();
             int hour = now.get(Calendar.HOUR_OF_DAY);
+            Log.d("hour now ", Integer.toString(hour));
+
 
             if (hour < begin){
                 calendar2.set(Calendar.HOUR_OF_DAY, 9);
@@ -316,7 +318,7 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
                     alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent);
                 }
             }
-            else if (hour > 22){
+            else if (hour >= end){
 
                 calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR)+1 );
                 calendar2.set(Calendar.HOUR_OF_DAY, 9);

@@ -249,6 +249,9 @@ namespace CalorieCounter.Migrations
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<bool>("FromGoogleLogin")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -345,6 +348,79 @@ namespace CalorieCounter.Migrations
                     b.ToTable("UserSettings");
                 });
 
+            modelBuilder.Entity("CalorieCounter.Entities.UserVitamins", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("DateOfVitamin")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsTaken")
+                        .HasColumnType("boolean");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("VitaminId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VitaminId");
+
+                    b.ToTable("UserVitamins");
+                });
+
+            modelBuilder.Entity("CalorieCounter.Entities.Vitamin", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("VitaminName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Vitamins");
+                });
+
+            modelBuilder.Entity("CalorieCounter.Entities.VitaminSettings", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("VitaminId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("VitaminId");
+
+                    b.ToTable("VitaminSettings");
+                });
+
             modelBuilder.Entity("CalorieCounter.Entities.WaterCounter", b =>
                 {
                     b.Property<long>("Id")
@@ -378,8 +454,8 @@ namespace CalorieCounter.Migrations
                     b.Property<int>("Begin")
                         .HasColumnType("integer");
 
-                    b.Property<long>("End")
-                        .HasColumnType("bigint");
+                    b.Property<int>("End")
+                        .HasColumnType("integer");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -542,6 +618,44 @@ namespace CalorieCounter.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CalorieCounter.Entities.UserVitamins", b =>
+                {
+                    b.HasOne("CalorieCounter.Entities.DbUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CalorieCounter.Entities.Vitamin", "Vitamin")
+                        .WithMany()
+                        .HasForeignKey("VitaminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("Vitamin");
+                });
+
+            modelBuilder.Entity("CalorieCounter.Entities.VitaminSettings", b =>
+                {
+                    b.HasOne("CalorieCounter.Entities.DbUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CalorieCounter.Entities.Vitamin", "Vitamin")
+                        .WithMany()
+                        .HasForeignKey("VitaminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("Vitamin");
                 });
 
             modelBuilder.Entity("CalorieCounter.Entities.WaterCounter", b =>
