@@ -17,4 +17,5 @@ namespace CalorieCounter.Models
        public int WaterVolume { get; set; }
         public DateTime DateOfDrink { get; set; }
     }
+
 }

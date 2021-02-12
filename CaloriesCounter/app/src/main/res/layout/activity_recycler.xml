@@ -164,7 +164,7 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/AddDish"
             android:onClick="onClickAddDish"
-            android:background="@drawable/home_toolbar_gradient"
+            android:background="@drawable/button_gradient"
             />
     </LinearLayout>
     </ScrollView>

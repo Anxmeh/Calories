@@ -11,16 +11,21 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.caloriescounter.adapters.CustomAdapter;
 import com.example.caloriescounter.adapters.ProductAdapter;
 import com.example.caloriescounter.models.Product;
+import com.example.caloriescounter.models.Vitamin;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.utils.CommonUtils;
 
@@ -31,8 +36,49 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TestProdActivity extends AppCompatActivity {
+    private String[] cats = { "Васька", "Мурзик", "Барсик", "Рыжик" };
+    private TextView tx;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_test_prod);
+        tx = findViewById(R.id.txtspin);
+
+        Spinner spinner = findViewById(R.id.spinner);
+        CustomAdapter adapter = new CustomAdapter(this,
+                android.R.layout.simple_spinner_item, cats);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.post(new Runnable() {
+            @Override
+            public void run() {
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        tx.setText("");
+                    }
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view,
+                                               int pos, long id) {
+                        // Set adapter flag that something has been chosen
+                        CustomAdapter.flag = true;
+                        String current = (String) spinner.getSelectedItem();
+                        tx.setText(current.toString());
+                        // String[] choose = getResources().getStringArray(R.array.cats);
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Ваш выбор: " + current.toString(), Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+            }
+        });
+    }
 
 }
+
+
 //
 //    private ListView listView;
 //    private List<Product> products;

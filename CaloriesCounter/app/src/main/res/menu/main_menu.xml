@@ -25,6 +25,10 @@
         android:icon="@drawable/ic_water"
         android:title="Лічильник води" />
     <item
+        android:id="@+id/choose"
+        android:icon="@drawable/ic_vitamins"
+        android:title="Мої вітаміни" />
+    <item
         android:id="@+id/userSettings"
         android:icon="@drawable/ic_settings"
         android:title="Налаштування профілю" />
@@ -44,9 +48,6 @@
         android:id="@+id/logout"
         android:icon="@drawable/ic_exit"
         android:title="Вихід" />
-             <item
-                android:id="@+id/choose"
-                android:icon="@drawable/ic_vitamins"
-                android:title="choose" />
+
 
 </menu>

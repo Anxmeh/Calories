@@ -1,5 +1,7 @@
 package com.example.caloriescounter.network;
 
+import android.database.Observable;
+
 import com.example.caloriescounter.models.AddProductView;
 import com.example.caloriescounter.models.DailyMenuView;
 import com.example.caloriescounter.models.Dish;
@@ -13,8 +15,10 @@ import com.example.caloriescounter.models.RegisterView;
 import com.example.caloriescounter.models.RemoveDailyView;
 import com.example.caloriescounter.models.UserSettingsView;
 import com.example.caloriescounter.models.UserView;
+import com.example.caloriescounter.models.UserVitaminsDailyView;
 import com.example.caloriescounter.models.UserVitaminsView;
 import com.example.caloriescounter.models.Vitamin;
+import com.example.caloriescounter.models.VitaminDailyCheckView;
 import com.example.caloriescounter.models.WaterSettingsView;
 import com.example.caloriescounter.models.WaterView;
 
@@ -23,7 +27,9 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -39,6 +45,9 @@ public interface JSONPlaceHolderApi {
 
     @POST("/api/account/register")
     Call<Tokens> register(@Body RegisterView model);
+
+    @POST("/api/account/signout")
+    Call<Void> signout();
 
     @GET("/api/products/products")
     Call<List<Product>> getProducts();
@@ -121,22 +130,18 @@ public interface JSONPlaceHolderApi {
     Call<List<UserVitaminsView>> getUserVitamins();
     @POST("/api/vitamins/addmyvitamin")
     Call<UserVitaminsView> addUserVitamin(@Body UserVitaminsView model);
+    @POST("/api/vitamins/removemyvitamin")
+    Call<UserVitaminsView> removeUserVitamin(@Body long vitaminId);
     @POST("/api/vitamins/сhangemyvitamin")
     Call<UserVitaminsView> changeUserVitamin(@Body UserVitaminsView model);
 
+    @POST("/api/vitamins/dailyvitamins")
+    Call<List<UserVitaminsDailyView>> getDailyVitamins(@Body Date dateOfVitamin);
+    @POST("/api/vitamins/checkvitamin")
+    Call<VitaminDailyCheckView> checkDailyVitamin(@Body VitaminDailyCheckView model);
 
-//
-//    @POST("/api/library/addbook")
-//    Call<Book> addBook(@Body Book book);
-//
-//    @Multipart
-//    @POST("/api/file/upload")
-//    Call uploadFile(@Part MultipartBody.Part file, @Part("file") RequestBody name);
-//
-//    @Multipart
-//    @POST("retrofit_example/upload_multiple_files.php")
-//    Call<ServerResponse> uploadMulFile(@Part MultipartBody.Part file1,
-//                                       @Part MultipartBody.Part file2);file2
+
+
 
 }
 

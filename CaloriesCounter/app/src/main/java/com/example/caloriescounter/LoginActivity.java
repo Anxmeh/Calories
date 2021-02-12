@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.example.caloriescounter.data.UserRepository;
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.caloriescounter.models.LoginGoogleView;
 import com.example.caloriescounter.models.LoginView;
+import com.example.caloriescounter.models.UserView;
 import com.example.caloriescounter.network.ImageRequester;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.SessionManager;
@@ -34,6 +36,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -45,19 +48,21 @@ public class LoginActivity extends BaseActivity {
    // private ImageRequester imageRequester;
    // private NetworkImageView editImage;
     private final String BASE_URL = NetworkService.getBaseUrl();
-
+    private UserView userProfile;
     private TextView mStatusTextView;
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "SignInActivity";
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.addContentView(R.layout.activity_login);
         this.getSupportActionBar().setTitle("Вхід");
+        sessionManager = SessionManager.getInstance(LoginActivity.this);
 
-        mStatusTextView = findViewById(R.id.status);
+        //mStatusTextView = findViewById(R.id.status);
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -119,10 +124,38 @@ public class LoginActivity extends BaseActivity {
                             Tokens token = response.body();
                             assert token != null;
 
-                            SessionManager sessionManager = SessionManager.getInstance(LoginActivity.this);
+                           // SessionManager sessionManager = SessionManager.getInstance(LoginActivity.this);
 
                             sessionManager.saveJWTToken(token.getToken());
                             sessionManager.saveUserLogin(model.getEmail());
+
+
+                            NetworkService.getInstance()
+                                    .getJSONApi()
+                                    .profile()
+                                    .enqueue(new Callback<UserView>() {
+                                        @SuppressLint("SetTextI18n")
+                                        @Override
+                                        public void onResponse(@NonNull Call<UserView> call, @NonNull Response<UserView> response) {
+
+                                            if (response.errorBody() == null && response.isSuccessful()) {
+                                                assert response.body() != null;
+                                                userProfile = response.body();
+                                                sessionManager.saveUserName(userProfile.getName());
+
+                                            } else {
+                                                userProfile = null;
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(@NonNull Call<UserView> call, @NonNull Throwable t) {
+                                            CommonUtils.hideLoading();
+                                            userProfile = null;
+                                            t.printStackTrace();
+                                        }
+                                    });
+
 
                             Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                             startActivity(intent);
@@ -177,13 +210,13 @@ public class LoginActivity extends BaseActivity {
 
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
-            mStatusTextView.setText("signed_in " + account.getDisplayName());
-            mStatusTextView.append(" email " + account.getEmail());
+//            mStatusTextView.setText("signed_in " + account.getDisplayName());
+//            mStatusTextView.append(" email " + account.getEmail());
 
-            //  findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+              findViewById(R.id.sign_in_button).setVisibility(View.GONE);
            // findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
-            mStatusTextView.setText("signed_out");
+//            mStatusTextView.setText("signed_out");
 
 
           //  findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
@@ -228,10 +261,36 @@ public class LoginActivity extends BaseActivity {
                                 Tokens token = response.body();
                                 assert token != null;
 
-                                 SessionManager sessionManager = SessionManager.getInstance(LoginActivity.this);
+                              //   SessionManager sessionManager = SessionManager.getInstance(LoginActivity.this);
 
                                   sessionManager.saveJWTToken(token.getToken());
                                  sessionManager.saveUserLogin(account.getEmail());
+
+                                NetworkService.getInstance()
+                                        .getJSONApi()
+                                        .profile()
+                                        .enqueue(new Callback<UserView>() {
+                                            @SuppressLint("SetTextI18n")
+                                            @Override
+                                            public void onResponse(@NonNull Call<UserView> call, @NonNull Response<UserView> response) {
+
+                                                if (response.errorBody() == null && response.isSuccessful()) {
+                                                    assert response.body() != null;
+                                                    userProfile = response.body();
+                                                    sessionManager.saveUserName(userProfile.getName());
+
+                                                } else {
+                                                    userProfile = null;
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(@NonNull Call<UserView> call, @NonNull Throwable t) {
+                                                CommonUtils.hideLoading();
+                                                userProfile = null;
+                                                t.printStackTrace();
+                                            }
+                                        });
 
                                 Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                                 startActivity(intent);
@@ -272,10 +331,10 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    public void onClickSignOut(View view) {
-        final Button signout = findViewById(R.id.sign_out_button);
-        mGoogleSignInClient.signOut();
-    }
+//    public void onClickSignOut(View view) {
+//        final Button signout = findViewById(R.id.sign_out_button);
+//        mGoogleSignInClient.signOut();
+//    }
 
 
 

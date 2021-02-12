@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Observable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,19 +17,34 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.caloriescounter.models.Product;
+import com.example.caloriescounter.models.UserView;
+import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.SessionManager;
+import com.example.caloriescounter.network.utils.CommonUtils;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.Objects;
 
-public class BaseActivity extends AppCompatActivity {
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+public class BaseActivity extends AppCompatActivity {
+    private UserView userProfile;
     private ActionBarDrawerToggle mToggle;
     private DrawerLayout drawerLayout;
     protected Context mContext;
     private SessionManager sessionManager;
     TextView txtTitle;
     Toolbar homeToolbar;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +65,18 @@ public class BaseActivity extends AppCompatActivity {
         navigationView.bringToFront();
         View headerView = navigationView.getHeaderView(0);
         TextView nav_user = (TextView) headerView.findViewById(R.id.header);
-        nav_user.setText("NEWHEADER");
+        TextView nav_email = (TextView) headerView.findViewById(R.id.subheader);
+       // nav_user.setText("NEWHEADER");
+
         //txtTitle.setText("Hohoh");
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                //.requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken("951922290898-kgfog8u4i0q0qo8ms93817n7aejv746c.apps.googleusercontent.com")
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
         sessionManager = SessionManager.getInstance(this);
 
         mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
@@ -64,6 +90,46 @@ public class BaseActivity extends AppCompatActivity {
         });
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        if (sessionManager.isLogged) {
+            String  login = sessionManager.fetchUserLogin();
+            nav_user.setText(login);
+            String  name = sessionManager.fetchUserName();
+            nav_email.setText(name);
+
+//            CommonUtils.showLoading(this);
+//            NetworkService.getInstance()
+//                    .getJSONApi()
+//                    .profile()
+//                    .enqueue(new Callback<UserView>() {
+//                        @SuppressLint("SetTextI18n")
+//                        @Override
+//                        public void onResponse(@NonNull Call<UserView> call, @NonNull Response<UserView> response) {
+//                            CommonUtils.hideLoading();
+//                            if (response.errorBody() == null && response.isSuccessful()) {
+//                                assert response.body() != null;
+//                                userProfile = response.body();
+//                                nav_user.setText(userProfile.getName());
+//                                nav_email.setText(userProfile.getEmail());
+//
+//                            } else {
+//                                userProfile = null;
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(@NonNull Call<UserView> call, @NonNull Throwable t) {
+//                            CommonUtils.hideLoading();
+//                            userProfile = null;
+//                            t.printStackTrace();
+//                        }
+//                    });
+        }
+        else {
+            nav_user.setText("Привіт, Гість");
+            nav_email.setText("");
+        }
+
     }
 
     @Override
@@ -138,7 +204,59 @@ public class BaseActivity extends AppCompatActivity {
                 toast = Toast.makeText(getApplicationContext(),
                         "You have been signed out successfully", Toast.LENGTH_LONG);
                 toast.show();
-                drawerLayout.closeDrawers();
+                mGoogleSignInClient.signOut();
+
+                NetworkService.getInstance()
+                        .getJSONApi()
+                        .signout()
+                        .enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                                CommonUtils.hideLoading();
+                                if (response.errorBody() == null && response.isSuccessful()) {
+                                 //   assert response.body() != null;
+                                  //  addedProduct = response.body();
+
+                                    String succeed = "Успішно";
+                                    Toast toast = Toast.makeText(getApplicationContext(),
+                                            succeed, Toast.LENGTH_LONG);
+                                    toast.show();
+                                                                   } else {
+                                    String errorMessage;
+                                    try {
+                                        assert response.errorBody() != null;
+                                        errorMessage = response.errorBody().string();
+                                    } catch (IOException e) {
+                                        errorMessage = response.message();
+                                        e.printStackTrace();
+                                    }
+                                    Toast toast = Toast.makeText(getApplicationContext(),
+                                            errorMessage, Toast.LENGTH_LONG);
+                                    toast.show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                                CommonUtils.hideLoading();
+                                String error = "Error occurred while getting request!";
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        error, Toast.LENGTH_LONG);
+                                toast.show();
+                                t.printStackTrace();
+                            }
+                        });
+
+
+
+
+
+
+
+
+               // drawerLayout.closeDrawers();
+                intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
                 break;
             case R.id.choose:
                 intent = new Intent(this, VitaminSettingsActivity.class);

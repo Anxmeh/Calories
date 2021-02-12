@@ -307,7 +307,7 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
                     alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent);
                 }
             }
-            else if (hour > begin && hour < end) {
+            else if (hour >= begin && hour < end) {
                 calendar2.set(Calendar.HOUR_OF_DAY, hour+1);
 //                calendar2.set(Calendar.HOUR_OF_DAY, 18);
                 calendar2.set(Calendar.MINUTE, 1);
@@ -359,15 +359,17 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     builder3 = new Notification.Builder(context, channelID)
                             .setSmallIcon(android.R.drawable.ic_dialog_info)
-                            .setContentTitle("New Message")
-                            .setContentText("Time to drink water! From boot")
+                            .setContentTitle("Нагадування")
+                            .setContentText("Час випити води!")
                             .setContentIntent(contentIntent)
+                    .setAutoCancel(true)
                             //  .setDefaults(Notification.DEFAULT_SOUND)
                             // .setSound(alarmSound)
                             .setWhen(System.currentTimeMillis());
                 }
 
                 Notification notification2 = builder3.build();
+                notification2.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
                 // Set the info for the views that show in the notification panel.
                 //notification2.setLatestEventInfo(context, context.getText(R.string.alarm_service_label), "This is a Test Alarm", contentIntent);
                 // Send the notification.
@@ -421,15 +423,17 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 builder3 = new Notification.Builder(context, channelID)
                         .setSmallIcon(android.R.drawable.ic_dialog_info)
-                        .setContentTitle("New Message")
-                        .setContentText("Time to drink water!")
+                        .setContentTitle("Нагадування")
+                        .setContentText("Час випити води!")
                         .setContentIntent(contentIntent)
+                        .setAutoCancel(true)
                         //  .setDefaults(Notification.DEFAULT_SOUND)
                         // .setSound(alarmSound)
                         .setWhen(System.currentTimeMillis());
             }
 
             Notification notification2 = builder3.build();
+           // notification2.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
             // Set the info for the views that show in the notification panel.
             //notification2.setLatestEventInfo(context, context.getText(R.string.alarm_service_label), "This is a Test Alarm", contentIntent);
             // Send the notification.

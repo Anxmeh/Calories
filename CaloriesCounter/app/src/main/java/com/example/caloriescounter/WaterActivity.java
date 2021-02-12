@@ -13,6 +13,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -40,9 +42,12 @@ import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.caloriescounter.elements.CircularProgressBar;
@@ -80,9 +85,17 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
     private WaterSettingsView waterSettings;
 
     private Button btnAdd100, btnAdd200, btnAdd300, btnAdd400, btnAdd500, btnAdd600, btnAddX;
+    Integer[] times = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
 
     int wat;
     int water2;
+    Spinner spinnerBegin;
+    Spinner spinnerEnd;
+
+    TextView tvTime;
+
+    int myHour;
+    int myMinute;
 
     NotificationManager notificationManager;
     //private static final String CHANNEL_ID ="com.chikeandroid.tutsplustalerts.ANDROID" ;
@@ -114,6 +127,9 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         btnAdd500.setOnClickListener(this);
         btnAdd600.setOnClickListener(this);
         btnAddX.setOnClickListener(this);
+        spinnerBegin = (Spinner) findViewById(R.id.spinnerBegin);
+        spinnerEnd = (Spinner) findViewById(R.id.spinnerEnd);
+        tvTime = (TextView) findViewById(R.id.tvTime);
 
 
         calendar2.set(Calendar.HOUR_OF_DAY, 15);
@@ -123,6 +139,13 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
 
         this.mCountUpBar2 = (CircularProgressBar) this.findViewById(R.id.countup_bar2);
         mCountUpBar2.setMax(1500);
+
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, times);
+        // Определяем разметку для использования при выборе элемента
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Применяем адаптер к элементу spinner
+        spinnerBegin.setAdapter(adapter);
+        spinnerEnd.setAdapter(adapter);
 
 
         NetworkService.getInstance()
@@ -285,6 +308,26 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         DrinkWater(model);
         SetTimer();
     }
+
+    public void onClickSetBegin(View view) {
+        final Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(WaterActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                myHour = hourOfDay;
+                myMinute = minute;
+                tvTime.setText("Time is " + myHour + " hours " + myMinute + " minutes");
+            }
+        }, hour, minute, true);
+
+        timePickerDialog.show();
+
+    }
+
+
 }
 
 

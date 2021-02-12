@@ -46,8 +46,8 @@ namespace CalorieCounter.Entities
 
                 user.UserProfile = new UserProfile()
                 {
-                    Name = "Petro",
-                    Surname = "Petunchik",
+                    Name = "Петро",
+                    Surname = "Петрунчик",
                     DateOfBirth = new DateTime(1980, 5, 20),
                     Phone = "+380978515659",
                     RegistrationDate = DateTime.Now,
@@ -70,8 +70,8 @@ namespace CalorieCounter.Entities
 
                 user.UserProfile = new UserProfile()
                 {
-                    Name = "Natalya",
-                    Surname = "Pupenko",
+                    Name = "Наталія",
+                    Surname = "Пупенко",
                     DateOfBirth = new DateTime(1982, 10, 7),
                     Phone = "+380670015009",
                     RegistrationDate = DateTime.Now,
@@ -90,7 +90,7 @@ namespace CalorieCounter.Entities
                 var products = new List<Product>();
                 products.Add(new Product
                 {
-                    Name = "Сhicken breast",
+                    Name = "Філе куряче сире",
                     Protein = 23.6,
                     Fat = 1.9,
                     Carbohydrate = 0.4,
@@ -98,7 +98,7 @@ namespace CalorieCounter.Entities
                 });
                 products.Add(new Product
                 {
-                    Name = "Boilde buckwheat",
+                    Name = "Крупа гречана відварена",
                     Protein = 3.9,
                     Fat = 1.4,
                     Carbohydrate = 20.1,
@@ -106,7 +106,7 @@ namespace CalorieCounter.Entities
                 });
                 products.Add(new Product
                 {
-                    Name = "Oat flakes",
+                    Name = "Вівсяні пластівці",
                     Protein = 10.8,
                     Fat = 3.2,
                     Carbohydrate = 59.5,
@@ -114,7 +114,7 @@ namespace CalorieCounter.Entities
                 });
                 products.Add(new Product
                 {
-                    Name = "Milk 2.5%",
+                    Name = "Молоко 2.5%",
                     Protein = 2.9,
                     Fat = 2.5,
                     Carbohydrate = 4.8,
@@ -122,7 +122,7 @@ namespace CalorieCounter.Entities
                 });
                 products.Add(new Product
                 {
-                    Name = "Coffee",
+                    Name = "Кава",
                     Protein = 0.2,
                     Fat = 0.5,
                     Carbohydrate = 0.2,
@@ -130,7 +130,7 @@ namespace CalorieCounter.Entities
                 });
                 products.Add(new Product
                 {
-                    Name = "Dark chocolate",
+                    Name = "Чорний шоколад",
                     Protein = 6.3,
                     Fat = 31.8,
                     Carbohydrate = 53.7,

@@ -57,4 +57,7 @@
     <string name="addFab">+</string>
     <string name="SignOut">Вихід</string>
     <string name="changeProfile">Змінити дані</string>
+    <string name="MyVitamins">Мої вітаміни</string>
+    <string name="begin">З: </string>
+    <string name="end">До: </string>
 </resources>

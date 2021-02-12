@@ -50,7 +50,7 @@ namespace CalorieCounter.Controllers
             {
                 return BadRequest("Поганий запит!");
             }
-            long ids = user.Id;
+           // long ids = user.Id;
             //  UserProfileView userProfile = new UserProfileView(user);
 
 
@@ -68,7 +68,16 @@ namespace CalorieCounter.Controllers
             }).Where(u => u.UserId == user.Id && u.DateOfDrink.Date == date.Date).ToList();
 
             var water = _context.WaterCounters.SingleOrDefault(w => w.DateOfDrink.Date == date.Date && w.UserId == user.Id);
+            if (water == null)
+            {
+                return Ok(new AddWaterViewModel
+                {
+                    DateOfDrink = date,
+                    WaterVolume = 0
 
+                });
+
+            }
 
             return Ok(new AddWaterViewModel
             {

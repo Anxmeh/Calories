@@ -36,8 +36,13 @@ import android.widget.Toast;
 import com.example.caloriescounter.adapters.DailyMenuRecyclerAdapter;
 import com.example.caloriescounter.adapters.ProductAdapter;
 import com.example.caloriescounter.adapters.ProductCardRecyclerViewAdapter;
+import com.example.caloriescounter.adapters.VitaminsDailyRecyclerAdapter;
+import com.example.caloriescounter.adapters.VitaminsRecyclerAdapter;
+import com.example.caloriescounter.click_listeners.OnChangeAmountVitamins;
+import com.example.caloriescounter.click_listeners.OnChangeDailyVitaminsListener;
 import com.example.caloriescounter.click_listeners.OnDeleteListener;
 import com.example.caloriescounter.click_listeners.OnDeleteListenerDailyMenu;
+import com.example.caloriescounter.click_listeners.OnDeleteListenerVitamins;
 import com.example.caloriescounter.models.AddProductView;
 import com.example.caloriescounter.models.DailyMenuView;
 import com.example.caloriescounter.models.Dish;
@@ -47,6 +52,9 @@ import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.models.ProgressTextView;
 import com.example.caloriescounter.models.RemoveDailyView;
 import com.example.caloriescounter.models.UserSettingsView;
+import com.example.caloriescounter.models.UserVitaminsDailyView;
+import com.example.caloriescounter.models.UserVitaminsView;
+import com.example.caloriescounter.models.VitaminDailyCheckView;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.SessionManager;
 import com.example.caloriescounter.network.utils.CommonUtils;
@@ -70,13 +78,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TodayActivity extends BaseActivity implements OnDeleteListenerDailyMenu {
+public class TodayActivity extends BaseActivity implements OnDeleteListenerDailyMenu, OnChangeDailyVitaminsListener {
 
     private static final String TAG = TodayActivity.class.getSimpleName();
     private ActionBarDrawerToggle mToggle;
     private DrawerLayout drawerLayout;
     private SessionManager sessionManager;
     private RecyclerView recyclerView;
+    private RecyclerView recyclerViewVit;
     private List<Product> products;
     private List<Ingredients> prodsindish;
     private List<DailyMenuView> dailyMenu;
@@ -85,6 +94,10 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
     private UserSettingsView userSettings;
    // Calendar c = Calendar.getInstance();
     //  c.set(2020, 12, 22);
+
+   private List<UserVitaminsDailyView> userVitamins;
+   // VitaminsRecyclerAdapter adapterVit;
+    VitaminsDailyRecyclerAdapter adapterVitDaily;
 
     private final Calendar calendar = Calendar.getInstance();
     SimpleDateFormat formatDate = new SimpleDateFormat("MMM d, yyyy",  new Locale("uk","UA"));
@@ -129,6 +142,7 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
         sessionManager = SessionManager.getInstance(this);
 
         recyclerView = findViewById(R.id.recycler_view);
+        recyclerViewVit = findViewById(R.id.recycler_view_vit);
 
 
 
@@ -174,6 +188,8 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
         //setUserData();
         setRecyclerView();
         loadListPr();
+        setRecyclerViewVit();
+
 
 
 
@@ -464,9 +480,9 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
                                         if (response.errorBody() == null && response.isSuccessful()) {
                                             assert response.body() != null;
                                             loadListPr();
-                                            Toast toast = Toast.makeText(getApplicationContext(),
-                                                    "hello", Toast.LENGTH_LONG);
-                            toast.show();
+//                                            Toast toast = Toast.makeText(getApplicationContext(),
+//                                                    "hello", Toast.LENGTH_LONG);
+//                            toast.show();
                                             // addedProduct = response.body();
                                           //  dish = response.body();
 //                                            txtDishCalories.setText(Double.toString(dish.getDishCalories()));
@@ -554,6 +570,7 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
                             progressCarbs.setTextColor(Color.parseColor("#000000"));
                             progressProtein.setValue((int)totalProtein);
                             progressProtein.setTextColor(Color.parseColor("#000000"));
+                            getUserVitamins();
                             adapter.notifyDataSetChanged();
                         } else {
                             dailyMenu = null;
@@ -695,4 +712,299 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
         //txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + calendar.get((Calendar.YEAR)));
         loadListPr();
     }
+
+    public void getUserVitamins() {
+        CommonUtils.showLoading(this);
+        NetworkService.getInstance()
+                .getJSONApi()
+                .getDailyVitamins(calendar.getTime())
+                .enqueue(new Callback<List<UserVitaminsDailyView>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<UserVitaminsDailyView>> call, @NonNull Response<List<UserVitaminsDailyView>> response) {
+                        CommonUtils.hideLoading();
+                        if (response.errorBody() == null && response.isSuccessful()) {
+                            assert response.body() != null;
+                            if (userVitamins != null)
+                                userVitamins.clear();
+                            if (response.body() != null)
+                                userVitamins.addAll(0, response.body());
+                            adapterVitDaily.notifyDataSetChanged();
+
+
+                        } else {
+                            userVitamins = null;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<List<UserVitaminsDailyView>> call, @NonNull Throwable t) {
+                        CommonUtils.hideLoading();
+                        userVitamins = null;
+                        t.printStackTrace();
+                    }
+                });
+    }
+
+    private void setRecyclerViewVit() {
+        recyclerViewVit.setHasFixedSize(true);
+        recyclerViewVit.setLayoutManager(new GridLayoutManager(this, 1,
+                GridLayoutManager.VERTICAL, false));
+        userVitamins = new ArrayList<>();
+        adapterVitDaily = new VitaminsDailyRecyclerAdapter(userVitamins, this, this );
+
+        recyclerViewVit.setAdapter(adapterVitDaily);
+
+        int largePadding = 16;
+        int smallPadding = 4;
+        //  recyclerView.addItemDecoration(new CategoryGridItemDecoration(largePadding, smallPadding));
+    }
+
+    @Override
+    public void checkVitamin(final UserVitaminsDailyView vitamin) {
+        Log.e(TAG, "Before is  " + vitamin.isTaken());
+        VitaminDailyCheckView model = new VitaminDailyCheckView();
+        model.setDateOfVitamin(vitamin.getDateOfVitamin());
+        model.setVitaminId(vitamin.getVitaminId());
+        model.setTaken(!vitamin.isTaken());
+        vitamin.setTaken(!vitamin.isTaken());
+        Log.e(TAG, "After is  " + model.isTaken());
+
+
+                        NetworkService.getInstance()
+                                .getJSONApi()
+                                .checkDailyVitamin(model)
+                                .enqueue(new Callback<VitaminDailyCheckView>() {
+                                    @Override
+                                    public void onResponse(@NonNull Call<VitaminDailyCheckView> call, @NonNull Response<VitaminDailyCheckView> response) {
+                                        CommonUtils.hideLoading();
+                                        if (response.errorBody() == null && response.isSuccessful()) {
+                                            assert response.body() != null;
+
+                                            adapter.notifyDataSetChanged();
+
+
+                                        } else {
+                                            String errorMessage;
+                                            try {
+                                                assert response.errorBody() != null;
+                                                errorMessage = response.errorBody().string();
+                                            } catch (IOException e) {
+                                                errorMessage = response.message();
+                                                e.printStackTrace();
+                                            }
+//                            Toast toast = Toast.makeText(getApplicationContext(),
+//                                    errorMessage, Toast.LENGTH_LONG);
+//                            toast.show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(@NonNull Call<VitaminDailyCheckView> call, @NonNull Throwable t) {
+                                        CommonUtils.hideLoading();
+                                        String error = "Error occurred while getting request!";
+//                        Toast toast = Toast.makeText(getApplicationContext(),
+//                                error, Toast.LENGTH_LONG);
+//                        toast.show();
+                                        t.printStackTrace();
+                                    }
+                                });
+                        //deleteConfirm(productEntry);
+
+
+
+    }
+    ///////////////////////////////////////////////
+//    @Override
+//    public void deleteItem(final UserVitaminsView vitamin) {
+//        new MaterialAlertDialogBuilder(this)
+//                .setTitle("Видалення")
+//                .setMessage("Ви дійсно бажаєте видалити \"" + vitamin.getVitaminName() + "\"?")
+//                .setNegativeButton("Скасувати", null)
+//                .setPositiveButton("Видалити", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Log.e(TAG, "Delete category by id " + vitamin.getVitaminId());
+//                        userVitamins.remove(vitamin);
+//                        adapter.notifyDataSetChanged();
+////
+////                        NetworkService.getInstance()
+////                                .getJSONApi()
+////                                .removeProduct(product.getId())
+////                                .enqueue(new Callback<List<Product>>() {
+////                                    @Override
+////                                    public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
+////                                        CommonUtils.hideLoading();
+////                                        if (response.errorBody() == null && response.isSuccessful()) {
+////                                            assert response.body() != null;
+////                                            // addedProduct = response.body();
+//////                                            dish = response.body();
+//////                                            txtDishCalories.setText(Double.toString(dish.getDishCalories()));
+//////                                            txtDishWeight.setText(Double.toString(dish.getDishWeight()));
+//////                                            // double n= Math.round(dish.getDishProtein()*100.0)/100.0;
+//////                                            txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
+//////                                            txtDishFat.setText(Double.toString(Math.round(dish.getDishFat()*100.0)/100.0));
+//////                                            txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate()*100.0)/100.0));
+////
+////
+////                                        } else {
+////                                            String errorMessage;
+////                                            try {
+////                                                assert response.errorBody() != null;
+////                                                errorMessage = response.errorBody().string();
+////                                            } catch (IOException e) {
+////                                                errorMessage = response.message();
+////                                                e.printStackTrace();
+////                                            }
+//////                            Toast toast = Toast.makeText(getApplicationContext(),
+//////                                    errorMessage, Toast.LENGTH_LONG);
+//////                            toast.show();
+////                                        }
+////                                    }
+////
+////                                    @Override
+////                                    public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
+////                                        CommonUtils.hideLoading();
+////                                        String error = "Error occurred while getting request!";
+//////                        Toast toast = Toast.makeText(getApplicationContext(),
+//////                                error, Toast.LENGTH_LONG);
+//////                        toast.show();
+////                                        t.printStackTrace();
+////                                    }
+////                                });
+////                        //deleteConfirm(productEntry);
+////                    }
+//                    }
+//                })
+//                .show();
+//
+//    }
+//
+//    @Override
+//    public void changeItem(final UserVitaminsView vitamin) {
+//        LayoutInflater li = LayoutInflater.from(context);
+//        View promptsView = li.inflate(R.layout.prompt, null);
+//
+//        //Создаем AlertDialog
+//        android.app.AlertDialog.Builder mDialogBuilder = new android.app.AlertDialog.Builder(context);
+//        //Настраиваем prompt.xml для нашего AlertDialog:
+//        mDialogBuilder.setView(promptsView);
+//        //Настраиваем отображение поля для ввода текста в открытом диалоге:
+//        final EditText userInput = (EditText) promptsView.findViewById(R.id.inputWeight);
+//        //Настраиваем сообщение в диалоговом окне:
+////        mDialogBuilder
+////                .setCancelable(false)
+////                .setPositiveButton("OK",
+////                        new DialogInterface.OnClickListener() {
+////                            public void onClick(DialogInterface dialog, int id) {
+////                                //Вводим текст и отображаем в строке ввода на основном экране:
+////                                try {
+////                                    amount = Integer.parseInt(userInput.getText().toString());
+////                                } catch (NumberFormatException nfe) {
+////                                    Log.e(TAG, "Could not parse " + nfe);
+////                                }
+////                                vitamin.setAmount(amount);
+////
+////                                CommonUtils.showLoading(context);
+////                                NetworkService.getInstance()
+////                                        .getJSONApi()
+////                                        .changeUserVitamin(vitamin)
+////                                        .enqueue(new Callback<UserVitaminsView>() {
+////                                            @Override
+////                                            public void onResponse(@NonNull Call<UserVitaminsView> call, @NonNull Response<UserVitaminsView> response) {
+////                                                CommonUtils.hideLoading();
+////                                                if (response.errorBody() == null && response.isSuccessful()) {
+////                                                    assert response.body() != null;
+////                                                    userVitamin = response.body();
+////                                                    getUserVitamins();
+////
+////
+////                                                } else {
+////                                                    vitamins = null;
+////                                                }
+////                                            }
+////
+////                                            @Override
+////                                            public void onFailure(@NonNull Call<UserVitaminsView> call, @NonNull Throwable t) {
+////                                                CommonUtils.hideLoading();
+////                                                userVitamin = null;
+////                                                t.printStackTrace();
+////                                            }
+////                                        });
+////
+////
+////                            }
+////                        }).show();
+//    }
+//
+//    @Override
+//    public void addItem(final UserVitaminsView vitamin) {
+//
+//        int newAm = vitamin.getAmount() + 1;
+//        vitamin.setAmount(newAm);
+//
+////        CommonUtils.showLoading(context);
+////        NetworkService.getInstance()
+////                .getJSONApi()
+////                .changeUserVitamin(vitamin)
+////                .enqueue(new Callback<UserVitaminsView>() {
+////                    @Override
+////                    public void onResponse(@NonNull Call<UserVitaminsView> call, @NonNull Response<UserVitaminsView> response) {
+////                        CommonUtils.hideLoading();
+////                        if (response.errorBody() == null && response.isSuccessful()) {
+////                            assert response.body() != null;
+////                            userVitamin = response.body();
+////                            //  getUserVitamins();
+////                            adapter.notifyDataSetChanged();
+////
+////                        } else {
+////                            vitamins = null;
+////                        }
+////                    }
+////
+////                    @Override
+////                    public void onFailure(@NonNull Call<UserVitaminsView> call, @NonNull Throwable t) {
+////                        CommonUtils.hideLoading();
+////                        userVitamin = null;
+////                        t.printStackTrace();
+////                    }
+////                });
+//    }
+//
+//    @Override
+//    public void removeItem(final UserVitaminsView vitamin) {
+////        if (amount > 0)
+////            amount--;
+////        vitamin.setAmount(amount);
+//        int newAm = vitamin.getAmount() - 1;
+//        vitamin.setAmount(newAm);
+//
+////        CommonUtils.showLoading(context);
+////        NetworkService.getInstance()
+////                .getJSONApi()
+////                .changeUserVitamin(vitamin)
+////                .enqueue(new Callback<UserVitaminsView>() {
+////                    @Override
+////                    public void onResponse(@NonNull Call<UserVitaminsView> call, @NonNull Response<UserVitaminsView> response) {
+////                        CommonUtils.hideLoading();
+////                        if (response.errorBody() == null && response.isSuccessful()) {
+////                            assert response.body() != null;
+////                            userVitamin = response.body();
+////                            //getUserVitamins();
+////                            adapter.notifyDataSetChanged();
+////
+////                        } else {
+////                            vitamins = null;
+////                        }
+////                    }
+////
+////                    @Override
+////                    public void onFailure(@NonNull Call<UserVitaminsView> call, @NonNull Throwable t) {
+////                        CommonUtils.hideLoading();
+////                        userVitamin = null;
+////                        t.printStackTrace();
+////                    }
+////                });
+//
+//
+//    }
 }

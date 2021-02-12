@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="65dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="vertical">
 
 
@@ -166,7 +166,14 @@
                             android:background="@drawable/background_carbs_bar"
                             android:gravity="center" />
                     </LinearLayout>
+
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/DarkGrey"
+                    android:layout_height="1sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"/>
 
 
                 <!--        <ScrollView-->
@@ -200,6 +207,28 @@
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/DarkGrey"
+                    android:layout_height="1sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/myVitamins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/MyVitamins"
+                    android:textSize="20sp"
+                    android:textColor="#743000"
+                    android:layout_gravity="center_horizontal"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_vit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/floating_action_button"

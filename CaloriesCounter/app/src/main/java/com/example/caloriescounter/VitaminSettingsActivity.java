@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.caloriescounter.adapters.CustomAdapterSpinner;
 import com.example.caloriescounter.adapters.ProductListRecyclerAdapter;
 import com.example.caloriescounter.adapters.VitaminsRecyclerAdapter;
 import com.example.caloriescounter.click_listeners.OnChangeAmountVitamins;
@@ -50,6 +51,7 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
     private EditText et1;
     private FloatingActionButton fab;
     private ArrayAdapter adp;
+    private CustomAdapterSpinner adp1;
     private Spinner sp;
     private Spinner sp2;
     LinearLayout view;
@@ -72,7 +74,7 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
 
         fab = findViewById(R.id.floating_action_button);
         recyclerView = findViewById(R.id.recycler_view);
-        //  getVitaminsList();
+       //   getVitaminsList();
         setRecyclerView();
         getUserVitamins();
 
@@ -118,18 +120,71 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
 //                if(builder.getParent() != null) {
 //                    ((ViewGroup)tv.getParent()).removeView(tv);} // <- fix
 //                builder.removeView();
+
+
+
+                sp = new Spinner(VitaminSettingsActivity.this);
+
+
+
                 if (sp.getParent() != null) {
                     ((ViewGroup) sp.getParent()).removeView(sp);
                 }
                 builder1.setView(sp);
                 builder1.setTitle("Оберіть зі списку");
                 //   final AlertDialog alertd = builder.create();
-
+               // CustomAdapterSpinner.flag = false;
 
                 // builder.setView(sp);
                 // alertd.show();
                 builder1.create().show();
+////////////////
+                adp1 = new CustomAdapterSpinner(VitaminSettingsActivity.this,
+                        android.R.layout.simple_spinner_item, vitamins);
+                // tx = (TextView) findViewById(R.id.txt1);
 
+              //  sp = new Spinner(VitaminSettingsActivity.this);
+                // String str = et1.getText().toString();
+              //  sp.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                sp.setAdapter(adp1);
+                sp.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                //  AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+                sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        CustomAdapterSpinner.flag = true;
+                        // Получаем выбранный объект
+                        //String item = (String)parent.getItemAtPosition(position);
+
+                        // Vitamin current = (Vitamin) parent.getSelectedItem();
+                        Vitamin current = (Vitamin) sp.getSelectedItem();
+
+
+                        // tx.setText(current.toString());
+                        UserVitaminsView addVitaminModel = new UserVitaminsView();
+                        addVitaminModel.setVitaminId(current.getId());
+                        addVitaminModel.setAmount(0);
+                        addVitaminModel.setVitaminName(current.getVitaminName());
+                        addVitamin(addVitaminModel);
+
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+                    //};
+
+                    //sp.setOnItemSelectedListener(itemSelectedListener);
+                });
+                    }
+                });
             }
 
         });
@@ -176,40 +231,50 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
                             assert response.body() != null;
                             vitamins = response.body();
 
-                            adp = new ArrayAdapter(VitaminSettingsActivity.this,
-                                    android.R.layout.simple_spinner_item, vitamins);
-
-                            tx = (TextView) findViewById(R.id.txt1);
-
-                            sp = new Spinner(VitaminSettingsActivity.this);
-                            // String str = et1.getText().toString();
-                            sp.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                            sp.setAdapter(adp);
-                            AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                                    // Получаем выбранный объект
-                                    //String item = (String)parent.getItemAtPosition(position);
-
-                                    //Vitamin current = (Vitamin) parent.getSelectedItem();
-                                    Vitamin current = (Vitamin) sp.getSelectedItem();
-
-                                    tx.setText(current.toString());
-                                    UserVitaminsView addVitaminModel = new UserVitaminsView();
-                                    addVitaminModel.setVitaminId(current.getId());
-                                    addVitaminModel.setAmount(0);
-                                    addVitaminModel.setVitaminName(current.getVitaminName());
-                                    addVitamin(addVitaminModel);
-
-                                }
-
-                                @Override
-                                public void onNothingSelected(AdapterView<?> parent) {
-                                }
-                            };
-                            sp.setOnItemSelectedListener(itemSelectedListener);
-
+//                            adp = new ArrayAdapter(VitaminSettingsActivity.this,
+//                                    android.R.layout.simple_spinner_item, vitamins);
+//
+//                            adp1 = new CustomAdapterSpinner(VitaminSettingsActivity.this,
+//                                    android.R.layout.simple_spinner_item, vitamins);
+//                            // tx = (TextView) findViewById(R.id.txt1);
+//
+//                            sp = new Spinner(VitaminSettingsActivity.this);
+//                            // String str = et1.getText().toString();
+//                            sp.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//                            adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                            sp.setAdapter(adp1);
+//
+//                            //  AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+//                            sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//
+//
+//                                @Override
+//                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                                    CustomAdapterSpinner.flag = true;
+//                                    // Получаем выбранный объект
+//                                    //String item = (String)parent.getItemAtPosition(position);
+//
+//                                    // Vitamin current = (Vitamin) parent.getSelectedItem();
+//                                    Vitamin current = (Vitamin) sp.getSelectedItem();
+//
+//
+//                                    // tx.setText(current.toString());
+//                                    UserVitaminsView addVitaminModel = new UserVitaminsView();
+//                                    addVitaminModel.setVitaminId(current.getId());
+//                                    addVitaminModel.setAmount(0);
+//                                    addVitaminModel.setVitaminName(current.getVitaminName());
+//                                    addVitamin(addVitaminModel);
+//
+//
+//                                }
+//
+//                                @Override
+//                                public void onNothingSelected(AdapterView<?> parent) {
+//                                }
+//                                //};
+//
+//                                //sp.setOnItemSelectedListener(itemSelectedListener);
+//                            });
 
                         } else {
                             vitamins = null;
@@ -311,57 +376,49 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
                 .setPositiveButton("Видалити", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.e(TAG, "Delete category by id " + vitamin.getVitaminId());
-                        userVitamins.remove(vitamin);
+                                              userVitamins.remove(vitamin);
                         adapter.notifyDataSetChanged();
+
 //
-//                        NetworkService.getInstance()
-//                                .getJSONApi()
-//                                .removeProduct(product.getId())
-//                                .enqueue(new Callback<List<Product>>() {
-//                                    @Override
-//                                    public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
-//                                        CommonUtils.hideLoading();
-//                                        if (response.errorBody() == null && response.isSuccessful()) {
-//                                            assert response.body() != null;
-//                                            // addedProduct = response.body();
-////                                            dish = response.body();
-////                                            txtDishCalories.setText(Double.toString(dish.getDishCalories()));
-////                                            txtDishWeight.setText(Double.toString(dish.getDishWeight()));
-////                                            // double n= Math.round(dish.getDishProtein()*100.0)/100.0;
-////                                            txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
-////                                            txtDishFat.setText(Double.toString(Math.round(dish.getDishFat()*100.0)/100.0));
-////                                            txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate()*100.0)/100.0));
-//
-//
-//                                        } else {
-//                                            String errorMessage;
-//                                            try {
-//                                                assert response.errorBody() != null;
-//                                                errorMessage = response.errorBody().string();
-//                                            } catch (IOException e) {
-//                                                errorMessage = response.message();
-//                                                e.printStackTrace();
-//                                            }
-////                            Toast toast = Toast.makeText(getApplicationContext(),
-////                                    errorMessage, Toast.LENGTH_LONG);
-////                            toast.show();
-//                                        }
-//                                    }
-//
-//                                    @Override
-//                                    public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
-//                                        CommonUtils.hideLoading();
-//                                        String error = "Error occurred while getting request!";
-////                        Toast toast = Toast.makeText(getApplicationContext(),
-////                                error, Toast.LENGTH_LONG);
-////                        toast.show();
-//                                        t.printStackTrace();
-//                                    }
-//                                });
-//                        //deleteConfirm(productEntry);
-//                    }
+                        NetworkService.getInstance()
+                                .getJSONApi()
+                                .removeUserVitamin(vitamin.getVitaminId())
+                                .enqueue(new Callback<UserVitaminsView>() {
+                                    @Override
+                                    public void onResponse(@NonNull Call<UserVitaminsView> call, @NonNull Response<UserVitaminsView> response) {
+                                        CommonUtils.hideLoading();
+                                        if (response.errorBody() == null && response.isSuccessful()) {
+                                            assert response.body() != null;
+
+
+                                        } else {
+                                            String errorMessage;
+                                            try {
+                                                assert response.errorBody() != null;
+                                                errorMessage = response.errorBody().string();
+                                            } catch (IOException e) {
+                                                errorMessage = response.message();
+                                                e.printStackTrace();
+                                            }
+//                            Toast toast = Toast.makeText(getApplicationContext(),
+//                                    errorMessage, Toast.LENGTH_LONG);
+//                            toast.show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(@NonNull Call<UserVitaminsView> call, @NonNull Throwable t) {
+                                        CommonUtils.hideLoading();
+                                        String error = "Error occurred while getting request!";
+//                        Toast toast = Toast.makeText(getApplicationContext(),
+//                                error, Toast.LENGTH_LONG);
+//                        toast.show();
+                                        t.printStackTrace();
+                                    }
+                                });
+                        //deleteConfirm(productEntry);
                     }
+
                 })
                 .show();
 
@@ -441,7 +498,7 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             userVitamin = response.body();
-                          //  getUserVitamins();
+                            //  getUserVitamins();
                             adapter.notifyDataSetChanged();
 
                         } else {

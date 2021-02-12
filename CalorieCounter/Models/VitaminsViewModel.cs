@@ -54,5 +54,34 @@ namespace CalorieCounter.Models
 
     }
 
-    
+    public class DailyVitaminsViewModel
+    {
+      
+        public long Id { get; set; }
+           public long UserId { get; set; }
+            public long VitaminId { get; set; }
+        public int Amount { get; set; }
+        public DateTime DateOfVitamin { get; set; }
+        public bool IsTaken { get; set; }
+    }
+
+    public class DailyVitaminsNameViewModel
+    {
+
+        public long UserId { get; set; }
+        public long VitaminId { get; set; }
+        public string VitaminName { get; set; }
+        public int Amount { get; set; }
+        public DateTime DateOfVitamin { get; set; }
+        public bool IsTaken { get; set; }
+    }
+
+    public class DailyVitaminsCheckViewModel
+    {
+        public long VitaminId { get; set; }
+        public DateTime DateOfVitamin { get; set; }
+        public bool IsTaken { get; set; }
+    }
+
+
 }

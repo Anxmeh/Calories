@@ -114,7 +114,7 @@ namespace CalorieCounter.Controllers
             {
                 return BadRequest("Невірно введений пароль!");
             }
-
+  
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Ok(
                  new
@@ -160,8 +160,20 @@ namespace CalorieCounter.Controllers
             string ext = ".jpg";
             string fileName = Path.GetRandomFileName() + ext;
 
-            user.UserSettings = new UserSettings();
+            user.UserSettings = new UserSettings()
+            {
+                Calories = 1500,
+                UserCalories = 1500,
+                UserCarbohydrate = 150,
+                UserFat = 50,
+                UserProtein = 113
+            };
 
+            user.UserWaterSettings = new WaterSetting()
+            {
+                Begin = 9,
+                End = 20
+            };
 
             user.UserProfile = new UserProfile()
             {
@@ -245,6 +257,11 @@ namespace CalorieCounter.Controllers
                     UserFat = 50,
                     UserProtein = 113
                 };
+                dbUser.UserWaterSettings = new WaterSetting()
+                {
+                    Begin = 9,
+                    End = 20
+                };
                 dbUser.UserProfile = new UserProfile()
                 {
                     Name = validPayload.GivenName,
@@ -293,58 +310,65 @@ namespace CalorieCounter.Controllers
                  });
         }
 
-      
-    
+        [HttpPost("signout")]
+        public async Task<IActionResult> Logout()
+        {
+
+            await _signInManager.SignOutAsync();
+            return Ok();
+        }
 
 
 
 
 
 
-    //[AllowAnonymous]
-    //[HttpPost("glogin")]
-    //public IActionResult GoogleLogin()
-    //{
-    //    string redirectUrl = Url.Action("GoogleResponse", "Account");
-    //    var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
-    //    return new ChallengeResult("Google", properties);
-    //}
 
-    //[AllowAnonymous]
-    //public async Task<IActionResult> GoogleResponse()
-    //{
-    //    ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
-    //    if (info == null)
-    //        return RedirectToAction(nameof(Login));
 
-    //    var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-    //    string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value };
-    //    if (result.Succeeded)
-    //        //  return View(userInfo);
-    //        return Ok();
-    //    else
-    //    {
-    //        DbUser user = new DbUser
-    //        {
-    //            Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
-    //            UserName = info.Principal.FindFirst(ClaimTypes.Email).Value
-    //        };
+            //[AllowAnonymous]
+            //[HttpPost("glogin")]
+            //public IActionResult GoogleLogin()
+            //{
+            //    string redirectUrl = Url.Action("GoogleResponse", "Account");
+            //    var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+            //    return new ChallengeResult("Google", properties);
+            //}
 
-    //        IdentityResult identResult = await _userManager.CreateAsync(user);
-    //        if (identResult.Succeeded)
-    //        {
-    //            identResult = await _userManager.AddLoginAsync(user, info);
-    //            if (identResult.Succeeded)
-    //            {
-    //                await _signInManager.SignInAsync(user, false);
-    //                // return View(userInfo);
-    //                return Ok();
-    //            }
-    //        }
-    //        // return AccessDenied();
-    //        return BadRequest("Поганий запит!");
-    //    }
-    //}
-}
+            //[AllowAnonymous]
+            //public async Task<IActionResult> GoogleResponse()
+            //{
+            //    ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+            //    if (info == null)
+            //        return RedirectToAction(nameof(Login));
+
+            //    var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            //    string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value };
+            //    if (result.Succeeded)
+            //        //  return View(userInfo);
+            //        return Ok();
+            //    else
+            //    {
+            //        DbUser user = new DbUser
+            //        {
+            //            Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
+            //            UserName = info.Principal.FindFirst(ClaimTypes.Email).Value
+            //        };
+
+            //        IdentityResult identResult = await _userManager.CreateAsync(user);
+            //        if (identResult.Succeeded)
+            //        {
+            //            identResult = await _userManager.AddLoginAsync(user, info);
+            //            if (identResult.Succeeded)
+            //            {
+            //                await _signInManager.SignInAsync(user, false);
+            //                // return View(userInfo);
+            //                return Ok();
+            //            }
+            //        }
+            //        // return AccessDenied();
+            //        return BadRequest("Поганий запит!");
+            //    }
+            //}
+        }
 }
 

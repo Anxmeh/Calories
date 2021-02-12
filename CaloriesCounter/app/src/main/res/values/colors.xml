@@ -14,5 +14,7 @@
     <color name="Indigo">#4B0082</color>
     <color name="DarkOrchid">#9932CC</color>
     <color name="DarkOrange">#FF8C00</color>
+    <color name="DarkGrey">#A9A9A9</color>
+    <color name="NavajoWhite">#FFDEAD</color>
 
 </resources>

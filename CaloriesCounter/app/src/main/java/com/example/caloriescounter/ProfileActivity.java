@@ -257,6 +257,7 @@ public class ProfileActivity extends BaseActivity {
                             }
                             textEditName.setText(userProfile.getName());
                             textEditSurname.setText(userProfile.getSurname());
+                            sessionManager.saveUserName(userProfile.getName());
 
                             calendar.setTime(userProfile.getDateOfBirth());
                             int day = calendar.get(Calendar.DAY_OF_MONTH);

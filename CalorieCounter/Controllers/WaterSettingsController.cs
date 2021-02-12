@@ -26,40 +26,136 @@ namespace CalorieCounter.Controllers
         [HttpGet("watersettings")]
         public IActionResult GetWaterSettings()
         {
-            //string userName;
-            
-            //try
-            //{
-            //    userName = User.Claims.FirstOrDefault(x => x.Type == "name").Value;
-            //}
-            //catch (Exception)
-            //{
-            //    return BadRequest("Потрібно спочатку залогінитися!");
-            //}
+            string userName;
 
-            //if (string.IsNullOrEmpty(userName))
-            //{
-            //    return BadRequest("Потрібно спочатку залогінитися!");
+            try
+            {
+                userName = User.Claims.FirstOrDefault(x => x.Type == "name").Value;
+            }
+            catch (Exception)
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+            }
 
-            //}
+            if (string.IsNullOrEmpty(userName))
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
 
-            //var queryUser = _context.Users.Include(x => x.UserProfile).AsQueryable();
-            //var user = queryUser.FirstOrDefault(c => c.UserName == userName);
+            }
 
-            //if (user == null)
-            //{
-            //    return BadRequest("Поганий запит!");
-            //}
-            //long ids = user.Id;
-            //  UserProfileView userProfile = new UserProfileView(user);
+            var queryUser = _context.Users.Include(x => x.UserProfile).AsQueryable();
+            var user = queryUser.FirstOrDefault(c => c.UserName == userName);
+
+            if (user == null)
+            {
+                return BadRequest("Поганий запит!");
+            }
+            long ids = user.Id;
+            UserProfileView userProfile = new UserProfileView(user);
 
 
             // var res = _context.DailyMenus.Where(u => u.UserId == 2);
             var queryWater = _context.WaterSettings.AsQueryable();
 
-    
-            var water = _context.WaterSettings.SingleOrDefault(w => w.UserId == 2);
 
+            var water = _context.WaterSettings.SingleOrDefault(w => w.UserId == user.Id);
+
+
+            return Ok(new WaterSettingsViewModel
+            {
+                Begin = water.Begin,
+                End = water.End
+
+            });
+        }
+
+        [HttpPost("setbegin")]
+        public IActionResult SetWaterSettingsBegin([FromBody] int begin)
+        {
+            string userName;
+
+            try
+            {
+                userName = User.Claims.FirstOrDefault(x => x.Type == "name").Value;
+            }
+            catch (Exception)
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+            }
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+
+            }
+
+            var queryUser = _context.Users.Include(x => x.UserProfile).AsQueryable();
+            var user = queryUser.FirstOrDefault(c => c.UserName == userName);
+
+            if (user == null)
+            {
+                return BadRequest("Поганий запит!");
+            }
+            // long ids = user.Id;
+            //  UserProfileView userProfile = new UserProfileView(user);
+
+           // var queryWater = _context.WaterSettings.AsQueryable();
+             var water = _context.WaterSettings.SingleOrDefault(w => w.UserId == user.Id);
+            if (water == null)
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+
+            }
+            water.Begin = begin;
+            _context.SaveChanges();
+
+            return Ok(new WaterSettingsViewModel
+            {
+                Begin = water.Begin,
+                End = water.End
+
+            });
+        }
+
+        [HttpPost("setend")]
+        public IActionResult SetWaterSettingsEnd([FromBody] int end)
+        {
+            string userName;
+
+            try
+            {
+                userName = User.Claims.FirstOrDefault(x => x.Type == "name").Value;
+            }
+            catch (Exception)
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+            }
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+
+            }
+
+            var queryUser = _context.Users.Include(x => x.UserProfile).AsQueryable();
+            var user = queryUser.FirstOrDefault(c => c.UserName == userName);
+
+            if (user == null)
+            {
+                return BadRequest("Поганий запит!");
+            }
+            // long ids = user.Id;
+            //  UserProfileView userProfile = new UserProfileView(user);
+
+            // var queryWater = _context.WaterSettings.AsQueryable();
+            var water = _context.WaterSettings.SingleOrDefault(w => w.UserId == user.Id);
+            if (water == null)
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+
+            }
+            water.End = end;
+            _context.SaveChanges();
 
             return Ok(new WaterSettingsViewModel
             {
