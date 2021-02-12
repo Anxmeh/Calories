@@ -29,9 +29,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                               android:textColor="#000000"
-                android:textSize="17sp"
-                />
+                android:textColor="#000000"
+
+                android:textSize="17sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,59 +39,76 @@
                 android:orientation="horizontal">
 
 
+                <TextView
+                    android:id="@+id/lblBegin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            <TextView
-                android:id="@+id/lblBegin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:text="@string/begin"
-                android:textColor="#000000"
-                android:textSize="17sp"
-                />
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="З:   "
+                    android:textColor="#000000"
+                    android:textSize="17sp" />
 
                 <Button
                     android:id="@+id/btnSetBegin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:onClick="onClickSetBegin"
-                    android:text="begin" />
+                    android:background="@android:color/transparent"
+                    android:drawableRight="@drawable/ic_time"
+                    android:onClick="onClickSetBegin" />
 
-            <Spinner
-                android:id="@+id/spinnerBegin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="17sp"
-                />
+                <TextView
+                    android:id="@+id/tvTimeBegin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:textColor="#000000"
+
+                    android:textSize="17sp" />
+
+
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/lblEnd"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lblEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="@string/end"
+                    android:textColor="#000000"
+                    android:textSize="17sp" />
+
+                <Button
+                android:id="@+id/btnSetEnd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@android:color/transparent"
+                android:drawableRight="@drawable/ic_time"
+                android:onClick="onClickSetEnd" />
 
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:text="@string/end"
-                android:textColor="#000000"
-                android:textSize="17sp"
-                />
+                <TextView
+                    android:id="@+id/tvTimeEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:textColor="#000000"
 
-            <Spinner
-                android:id="@+id/spinnerEnd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="17sp"
-                />
-        </LinearLayout>
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -256,8 +273,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"
                 android:layout_marginLeft="22dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginRight="22dp"
                 android:textColor="#780000"
                 android:textSize="30sp"
