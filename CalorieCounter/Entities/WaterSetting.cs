@@ -14,8 +14,10 @@ namespace CalorieCounter.Entities
         [ForeignKey("User")]
         public long UserId { get; set; }
         public virtual DbUser User { get; set; }
-        public int Begin { get; set; }
-        public int End { get; set; }
+        public int BeginHour { get; set; }
+        public int EndHour { get; set; }
+        public int BeginMinute{ get; set; }
+        public int EndMinute { get; set; }
 
     }
 }

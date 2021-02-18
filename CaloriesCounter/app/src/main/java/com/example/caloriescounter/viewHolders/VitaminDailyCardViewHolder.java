@@ -14,6 +14,7 @@ public class VitaminDailyCardViewHolder extends RecyclerView.ViewHolder {
 
     private View view;
     public TextView txtNameVitamin;
+    public TextView txtAmountVitamin;
     public Button delete;
     public CheckBox checkBoxVitamin;
 
@@ -21,6 +22,7 @@ public class VitaminDailyCardViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         this.view = itemView;
         txtNameVitamin = itemView.findViewById(R.id.txtNameVitamin);
+        txtAmountVitamin = itemView.findViewById(R.id.txtAmountVitamin);
         delete = itemView.findViewById(R.id.btnDelete);
         checkBoxVitamin = (CheckBox)itemView.findViewById(R.id.checkVitamin);
     }

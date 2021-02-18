@@ -23,6 +23,41 @@
             android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnPrevious"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:drawableRight="@drawable/ic_previous"
+                    android:onClick="onClickPreviousDate" />
+
+                <TextView
+                    android:id="@+id/dateAct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="Date"
+                    android:textColor="#743000"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/ic_next"
+                    android:gravity="start"
+                    android:onClick="onClickNextDate"
+                    android:textAlignment="textStart" />
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tvTime"
                 android:layout_width="wrap_content"
@@ -30,6 +65,7 @@
                 android:gravity="center_vertical"
                 android:padding="10dp"
                 android:textColor="#000000"
+                android:text="@string/TimeAlarm"
 
                 android:textSize="17sp" />
 
@@ -39,16 +75,16 @@
                 android:orientation="horizontal">
 
 
-                <TextView
-                    android:id="@+id/lblBegin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+<!--                <TextView-->
+<!--                    android:id="@+id/lblBegin"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
 
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:text="З:   "
-                    android:textColor="#000000"
-                    android:textSize="17sp" />
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:text="З:   "-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textSize="17sp" />-->
 
                 <Button
                     android:id="@+id/btnSetBegin"
@@ -57,57 +93,60 @@
                     android:layout_gravity="center_horizontal"
                     android:background="@android:color/transparent"
                     android:drawableRight="@drawable/ic_time"
-                    android:onClick="onClickSetBegin" />
+                    android:onClick="onClickSetBegin"
+
+                    android:gravity="center_vertical"/>
 
                 <TextView
-                    android:id="@+id/tvTimeBegin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:textColor="#000000"
-
-                    android:textSize="17sp" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/lblEnd"
+                    android:id="@+id/lblTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
                     android:gravity="center_vertical"
                     android:padding="10dp"
-                    android:text="@string/end"
-                    android:textColor="#000000"
-                    android:textSize="17sp" />
+                    android:text=" - "
+                    android:textColor="@color/SaddleBrown"
+                    android:textSize="20sp" />
 
                 <Button
-                android:id="@+id/btnSetEnd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@android:color/transparent"
-                android:drawableRight="@drawable/ic_time"
-                android:onClick="onClickSetEnd" />
-
-                <TextView
-                    android:id="@+id/tvTimeEnd"
+                    android:id="@+id/btnSetEnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:textColor="#000000"
-
-                    android:textSize="17sp" />
-
+                    android:layout_gravity="center_horizontal"
+                    android:background="@android:color/transparent"
+                    android:drawableRight="@drawable/ic_time"
+                    android:onClick="onClickSetEnd" />
             </LinearLayout>
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/lblEnd"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:text="@string/end"-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textSize="17sp" />-->
+
+<!--               -->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tvTimeEnd"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:textColor="#000000"-->
+
+<!--                    android:textSize="17sp" />-->
+
+<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"

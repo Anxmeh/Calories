@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.caloriescounter.WaterActivity;
 import com.example.caloriescounter.models.WaterSettingsView;
+import com.example.caloriescounter.models.WaterTimeView;
 import com.example.caloriescounter.models.WaterView;
 import com.example.caloriescounter.network.NetworkService;
 
@@ -39,9 +40,10 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
     Calendar calendar2 = Calendar.getInstance();
     Calendar calendar = Calendar.getInstance();
     Date currentTime;
-    WaterSettingsView waterSettings;
+    WaterTimeView waterSettings;
     int begin;
     int end;
+    int beginHour, beginMinute, endHour, endMinute;
 
     @Override
     public void onReceive(Context context, Intent intent)
@@ -49,18 +51,20 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
         NetworkService.getInstance()
                 .getJSONApi()
                 .getWaterSettings()
-                .enqueue(new Callback<WaterSettingsView>() {
+                .enqueue(new Callback<WaterTimeView>() {
                     @SuppressLint("SetTextI18n")
                     @Override
-                    public void onResponse(@NonNull Call<WaterSettingsView> call, @NonNull Response<WaterSettingsView> response) {
+                    public void onResponse(@NonNull Call<WaterTimeView> call, @NonNull Response<WaterTimeView> response) {
                         CommonUtils.hideLoading();
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             waterSettings = response.body();
-                            begin = waterSettings.getBegin();
-                            end = waterSettings.getEnd();
-                            Log.d("Bootbegin", Integer.toString(waterSettings.getBegin()));
-                            Log.d("Bootend", Integer.toString(waterSettings.getEnd()));
+                            beginHour = waterSettings.getBeginHour();
+                            endHour = waterSettings.getEndHour();
+                            beginMinute = waterSettings.getBeginMinute() ;
+                            endMinute = waterSettings.getEndMinute();
+                            Log.d("Bootbegin", waterSettings.getBeginHour() + " : " + waterSettings.getBeginMinute());
+                            Log.d("Bootend", waterSettings.getEndHour() + " : " + waterSettings.getEndMinute());
 //                            Intent intent2 = new Intent(context.getApplicationContext(), AlarmReceiverOnBoot.class);
 //                            intent2.setAction("NOTIFICATION_INTENT_ACTION_WATER");
 //                            PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(),
@@ -72,7 +76,7 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<WaterSettingsView> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<WaterTimeView> call, @NonNull Throwable t) {
                         CommonUtils.hideLoading();
                         waterSettings = null;
                         t.printStackTrace();
@@ -297,9 +301,9 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
             Log.d("hour now ", Integer.toString(hour));
 
 
-            if (hour < begin){
-                calendar2.set(Calendar.HOUR_OF_DAY, 9);
-                calendar2.set(Calendar.MINUTE, 1);
+            if (hour < beginHour){
+                calendar2.set(Calendar.HOUR_OF_DAY, beginHour);
+                calendar2.set(Calendar.MINUTE, beginMinute+1);
                 calendar2.set(Calendar.SECOND, 0);
                 Log.d("Calendar after", calendar2.toString());
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -307,7 +311,7 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
                     alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent);
                 }
             }
-            else if (hour >= begin && hour < end) {
+            else if (hour >= beginHour && hour < endHour) {
                 calendar2.set(Calendar.HOUR_OF_DAY, hour+1);
 //                calendar2.set(Calendar.HOUR_OF_DAY, 18);
                 calendar2.set(Calendar.MINUTE, 1);
@@ -318,12 +322,12 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
                     alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent);
                 }
             }
-            else if (hour >= end){
+            else if (hour >= endHour){
 
                 calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR)+1 );
-                calendar2.set(Calendar.HOUR_OF_DAY, 9);
+                calendar2.set(Calendar.HOUR_OF_DAY, beginHour);
 //                calendar2.set(Calendar.HOUR_OF_DAY, 18);
-                calendar2.set(Calendar.MINUTE, 1);
+                calendar2.set(Calendar.MINUTE, beginMinute);
                 calendar2.set(Calendar.SECOND, 0);
                 Log.d("in if between", calendar2.toString());
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

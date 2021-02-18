@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -42,8 +44,10 @@ import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,13 +55,16 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.caloriescounter.elements.CircularProgressBar;
+import com.example.caloriescounter.models.SetWaterTimeView;
 import com.example.caloriescounter.models.UserSettingsView;
 import com.example.caloriescounter.models.WaterSettingsView;
+import com.example.caloriescounter.models.WaterTimeView;
 import com.example.caloriescounter.models.WaterView;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.utils.AlarmReceiver;
 import com.example.caloriescounter.network.utils.AlarmReceiverOnBoot;
 import com.example.caloriescounter.network.utils.CommonUtils;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 //import com.example.caloriescounter.network.utils.MyWorker;
 
 import java.sql.Time;
@@ -82,19 +89,17 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
     private final Calendar calendar2 = Calendar.getInstance();
     private Date currentTime;
     private WaterView waterView;
-    private WaterSettingsView waterSettings;
+    private WaterTimeView waterSettings;
 
     private Button btnAdd100, btnAdd200, btnAdd300, btnAdd400, btnAdd500, btnAdd600, btnAddX;
     private Button btnSetEnd, btnSetBegin;
     int wat;
     int water2;
 
-
-    TextView tvTimeBegin, tvTimeEnd;
-
     int myHour;
     int myMinute;
-
+    SimpleDateFormat formatDate = new SimpleDateFormat("MMM d, yyyy",  new Locale("uk","UA"));
+    public TextView txtDate;
     NotificationManager notificationManager;
     //private static final String CHANNEL_ID ="com.chikeandroid.tutsplustalerts.ANDROID" ;
     // String CHANNEL_ID = "my_channel_01";
@@ -109,7 +114,9 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         super.addContentView(R.layout.activity_water);
         this.getSupportActionBar().setTitle("Лічильник води");
         //  setContentView(R.layout.activity_water);
+
         currentTime = Calendar.getInstance().getTime();
+        txtDate = findViewById(R.id.dateAct);
 
         btnAdd100 = findViewById(R.id.btnAdd100);
         btnAdd200 = findViewById(R.id.btnAdd200);
@@ -128,11 +135,6 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         btnAdd500.setOnClickListener(this);
         btnAdd600.setOnClickListener(this);
         btnAddX.setOnClickListener(this);
-
-        tvTimeBegin = (TextView) findViewById(R.id.tvTimeBegin);
-        tvTimeEnd = (TextView) findViewById(R.id.tvTimeEnd);
-
-
         calendar2.set(Calendar.HOUR_OF_DAY, 15);
         calendar2.set(Calendar.MINUTE, 10);
         calendar2.set(Calendar.SECOND, 0);
@@ -140,18 +142,22 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
 
         this.mCountUpBar2 = (CircularProgressBar) this.findViewById(R.id.countup_bar2);
         mCountUpBar2.setMax(1500);
+        txtDate.setText(formatDate.format(currentTime));
 
         NetworkService.getInstance()
                 .getJSONApi()
                 .getWaterSettings()
-                .enqueue(new Callback<WaterSettingsView>() {
+                .enqueue(new Callback<WaterTimeView>() {
                     @SuppressLint("SetTextI18n")
                     @Override
-                    public void onResponse(@NonNull Call<WaterSettingsView> call, @NonNull Response<WaterSettingsView> response) {
+                    public void onResponse(@NonNull Call<WaterTimeView> call, @NonNull Response<WaterTimeView> response) {
                         CommonUtils.hideLoading();
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             waterSettings = response.body();
+
+                            btnSetBegin.setText(waterSettings.getBeginHour() + ":" + waterSettings.getBeginMinute());
+                            btnSetEnd.setText(waterSettings.getEndHour() + ":" + waterSettings.getEndMinute());
 
                         } else {
                             waterSettings = null;
@@ -159,39 +165,39 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<WaterSettingsView> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<WaterTimeView> call, @NonNull Throwable t) {
                         CommonUtils.hideLoading();
                         waterSettings = null;
                         t.printStackTrace();
                     }
                 });
+        GetWater();
 
-
-        CommonUtils.showLoading(this);
-        NetworkService.getInstance()
-                .getJSONApi()
-                .getWater(calendar.getTime())
-                .enqueue(new Callback<WaterView>() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onResponse(@NonNull Call<WaterView> call, @NonNull Response<WaterView> response) {
-                        CommonUtils.hideLoading();
-                        if (response.errorBody() == null && response.isSuccessful()) {
-                            assert response.body() != null;
-                            waterView = response.body();
-                            WaterActivity.this.mCountUpBar2.setProgress(waterView.getWaterVolume());
-                        } else {
-                            waterView = null;
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<WaterView> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
-                        waterView = null;
-                        t.printStackTrace();
-                    }
-                });
+//        CommonUtils.showLoading(this);
+//        NetworkService.getInstance()
+//                .getJSONApi()
+//                .getWater(calendar.getTime())
+//                .enqueue(new Callback<WaterView>() {
+//                    @SuppressLint("SetTextI18n")
+//                    @Override
+//                    public void onResponse(@NonNull Call<WaterView> call, @NonNull Response<WaterView> response) {
+//                        CommonUtils.hideLoading();
+//                        if (response.errorBody() == null && response.isSuccessful()) {
+//                            assert response.body() != null;
+//                            waterView = response.body();
+//                            WaterActivity.this.mCountUpBar2.setProgress(waterView.getWaterVolume());
+//                        } else {
+//                            waterView = null;
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NonNull Call<WaterView> call, @NonNull Throwable t) {
+//                        CommonUtils.hideLoading();
+//                        waterView = null;
+//                        t.printStackTrace();
+//                    }
+//                });
 
 
     }
@@ -250,10 +256,10 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
                 this.getApplicationContext(), 234324243, intent, 0);
         //int i = 10; //sec
         int i = 10;
-        int begin = waterSettings.getBegin();
-        int end = waterSettings.getEnd();
-        Log.d("Bootbegin", Integer.toString(waterSettings.getBegin()));
-        Log.d("Bootend", Integer.toString(waterSettings.getEnd()));
+        int begin = waterSettings.getBeginHour();
+        int end = waterSettings.getEndHour();
+        Log.d("Bootbegin", Integer.toString(waterSettings.getBeginHour()));
+        Log.d("Bootend", Integer.toString(waterSettings.getEndHour()));
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
 
@@ -312,8 +318,37 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 myHour = hourOfDay;
                 myMinute = minute;
-                tvTimeBegin.setText("Time is " + myHour + " hours " + myMinute + " minutes");
+               // tvTimeBegin.setText("Time is " + myHour + " hours " + myMinute + " minutes");
                 btnSetBegin.setText(myHour + " : " + myMinute);
+
+                SetWaterTimeView model = new SetWaterTimeView();
+                model.setHour(myHour);
+                model.setMinute(myMinute);
+                CommonUtils.showLoading(WaterActivity.this);
+                NetworkService.getInstance()
+                        .getJSONApi()
+                        .setWaterBegin(model)
+                        .enqueue(new Callback<WaterTimeView>() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void onResponse(@NonNull Call<WaterTimeView> call, @NonNull Response<WaterTimeView> response) {
+                                CommonUtils.hideLoading();
+                                if (response.errorBody() == null && response.isSuccessful()) {
+                                    assert response.body() != null;
+                                    waterSettings = response.body();
+
+                                } else {
+                                    waterSettings = null;
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<WaterTimeView> call, @NonNull Throwable t) {
+                                CommonUtils.hideLoading();
+                                waterSettings = null;
+                                t.printStackTrace();
+                            }
+                        });
             }
         }, hour, minute, true);
 
@@ -332,13 +367,123 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 myHour = hourOfDay;
                 myMinute = minute;
-                tvTimeEnd.setText("Time is " + myHour + " hours " + myMinute + " minutes");
+                //tvTimeEnd.setText("Time is " + myHour + " hours " + myMinute + " minutes");
                 btnSetEnd.setText(myHour + " : " + myMinute);
+                SetWaterTimeView model = new SetWaterTimeView();
+                model.setHour(myHour);
+                model.setMinute(myMinute);
+
+                if (myHour < waterSettings.getBeginHour()) {
+                    new MaterialAlertDialogBuilder(WaterActivity.this)
+                            .setTitle("Попередження")
+                            .setMessage("Перевірте правильність обраного часу, сповіщення відбуватимуться у нічний час.")
+                            .setPositiveButton("OK", null)
+                            .show();
+                }
+
+                CommonUtils.showLoading(WaterActivity.this);
+                                NetworkService.getInstance()
+                        .getJSONApi()
+                        .setWaterEnd(model)
+                        .enqueue(new Callback<WaterTimeView>() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void onResponse(@NonNull Call<WaterTimeView> call, @NonNull Response<WaterTimeView> response) {
+                                CommonUtils.hideLoading();
+                                if (response.errorBody() == null && response.isSuccessful()) {
+                                    assert response.body() != null;
+                                    waterSettings = response.body();
+
+                                } else {
+                                    waterSettings = null;
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull Call<WaterTimeView> call, @NonNull Throwable t) {
+                                CommonUtils.hideLoading();
+                                waterSettings = null;
+                                t.printStackTrace();
+                            }
+                        });
             }
         }, hour, minute, true);
 
         timePickerDialog.show();
     }
+
+    private void showDatePicker(View view) {
+        //hide keyboard
+        InputMethodManager imm = (InputMethodManager) WaterActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        // date picker dialog
+        DatePickerDialog datePicker = new DatePickerDialog(WaterActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDateSet(DatePicker view, int yearSelect, int monthSelect, int daySelect) {
+                        calendar.set(yearSelect, monthSelect, daySelect);
+
+                        txtDate.setText(daySelect + "/" + (monthSelect + 1) + "/" + yearSelect);
+                        GetWater();
+                    }
+                }, year, month, day);
+        datePicker.show();
+        GetWater();
+    }
+    public void onClickPreviousDate (View view) {
+        calendar.add(Calendar.DATE, -1);
+        int month = calendar.get(Calendar.MONTH)+1;
+
+        Date currentTime =  calendar.getTime();;
+        txtDate.setText(formatDate.format(currentTime));
+        //txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + calendar.get((Calendar.YEAR)));
+        GetWater();
+    }
+
+    public void onClickNextDate(View view) {
+        calendar.add(Calendar.DATE, 1);
+        int month = calendar.get(Calendar.MONTH)+1;
+        Date currentTime = calendar.getTime();
+        //currentTime = calendar.getTime();
+        txtDate.setText(formatDate.format(currentTime));
+        //txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + calendar.get((Calendar.YEAR)));
+        GetWater();
+    }
+
+    public void GetWater() {
+        CommonUtils.showLoading(this);
+        NetworkService.getInstance()
+                .getJSONApi()
+                .getWater(calendar.getTime())
+                .enqueue(new Callback<WaterView>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onResponse(@NonNull Call<WaterView> call, @NonNull Response<WaterView> response) {
+                        CommonUtils.hideLoading();
+                        if (response.errorBody() == null && response.isSuccessful()) {
+                            assert response.body() != null;
+                            waterView = response.body();
+                            WaterActivity.this.mCountUpBar2.setProgress(waterView.getWaterVolume());
+                        } else {
+                            waterView = null;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<WaterView> call, @NonNull Throwable t) {
+                        CommonUtils.hideLoading();
+                        waterView = null;
+                        t.printStackTrace();
+                    }
+                });
+    }
+
+
 }
 
 

@@ -63,14 +63,16 @@ namespace CalorieCounter.Controllers
 
             return Ok(new WaterSettingsViewModel
             {
-                Begin = water.Begin,
-                End = water.End
+                BeginHour = water.BeginHour,
+                EndHour = water.EndHour,
+                BeginMinute = water.BeginMinute,
+                EndMinute = water.EndMinute
 
             });
         }
 
         [HttpPost("setbegin")]
-        public IActionResult SetWaterSettingsBegin([FromBody] int begin)
+        public IActionResult SetWaterSettingsBegin([FromBody] SetWaterSettingsViewModel begin)
         {
             string userName;
 
@@ -106,19 +108,22 @@ namespace CalorieCounter.Controllers
                 return BadRequest("Потрібно спочатку залогінитися!");
 
             }
-            water.Begin = begin;
+            water.BeginHour = begin.Hour;
+            water.BeginMinute = begin.Minute;
             _context.SaveChanges();
 
             return Ok(new WaterSettingsViewModel
             {
-                Begin = water.Begin,
-                End = water.End
+                BeginHour = water.BeginHour,
+                EndHour = water.EndHour,
+                BeginMinute = water.BeginMinute,
+                EndMinute = water.EndMinute
 
             });
         }
 
         [HttpPost("setend")]
-        public IActionResult SetWaterSettingsEnd([FromBody] int end)
+        public IActionResult SetWaterSettingsEnd([FromBody] SetWaterSettingsViewModel end)
         {
             string userName;
 
@@ -154,13 +159,16 @@ namespace CalorieCounter.Controllers
                 return BadRequest("Потрібно спочатку залогінитися!");
 
             }
-            water.End = end;
+            water.EndHour = end.Hour;
+            water.EndMinute = end.Minute;
             _context.SaveChanges();
 
             return Ok(new WaterSettingsViewModel
             {
-                Begin = water.Begin,
-                End = water.End
+                BeginHour = water.BeginHour,
+                EndHour = water.EndHour,
+                BeginMinute = water.BeginMinute,
+                EndMinute = water.EndMinute
 
             });
         }

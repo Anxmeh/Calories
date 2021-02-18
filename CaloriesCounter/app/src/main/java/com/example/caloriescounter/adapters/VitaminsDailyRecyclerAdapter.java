@@ -44,6 +44,7 @@ public class VitaminsDailyRecyclerAdapter extends RecyclerView.Adapter<VitaminDa
         if (vitaminsList != null && position < vitaminsList.size()) {
             final UserVitaminsDailyView vitamin = vitaminsList.get(position);
             holder.txtNameVitamin.setText(vitamin.getVitaminName());
+            holder.txtAmountVitamin.setText(Integer.toString(vitamin.getAmount()) + "шт");
             holder.checkBoxVitamin.setChecked(vitamin.isTaken());
             holder.checkBoxVitamin.setOnClickListener(new View.OnClickListener() {
                 @Override

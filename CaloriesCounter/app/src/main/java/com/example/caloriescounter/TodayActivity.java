@@ -161,7 +161,7 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
 
         setUserData();
         Date currentTime = Calendar.getInstance().getTime();
-        txtDate.setText(currentTime.toString());
+        //txtDate.setText(currentTime.toString());
         int monthShow = calendar.get(Calendar.MONTH)+1;
 
         txtDate.setText(formatDate.format(currentTime));

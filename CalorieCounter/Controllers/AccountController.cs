@@ -171,8 +171,10 @@ namespace CalorieCounter.Controllers
 
             user.UserWaterSettings = new WaterSetting()
             {
-                Begin = 9,
-                End = 20
+                BeginHour = 9,
+                BeginMinute = 1,
+                EndHour = 20,
+                EndMinute = 1
             };
 
             user.UserProfile = new UserProfile()
@@ -259,8 +261,10 @@ namespace CalorieCounter.Controllers
                 };
                 dbUser.UserWaterSettings = new WaterSetting()
                 {
-                    Begin = 9,
-                    End = 20
+                    BeginHour = 9,
+                    BeginMinute = 1,
+                    EndHour = 20,
+                    EndMinute = 1
                 };
                 dbUser.UserProfile = new UserProfile()
                 {

@@ -64,8 +64,8 @@ public class BaseActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.navigation);
         navigationView.bringToFront();
         View headerView = navigationView.getHeaderView(0);
-        TextView nav_user = (TextView) headerView.findViewById(R.id.header);
-        TextView nav_email = (TextView) headerView.findViewById(R.id.subheader);
+        TextView nav_email = (TextView) headerView.findViewById(R.id.header);
+        TextView nav_user = (TextView) headerView.findViewById(R.id.subheader);
        // nav_user.setText("NEWHEADER");
 
         //txtTitle.setText("Hohoh");

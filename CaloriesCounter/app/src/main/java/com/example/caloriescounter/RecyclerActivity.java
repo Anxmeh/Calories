@@ -41,6 +41,7 @@ import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.SessionManager;
 import com.example.caloriescounter.network.utils.CommonUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.IOException;
@@ -75,7 +76,7 @@ public class RecyclerActivity extends BaseActivity implements OnDeleteListener {
     private double caloriesInProduct = 0;
     EditText inputSearch;
 
-
+    private FloatingActionButton fab;
 
     ProductAdapter customAdapter;
 
@@ -94,7 +95,7 @@ public class RecyclerActivity extends BaseActivity implements OnDeleteListener {
         this.getSupportActionBar().setTitle("Нова страва");
         recyclerView = findViewById(R.id.recycler_view);
 
-
+        fab = findViewById(R.id.floating_action_button);
 
         // final TextView addedprod = findViewById(R.id.resultDish);
         listView = findViewById(R.id.listViewProducts);
@@ -119,240 +120,249 @@ public class RecyclerActivity extends BaseActivity implements OnDeleteListener {
 //        });
 //
 //        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RecyclerActivity.this, ChooseIngredientActivity.class);
+                startActivity(intent);
+            }
+
+        });
         sessionManager = SessionManager.getInstance(this);
         setRecyclerView();
         loadList();
         calculate();
 
 
-        NetworkService.getInstance()
-                .getJSONApi()
-                .getProducts()
-                .enqueue(new Callback<List<Product>>() {
-                    @Override
-                    public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
-                        CommonUtils.hideLoading();
-                        if (response.errorBody() == null && response.isSuccessful()) {
-                            assert response.body() != null;
-                            products = response.body();
-                            final ProductAdapter adapterP = new ProductAdapter(products, RecyclerActivity.this);
-                            listView.setAdapter(adapterP);
-
-
-                            inputSearch.addTextChangedListener(new TextWatcher() {
-
-                                @Override
-                                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                                    adapterP.getFilter().filter(cs);
-                                }
-
-                                @Override
-                                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                                              int arg3) {
-                                }
-
-                                @Override
-                                public void afterTextChanged(Editable arg0) {
-                                }
-                            });
-
-                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    Product product = (Product) adapterP.getItem(position);
-                                    // Product product2 = products.get(position);
-                                    addedProducts2.add(product);
-                                    //dishCalories = 0;
-                                    // caloriesInProduct =product.getCalories();
-
-                                    //addedprod.append(product.getName() + " ");
-                                    // addedprod.setText(Integer.toString(addedProducts2.size()));
-
-
-                                    //Получаем вид с файла prompt.xml, который применим для диалогового окна:
-                                    LayoutInflater li = LayoutInflater.from(context);
-                                    View promptsView = li.inflate(R.layout.prompt, null);
-
-                                    //Создаем AlertDialog
-                                    AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(context);
-
-                                    //Настраиваем prompt.xml для нашего AlertDialog:
-                                    mDialogBuilder.setView(promptsView);
-
-                                    //Настраиваем отображение поля для ввода текста в открытом диалоге:
-                                    final EditText userInput = (EditText) promptsView.findViewById(R.id.inputWeight);
-
-                                    //Настраиваем сообщение в диалоговом окне:
-                                    mDialogBuilder
-                                            .setCancelable(false)
-                                            .setPositiveButton("OK",
-                                                    new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            //Вводим текст и отображаем в строке ввода на основном экране:
-                                                            caloriesInProduct = product.getCalories() * Double.parseDouble(userInput.getText().toString()) / 100;
-                                                            dishCalories += caloriesInProduct;
-                                                            // addedprod.setText(Double.toString(dishCalories));
-
-                                                            // получим экземпляр FragmentTransaction из нашей Activity
-//                                                            FragmentManager fragmentManager = getFragmentManager();
-//                                                            FragmentTransaction fragmentTransaction = fragmentManager
-//                                                                    .beginTransaction();
+//        NetworkService.getInstance()
+//                .getJSONApi()
+//                .getProducts()
+//                .enqueue(new Callback<List<Product>>() {
+//                    @Override
+//                    public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
+//                        CommonUtils.hideLoading();
+//                        if (response.errorBody() == null && response.isSuccessful()) {
+//                            assert response.body() != null;
+//                            products = response.body();
+//                            final ProductAdapter adapterP = new ProductAdapter(products, RecyclerActivity.this);
+//                            listView.setAdapter(adapterP);
 //
-//                                                            // добавляем фрагмент
-//                                                            MyFragment myFragment = MyFragment.newInstance(product.getName(), userInput.getText().toString(),
-//                                                                    Double.toString(product.getProtein()), Double.toString(product.getFat()),
-//                                                                    Double.toString(product.getCarbohydrate()), Double.toString(product.getCarbohydrate()));
-//                                                            //fragmentTransaction.add(R.id.myfragment, myFragment);
-//                                                            fragmentTransaction.add(R.id.container, myFragment);
-//                                                            fragmentTransaction.commit();
 //
-//                                                            // CommonUtils.showLoading(this);this
-
-                                                            final DishIngredientsView modelDish = new DishIngredientsView();
-                                                            modelDish.setProductName(product.getName());
-                                                            modelDish.setProductCalories(product.getCalories());
-                                                            modelDish.setProductProtein(product.getProtein());
-                                                            modelDish.setProductFat(product.getFat());
-                                                            modelDish.setProductCarbohydrate(product.getCarbohydrate());
-                                                            modelDish.setProductWeight(Double.parseDouble(userInput.getText().toString()));
-
-
-                                                            NetworkService.getInstance()
-                                                                    .getJSONApi()
-                                                                    .addProductToDish(modelDish)
-                                                                    .enqueue(new Callback<Product>() {
-                                                                        @Override
-                                                                        public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {
-                                                                            CommonUtils.hideLoading();
-                                                                            if (response.errorBody() == null && response.isSuccessful()) {
-                                                                                assert response.body() != null;
-                                                                                addedProduct = response.body();
-
-                                                                                String succeed = "Add succeed";
-
-                                                                                ////////////
-                                                                                //CommonUtils.showLoading(this);
-                                                                                NetworkService.getInstance()
-                                                                                        .getJSONApi()
-                                                                                        .calculateDish()
-                                                                                        .enqueue(new Callback<Dish>() {
-                                                                                            @Override
-                                                                                            public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response) {
-                                                                                                CommonUtils.hideLoading();
-                                                                                                if (response.errorBody() == null && response.isSuccessful()) {
-                                                                                                    assert response.body() != null;
-
-                                                                                                    dish = response.body();
-
-                                                                                                    txtDishCalories.setText(Double.toString(dish.getDishCalories()));
-                                                                                                    txtDishWeight.setText(Double.toString(dish.getDishWeight()));
-                                                                                                    txtDishProtein.setText(Double.toString(dish.getDishProtein())) ;
-                                                                                                    txtDishFat.setText(Double.toString(dish.getDishFat() ));
-                                                                                                    txtDishCarbs.setText(Double.toString(dish.getDishCarbohydrate() ));
-
-                                                                                                    loadList();
-                                                                                                    //////////////////////
-
-//                                                                                                    NetworkService.getInstance()
-//                                                                                                            .getJSONApi()
-//                                                                                                            .getProductsinDish()
-//                                                                                                            .enqueue(new Callback<List<Ingredients>>() {
-//                                                                                                                @Override
-//                                                                                                                public void onResponse(@NonNull Call<List<Ingredients>> call, @NonNull Response<List<Ingredients>> response) {
-//                                                                                                                    CommonUtils.hideLoading();
-//                                                                                                                    if (response.errorBody() == null && response.isSuccessful()) {
-//                                                                                                                        assert response.body() != null;
-//                                                                                                                        if (prodsindish != null)
-//                                                                                                                            prodsindish.clear();
-//                                                                                                                        prodsindish.addAll(0, response.body());
-//                                                                                                                        adapter.notifyDataSetChanged();
-//                                                                                                                    } else {
-//                                                                                                                        prodsindish = null;
-//                                                                                                                    }
-//                                                                                                                }
+//                            inputSearch.addTextChangedListener(new TextWatcher() {
 //
-//                                                                                                                @Override
-//                                                                                                                public void onFailure(@NonNull Call<List<Ingredients>> call, @NonNull Throwable t) {
-//                                                                                                                    CommonUtils.hideLoading();
-//                                                                                                                    prodsindish = null;
-//                                                                                                                    t.printStackTrace();
-//                                                                                                                }
-//                                                                                                            });
-                                                                                                    /////////////////////
-
-
-                                                                                                } else {
-                                                                                                    dish = null;
-                                                                                                }
-                                                                                            }
-
-                                                                                            @Override
-                                                                                            public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t) {
-                                                                                                CommonUtils.hideLoading();
-                                                                                                dish = null;
-                                                                                                t.printStackTrace();
-                                                                                            }
-                                                                                        });
-                                                                                ///////////
+//                                @Override
+//                                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+//                                    adapterP.getFilter().filter(cs);
+//                                }
+//
+//                                @Override
+//                                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+//                                                              int arg3) {
+//                                }
+//
+//                                @Override
+//                                public void afterTextChanged(Editable arg0) {
+//                                }
+//                            });
+//
+//                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                                @Override
+//                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                    Product product = (Product) adapterP.getItem(position);
+//                                    // Product product2 = products.get(position);
+//                                    addedProducts2.add(product);
+//                                    //dishCalories = 0;
+//                                    // caloriesInProduct =product.getCalories();
+//
+//                                    //addedprod.append(product.getName() + " ");
+//                                    // addedprod.setText(Integer.toString(addedProducts2.size()));
+//
+//
+//                                    //Получаем вид с файла prompt.xml, который применим для диалогового окна:
+//                                    LayoutInflater li = LayoutInflater.from(context);
+//                                    View promptsView = li.inflate(R.layout.prompt, null);
+//
+//                                    //Создаем AlertDialog
+//                                    AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(context);
+//
+//                                    //Настраиваем prompt.xml для нашего AlertDialog:
+//                                    mDialogBuilder.setView(promptsView);
+//
+//                                    //Настраиваем отображение поля для ввода текста в открытом диалоге:
+//                                    final EditText userInput = (EditText) promptsView.findViewById(R.id.inputWeight);
+//
+//                                    //Настраиваем сообщение в диалоговом окне:
+//                                    mDialogBuilder
+//                                            .setCancelable(false)
+//                                            .setPositiveButton("OK",
+//                                                    new DialogInterface.OnClickListener() {
+//                                                        public void onClick(DialogInterface dialog, int id) {
+//                                                            //Вводим текст и отображаем в строке ввода на основном экране:
+//                                                            caloriesInProduct = product.getCalories() * Double.parseDouble(userInput.getText().toString()) / 100;
+//                                                            dishCalories += caloriesInProduct;
+//                                                            // addedprod.setText(Double.toString(dishCalories));
+//
+//                                                            // получим экземпляр FragmentTransaction из нашей Activity
+////                                                            FragmentManager fragmentManager = getFragmentManager();
+////                                                            FragmentTransaction fragmentTransaction = fragmentManager
+////                                                                    .beginTransaction();
+////
+////                                                            // добавляем фрагмент
+////                                                            MyFragment myFragment = MyFragment.newInstance(product.getName(), userInput.getText().toString(),
+////                                                                    Double.toString(product.getProtein()), Double.toString(product.getFat()),
+////                                                                    Double.toString(product.getCarbohydrate()), Double.toString(product.getCarbohydrate()));
+////                                                            //fragmentTransaction.add(R.id.myfragment, myFragment);
+////                                                            fragmentTransaction.add(R.id.container, myFragment);
+////                                                            fragmentTransaction.commit();
+////
+////                                                            // CommonUtils.showLoading(this);this
+//
+//                                                            final DishIngredientsView modelDish = new DishIngredientsView();
+//                                                            modelDish.setProductName(product.getName());
+//                                                            modelDish.setProductCalories(product.getCalories());
+//                                                            modelDish.setProductProtein(product.getProtein());
+//                                                            modelDish.setProductFat(product.getFat());
+//                                                            modelDish.setProductCarbohydrate(product.getCarbohydrate());
+//                                                            modelDish.setProductWeight(Double.parseDouble(userInput.getText().toString()));
+//
+//
+//                                                            NetworkService.getInstance()
+//                                                                    .getJSONApi()
+//                                                                    .addProductToDish(modelDish)
+//                                                                    .enqueue(new Callback<Product>() {
+//                                                                        @Override
+//                                                                        public void onResponse(@NonNull Call<Product> call, @NonNull Response<Product> response) {
+//                                                                            CommonUtils.hideLoading();
+//                                                                            if (response.errorBody() == null && response.isSuccessful()) {
+//                                                                                assert response.body() != null;
+//                                                                                addedProduct = response.body();
+//
+//                                                                                String succeed = "Add succeed";
+//
+//                                                                                ////////////
+//                                                                                //CommonUtils.showLoading(this);
+//                                                                                NetworkService.getInstance()
+//                                                                                        .getJSONApi()
+//                                                                                        .calculateDish()
+//                                                                                        .enqueue(new Callback<Dish>() {
+//                                                                                            @Override
+//                                                                                            public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response) {
+//                                                                                                CommonUtils.hideLoading();
+//                                                                                                if (response.errorBody() == null && response.isSuccessful()) {
+//                                                                                                    assert response.body() != null;
+//
+//                                                                                                    dish = response.body();
+//
+//                                                                                                    txtDishCalories.setText(Double.toString(dish.getDishCalories()));
+//                                                                                                    txtDishWeight.setText(Double.toString(dish.getDishWeight()));
+//                                                                                                    txtDishProtein.setText(Double.toString(dish.getDishProtein())) ;
+//                                                                                                    txtDishFat.setText(Double.toString(dish.getDishFat() ));
+//                                                                                                    txtDishCarbs.setText(Double.toString(dish.getDishCarbohydrate() ));
+//
+//                                                                                                    loadList();
+//                                                                                                    //////////////////////
+//
+////                                                                                                    NetworkService.getInstance()
+////                                                                                                            .getJSONApi()
+////                                                                                                            .getProductsinDish()
+////                                                                                                            .enqueue(new Callback<List<Ingredients>>() {
+////                                                                                                                @Override
+////                                                                                                                public void onResponse(@NonNull Call<List<Ingredients>> call, @NonNull Response<List<Ingredients>> response) {
+////                                                                                                                    CommonUtils.hideLoading();
+////                                                                                                                    if (response.errorBody() == null && response.isSuccessful()) {
+////                                                                                                                        assert response.body() != null;
+////                                                                                                                        if (prodsindish != null)
+////                                                                                                                            prodsindish.clear();
+////                                                                                                                        prodsindish.addAll(0, response.body());
+////                                                                                                                        adapter.notifyDataSetChanged();
+////                                                                                                                    } else {
+////                                                                                                                        prodsindish = null;
+////                                                                                                                    }
+////                                                                                                                }
+////
+////                                                                                                                @Override
+////                                                                                                                public void onFailure(@NonNull Call<List<Ingredients>> call, @NonNull Throwable t) {
+////                                                                                                                    CommonUtils.hideLoading();
+////                                                                                                                    prodsindish = null;
+////                                                                                                                    t.printStackTrace();
+////                                                                                                                }
+////                                                                                                            });
+//                                                                                                    /////////////////////
+//
+//
+//                                                                                                } else {
+//                                                                                                    dish = null;
+//                                                                                                }
+//                                                                                            }
+//
+//                                                                                            @Override
+//                                                                                            public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t) {
+//                                                                                                CommonUtils.hideLoading();
+//                                                                                                dish = null;
+//                                                                                                t.printStackTrace();
+//                                                                                            }
+//                                                                                        });
+//                                                                                ///////////
+////                                                                                Toast toast = Toast.makeText(getApplicationContext(),
+////                                                                                        succeed, Toast.LENGTH_LONG);
+////                                                                                toast.show();
+////                                                                                Intent intent = new Intent(AddProductActivity.this, ProductsActivity.class);
+////                                                                                startActivity(intent);
+//                                                                            } else {
+//                                                                                String errorMessage;
+//                                                                                try {
+//                                                                                    assert response.errorBody() != null;
+//                                                                                    errorMessage = response.errorBody().string();
+//                                                                                } catch (IOException e) {
+//                                                                                    errorMessage = response.message();
+//                                                                                    e.printStackTrace();
+//                                                                                }
 //                                                                                Toast toast = Toast.makeText(getApplicationContext(),
-//                                                                                        succeed, Toast.LENGTH_LONG);
+//                                                                                        errorMessage, Toast.LENGTH_LONG);
 //                                                                                toast.show();
-//                                                                                Intent intent = new Intent(AddProductActivity.this, ProductsActivity.class);
-//                                                                                startActivity(intent);
-                                                                            } else {
-                                                                                String errorMessage;
-                                                                                try {
-                                                                                    assert response.errorBody() != null;
-                                                                                    errorMessage = response.errorBody().string();
-                                                                                } catch (IOException e) {
-                                                                                    errorMessage = response.message();
-                                                                                    e.printStackTrace();
-                                                                                }
-                                                                                Toast toast = Toast.makeText(getApplicationContext(),
-                                                                                        errorMessage, Toast.LENGTH_LONG);
-                                                                                toast.show();
-                                                                            }
-                                                                        }
-
-                                                                        @Override
-                                                                        public void onFailure(@NonNull Call<Product> call, @NonNull Throwable t) {
-                                                                            CommonUtils.hideLoading();
-                                                                            String error = "Error occurred while getting request!";
-                                                                            Toast toast = Toast.makeText(getApplicationContext(),
-                                                                                    error, Toast.LENGTH_LONG);
-                                                                            toast.show();
-                                                                            t.printStackTrace();
-                                                                        }
-                                                                    });
-
-                                                        }
-                                                    })
-                                            .setNegativeButton("Отмена",
-                                                    new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            dialog.cancel();
-                                                        }
-                                                    });
-
-                                    //Создаем AlertDialog:
-                                    AlertDialog alertDialog = mDialogBuilder.create();
-                                    //и отображаем его:
-                                    alertDialog.show();
-                                }
-                            });
-
-                        } else {
-                            products = null;
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
-                        products = null;
-                        t.printStackTrace();
-                    }
-                });
+//                                                                            }
+//                                                                        }
+//
+//                                                                        @Override
+//                                                                        public void onFailure(@NonNull Call<Product> call, @NonNull Throwable t) {
+//                                                                            CommonUtils.hideLoading();
+//                                                                            String error = "Error occurred while getting request!";
+//                                                                            Toast toast = Toast.makeText(getApplicationContext(),
+//                                                                                    error, Toast.LENGTH_LONG);
+//                                                                            toast.show();
+//                                                                            t.printStackTrace();
+//                                                                        }
+//                                                                    });
+//
+//                                                        }
+//                                                    })
+//                                            .setNegativeButton("Отмена",
+//                                                    new DialogInterface.OnClickListener() {
+//                                                        public void onClick(DialogInterface dialog, int id) {
+//                                                            dialog.cancel();
+//                                                        }
+//                                                    });
+//
+//                                    //Создаем AlertDialog:
+//                                    AlertDialog alertDialog = mDialogBuilder.create();
+//                                    //и отображаем его:
+//                                    alertDialog.show();
+//                                }
+//                            });
+//
+//                        } else {
+//                            products = null;
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
+//                        CommonUtils.hideLoading();
+//                        products = null;
+//                        t.printStackTrace();
+//                    }
+//                });
 
 
     }
@@ -615,12 +625,82 @@ public class RecyclerActivity extends BaseActivity implements OnDeleteListener {
 //                                assert response.body() != null;
 
                             dish = response.body();
+//                            txtDishCalories.setText(Double.toString(dish.getDishCalories()));
+//                            txtDishWeight.setText(Double.toString(dish.getDishWeight()));
+//
+//                            txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein() * 100.0) / 100.0));
+//                            txtDishFat.setText(Double.toString(Math.round(dish.getDishFat() * 100.0) / 100.0));
+//                            txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate() * 100.0) / 100.0));
+
                             txtDishCalories.setText(Double.toString(dish.getDishCalories()));
                             txtDishWeight.setText(Double.toString(dish.getDishWeight()));
+                            txtDishProtein.setText(Double.toString(dish.getDishProtein())) ;
+                            txtDishFat.setText(Double.toString(dish.getDishFat() ));
+                            txtDishCarbs.setText(Double.toString(dish.getDishCarbohydrate() ));
 
-                            txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein() * 100.0) / 100.0));
-                            txtDishFat.setText(Double.toString(Math.round(dish.getDishFat() * 100.0) / 100.0));
-                            txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate() * 100.0) / 100.0));
+                        } else {
+                            dish = null;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Dish> call, @NonNull Throwable t) {
+                        CommonUtils.hideLoading();
+                        dish = null;
+                        t.printStackTrace();
+                    }
+                });
+    }
+
+    public void caclute() {
+        NetworkService.getInstance()
+                .getJSONApi()
+                .calculateDish()
+                .enqueue(new Callback<Dish>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Dish> call, @NonNull Response<Dish> response) {
+                        CommonUtils.hideLoading();
+                        if (response.errorBody() == null && response.isSuccessful()) {
+                            assert response.body() != null;
+
+                            dish = response.body();
+
+                            txtDishCalories.setText(Double.toString(dish.getDishCalories()));
+                            txtDishWeight.setText(Double.toString(dish.getDishWeight()));
+                            txtDishProtein.setText(Double.toString(dish.getDishProtein())) ;
+                            txtDishFat.setText(Double.toString(dish.getDishFat() ));
+                            txtDishCarbs.setText(Double.toString(dish.getDishCarbohydrate() ));
+
+                            loadList();
+                            //////////////////////
+
+//                                                                                                    NetworkService.getInstance()
+//                                                                                                            .getJSONApi()
+//                                                                                                            .getProductsinDish()
+//                                                                                                            .enqueue(new Callback<List<Ingredients>>() {
+//                                                                                                                @Override
+//                                                                                                                public void onResponse(@NonNull Call<List<Ingredients>> call, @NonNull Response<List<Ingredients>> response) {
+//                                                                                                                    CommonUtils.hideLoading();
+//                                                                                                                    if (response.errorBody() == null && response.isSuccessful()) {
+//                                                                                                                        assert response.body() != null;
+//                                                                                                                        if (prodsindish != null)
+//                                                                                                                            prodsindish.clear();
+//                                                                                                                        prodsindish.addAll(0, response.body());
+//                                                                                                                        adapter.notifyDataSetChanged();
+//                                                                                                                    } else {
+//                                                                                                                        prodsindish = null;
+//                                                                                                                    }
+//                                                                                                                }
+//
+//                                                                                                                @Override
+//                                                                                                                public void onFailure(@NonNull Call<List<Ingredients>> call, @NonNull Throwable t) {
+//                                                                                                                    CommonUtils.hideLoading();
+//                                                                                                                    prodsindish = null;
+//                                                                                                                    t.printStackTrace();
+//                                                                                                                }
+//                                                                                                            });
+                            /////////////////////
+
 
                         } else {
                             dish = null;

@@ -60,4 +60,6 @@
     <string name="MyVitamins">Мої вітаміни</string>
     <string name="begin">З: </string>
     <string name="end">До: </string>
+    <string name="TimeAlarm">Час нагадування:</string>
+    <string name="amount">Кількість</string>
 </resources>

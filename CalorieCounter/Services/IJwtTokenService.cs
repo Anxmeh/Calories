@@ -49,7 +49,7 @@ namespace CalorieCounter.Services
 
             var jwt = new JwtSecurityToken(
                 signingCredentials: signinCredentials,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(10),
                 claims: claims
                 );
             return new JwtSecurityTokenHandler().WriteToken(jwt);

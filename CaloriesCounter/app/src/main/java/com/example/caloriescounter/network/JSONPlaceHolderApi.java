@@ -13,6 +13,7 @@ import com.example.caloriescounter.models.Photo;
 import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.models.RegisterView;
 import com.example.caloriescounter.models.RemoveDailyView;
+import com.example.caloriescounter.models.SetWaterTimeView;
 import com.example.caloriescounter.models.UserSettingsView;
 import com.example.caloriescounter.models.UserView;
 import com.example.caloriescounter.models.UserVitaminsDailyView;
@@ -20,6 +21,7 @@ import com.example.caloriescounter.models.UserVitaminsView;
 import com.example.caloriescounter.models.Vitamin;
 import com.example.caloriescounter.models.VitaminDailyCheckView;
 import com.example.caloriescounter.models.WaterSettingsView;
+import com.example.caloriescounter.models.WaterTimeView;
 import com.example.caloriescounter.models.WaterView;
 
 import java.util.Date;
@@ -62,7 +64,11 @@ public interface JSONPlaceHolderApi {
     Call<WaterView> addWater(@Body WaterView model);
 
     @GET("/api/watersettings/watersettings")
-    Call<WaterSettingsView> getWaterSettings();
+    Call<WaterTimeView> getWaterSettings();
+    @POST("/api/watersettings/setbegin")
+    Call<WaterTimeView> setWaterBegin(@Body SetWaterTimeView model);
+    @POST("/api/watersettings/setend")
+    Call<WaterTimeView> setWaterEnd(@Body SetWaterTimeView model);
 
 
     /////////

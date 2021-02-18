@@ -108,7 +108,7 @@ namespace CalorieCounter.Controllers
             user.UserSettings.UserCalories = model.UserCalories;
 
             double heightM = user.UserSettings.Height / 100;
-            user.UserSettings.Bmi = user.UserSettings.Weight / (heightM * heightM);
+            user.UserSettings.Bmi = Math.Round(user.UserSettings.Weight / (heightM * heightM),2);
 
             if (user.UserSettings.Sex == true) //male
                 user.UserSettings.Calories = Math.Round(((88.36 + (13.4 * user.UserSettings.Weight) +
