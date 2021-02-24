@@ -178,6 +178,7 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TodayActivity.this, ChooseProductActivity.class);
+                finish();
                 startActivity(intent);
             }
 

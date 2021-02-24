@@ -171,6 +171,7 @@ public class ChooseProductActivity extends AppCompatActivity {
 
                                                                                                     dish = response.body();
                                                                                                     Intent intent = new Intent(ChooseProductActivity.this,TodayActivity.class);
+                                                                                                    finish();
                                                                                                     startActivity(intent);
 
 

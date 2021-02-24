@@ -48,6 +48,7 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        Log.w("boot_broadcast_poc", "starting service...");
         NetworkService.getInstance()
                 .getJSONApi()
                 .getWaterSettings()
@@ -303,7 +304,7 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
 
             if (hour < beginHour){
                 calendar2.set(Calendar.HOUR_OF_DAY, beginHour);
-                calendar2.set(Calendar.MINUTE, beginMinute+1);
+                calendar2.set(Calendar.MINUTE, beginMinute);
                 calendar2.set(Calendar.SECOND, 0);
                 Log.d("Calendar after", calendar2.toString());
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

@@ -74,7 +74,7 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
 
         fab = findViewById(R.id.floating_action_button);
         recyclerView = findViewById(R.id.recycler_view);
-       //   getVitaminsList();
+        //   getVitaminsList();
         setRecyclerView();
         getUserVitamins();
 
@@ -122,9 +122,7 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
 //                builder.removeView();
 
 
-
                 sp = new Spinner(VitaminSettingsActivity.this);
-
 
 
                 if (sp.getParent() != null) {
@@ -133,7 +131,7 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
                 builder1.setView(sp);
                 builder1.setTitle("Оберіть зі списку");
                 //   final AlertDialog alertd = builder.create();
-               // CustomAdapterSpinner.flag = false;
+                // CustomAdapterSpinner.flag = false;
 
                 // builder.setView(sp);
                 // alertd.show();
@@ -143,46 +141,40 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
                         android.R.layout.simple_spinner_item, vitamins);
                 // tx = (TextView) findViewById(R.id.txt1);
 
-              //  sp = new Spinner(VitaminSettingsActivity.this);
+                //  sp = new Spinner(VitaminSettingsActivity.this);
                 // String str = et1.getText().toString();
-              //  sp.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                //  sp.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 sp.setAdapter(adp1);
                 sp.post(new Runnable() {
                     @Override
                     public void run() {
 
-                //  AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
-                sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        //  AdapterView.OnItemSelectedListener itemSelectedListener = new AdapterView.OnItemSelectedListener() {
+                        sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
 
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        CustomAdapterSpinner.flag = true;
-                        // Получаем выбранный объект
-                        //String item = (String)parent.getItemAtPosition(position);
-
-                        // Vitamin current = (Vitamin) parent.getSelectedItem();
-                        Vitamin current = (Vitamin) sp.getSelectedItem();
-
-
-                        // tx.setText(current.toString());
-                        UserVitaminsView addVitaminModel = new UserVitaminsView();
-                        addVitaminModel.setVitaminId(current.getId());
-                        addVitaminModel.setAmount(0);
-                        addVitaminModel.setVitaminName(current.getVitaminName());
-                        addVitamin(addVitaminModel);
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                CustomAdapterSpinner.flag = true;
+                                // Получаем выбранный объект
+                                // Vitamin current = (Vitamin) parent.getSelectedItem();
+                                Vitamin current = (Vitamin) sp.getSelectedItem();
+                                // tx.setText(current.toString());
+                                UserVitaminsView addVitaminModel = new UserVitaminsView();
+                                addVitaminModel.setVitaminId(current.getId());
+                                addVitaminModel.setAmount(0);
+                                addVitaminModel.setVitaminName(current.getVitaminName());
+                                addVitamin(addVitaminModel);
 
 
-                    }
+                            }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                    }
-                    //};
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                            }
 
-                    //sp.setOnItemSelectedListener(itemSelectedListener);
-                });
+                        });
                     }
                 });
             }
@@ -376,7 +368,7 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
                 .setPositiveButton("Видалити", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                                              userVitamins.remove(vitamin);
+                        userVitamins.remove(vitamin);
                         adapter.notifyDataSetChanged();
 
 //

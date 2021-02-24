@@ -174,7 +174,8 @@ namespace CalorieCounter.Controllers
                 BeginHour = 9,
                 BeginMinute = 1,
                 EndHour = 20,
-                EndMinute = 1
+                EndMinute = 1,
+                UserWaterVolume = 2000
             };
 
             user.UserProfile = new UserProfile()
@@ -264,7 +265,8 @@ namespace CalorieCounter.Controllers
                     BeginHour = 9,
                     BeginMinute = 1,
                     EndHour = 20,
-                    EndMinute = 1
+                    EndMinute = 1,
+                    UserWaterVolume = 2000
                 };
                 dbUser.UserProfile = new UserProfile()
                 {

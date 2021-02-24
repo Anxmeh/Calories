@@ -56,8 +56,6 @@ namespace CalorieCounter.Controllers
 
             // var res = _context.DailyMenus.Where(u => u.UserId == 2);
             var queryWater = _context.WaterSettings.AsQueryable();
-
-
             var water = _context.WaterSettings.SingleOrDefault(w => w.UserId == user.Id);
 
 
@@ -66,7 +64,61 @@ namespace CalorieCounter.Controllers
                 BeginHour = water.BeginHour,
                 EndHour = water.EndHour,
                 BeginMinute = water.BeginMinute,
-                EndMinute = water.EndMinute
+                EndMinute = water.EndMinute,
+                DailyVolume = water.UserWaterVolume
+
+            });
+        }
+
+
+        [HttpPost("setdailyvolume")]
+        public IActionResult SetDailyWaterVolume([FromBody] SetDailyWaterVolume model)
+        {
+            string userName;
+
+            try
+            {
+                userName = User.Claims.FirstOrDefault(x => x.Type == "name").Value;
+            }
+            catch (Exception)
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+            }
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+
+            }
+
+            var queryUser = _context.Users.Include(x => x.UserProfile).AsQueryable();
+            var user = queryUser.FirstOrDefault(c => c.UserName == userName);
+
+            if (user == null)
+            {
+                return BadRequest("Поганий запит!");
+            }
+            // long ids = user.Id;
+            //  UserProfileView userProfile = new UserProfileView(user);
+
+            // var queryWater = _context.WaterSettings.AsQueryable();
+            var water = _context.WaterSettings.SingleOrDefault(w => w.UserId == user.Id);
+            if (water == null)
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+
+            }
+            water.UserWaterVolume = model.DailyVolume;
+
+            _context.SaveChanges();
+
+            return Ok(new WaterSettingsViewModel
+            {
+                BeginHour = water.BeginHour,
+                EndHour = water.EndHour,
+                BeginMinute = water.BeginMinute,
+                EndMinute = water.EndMinute,
+                DailyVolume = water.UserWaterVolume
 
             });
         }

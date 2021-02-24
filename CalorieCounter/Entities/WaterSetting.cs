@@ -18,6 +18,7 @@ namespace CalorieCounter.Entities
         public int EndHour { get; set; }
         public int BeginMinute{ get; set; }
         public int EndMinute { get; set; }
+        public int UserWaterVolume { get; set; }
 
     }
 }

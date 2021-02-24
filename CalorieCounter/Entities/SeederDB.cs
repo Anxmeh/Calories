@@ -67,7 +67,8 @@ namespace CalorieCounter.Entities
                     BeginHour = 9,
                     BeginMinute = 1,
                     EndHour = 20,
-                    EndMinute = 1
+                    EndMinute = 1,
+                    UserWaterVolume = 2000
                 };
 
                 var result = userManager.CreateAsync(user, "Qwerty1-").Result;
@@ -107,7 +108,8 @@ namespace CalorieCounter.Entities
                     BeginHour = 9,
                     BeginMinute = 1,
                     EndHour = 20,
-                    EndMinute = 1
+                    EndMinute = 1,
+                    UserWaterVolume = 2000
                 };
                 var result = userManager.CreateAsync(user, "Qwerty1-").Result;
                 result = userManager.AddToRoleAsync(user, userRoleName).Result;

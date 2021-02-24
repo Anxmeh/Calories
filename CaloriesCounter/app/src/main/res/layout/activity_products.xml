@@ -7,6 +7,7 @@
     android:background="@drawable/background"
         tools:ignore="ExtraText"
     tools:context=".ProductsActivity"
+    android:noHistory="true"
     android:scrollbars="none">
 
 <!--    <androidx.coordinatorlayout.widget.CoordinatorLayout-->

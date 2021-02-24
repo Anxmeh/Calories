@@ -6,6 +6,7 @@
     android:background="@drawable/background"
     android:orientation="vertical"
     android:id="@+id/drawerLayout"
+    android:noHistory="true"
     tools:context=".RecyclerActivity">
 
 

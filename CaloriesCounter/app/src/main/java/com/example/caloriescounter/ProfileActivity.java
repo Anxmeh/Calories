@@ -81,9 +81,9 @@ public class ProfileActivity extends BaseActivity {
 
     private void showAlertDialogAndChangePhoto(final String photoBase64) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
-        builder.setMessage("Are you sure you want to change photo")
+        builder.setMessage("Зміна фото. Ви впевнені?")
                 .setCancelable(false)
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Ні", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -103,7 +103,7 @@ public class ProfileActivity extends BaseActivity {
                         });
                     }
                 })
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Так", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         CommonUtils.showLoading(ProfileActivity.this);
@@ -119,7 +119,7 @@ public class ProfileActivity extends BaseActivity {
                                         CommonUtils.hideLoading();
                                         if (response.errorBody() == null && response.isSuccessful()) {
                                             userProfile = response.body();
-                                            String succeed = "Update have been done";
+                                            String succeed = "Фото оновлено";
                                             Toast toast = Toast.makeText(getApplicationContext(),
                                                     succeed, Toast.LENGTH_LONG);
                                             toast.show();
@@ -294,7 +294,7 @@ public class ProfileActivity extends BaseActivity {
         userUpdate.setRegistrationDate(userProfile.getRegistrationDate());
 
         if (userUpdate.equals(userProfile)) {
-            String warnings = "Nothing to update!";
+            String warnings = "Змін не виявлено";
             Toast toast = Toast.makeText(getApplicationContext(),
                     warnings, Toast.LENGTH_LONG);
             toast.show();
@@ -313,7 +313,7 @@ public class ProfileActivity extends BaseActivity {
                             userProfile = response.body();
                             sessionManager.saveUserLogin(userProfile.getEmail());
 
-                            String succeed = "Update have been done";
+                            String succeed = "Зміни внесені";
                             Toast toast = Toast.makeText(getApplicationContext(),
                                     succeed, Toast.LENGTH_LONG);
                             toast.show();

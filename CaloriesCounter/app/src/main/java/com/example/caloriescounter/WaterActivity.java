@@ -68,6 +68,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 //import com.example.caloriescounter.network.utils.MyWorker;
 
 import java.sql.Time;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -87,14 +88,18 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
 
     private final Calendar calendar = Calendar.getInstance();
     private final Calendar calendar2 = Calendar.getInstance();
+    private Calendar timerCalendar = Calendar.getInstance();
     private Date currentTime;
+    private Date timeBegin, timeEnd;
     private WaterView waterView;
     private WaterTimeView waterSettings;
+    private DateFormat timeFormat;
 
     private Button btnAdd100, btnAdd200, btnAdd300, btnAdd400, btnAdd500, btnAdd600, btnAddX;
     private Button btnSetEnd, btnSetBegin;
     int wat;
     int water2;
+    int beginHour, beginMinute, endHour, endMinute;
 
     int myHour;
     int myMinute;
@@ -114,7 +119,7 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         super.addContentView(R.layout.activity_water);
         this.getSupportActionBar().setTitle("Лічильник води");
         //  setContentView(R.layout.activity_water);
-
+        timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         currentTime = Calendar.getInstance().getTime();
         txtDate = findViewById(R.id.dateAct);
 
@@ -143,6 +148,12 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         this.mCountUpBar2 = (CircularProgressBar) this.findViewById(R.id.countup_bar2);
         mCountUpBar2.setMax(1500);
         txtDate.setText(formatDate.format(currentTime));
+        txtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker(v);
+            }
+        });
 
         NetworkService.getInstance()
                 .getJSONApi()
@@ -156,8 +167,19 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
                             assert response.body() != null;
                             waterSettings = response.body();
 
-                            btnSetBegin.setText(waterSettings.getBeginHour() + ":" + waterSettings.getBeginMinute());
-                            btnSetEnd.setText(waterSettings.getEndHour() + ":" + waterSettings.getEndMinute());
+                           // btnSetBegin.setText(waterSettings.getBeginHour() + ":" + waterSettings.getBeginMinute());
+                            //btnSetEnd.setText(waterSettings.getEndHour() + ":" + waterSettings.getEndMinute());
+                            timerCalendar.set(Calendar.HOUR_OF_DAY, waterSettings.getBeginHour());
+                            timerCalendar.set(Calendar.MINUTE, waterSettings.getBeginMinute());
+
+                            timeBegin = timerCalendar.getTime();
+
+                            btnSetBegin.setText(timeFormat.format(timeBegin));
+                            timerCalendar.set(Calendar.HOUR_OF_DAY, waterSettings.getEndHour() );
+                            timerCalendar.set(Calendar.MINUTE, waterSettings.getEndMinute() );
+                            timeEnd = timerCalendar.getTime();
+
+                            btnSetEnd.setText(timeFormat.format(timeEnd));
 
                         } else {
                             waterSettings = null;
@@ -258,15 +280,43 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         int i = 10;
         int begin = waterSettings.getBeginHour();
         int end = waterSettings.getEndHour();
+
+        int beginHour = waterSettings.getBeginHour();
+        int endHour = waterSettings.getEndHour();
+        int beginMinute = waterSettings.getBeginMinute();
+        int endMinute = waterSettings.getEndMinute();
         Log.d("Bootbegin", Integer.toString(waterSettings.getBeginHour()));
         Log.d("Bootend", Integer.toString(waterSettings.getEndHour()));
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
 
         Calendar time = Calendar.getInstance();
-        time.setTimeInMillis(System.currentTimeMillis());
-        time.add(Calendar.SECOND, 30);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
+
+        int hour = time.get(Calendar.HOUR_OF_DAY);
+
+
+        if (hour > end ) // або випита ціль води
+        {
+            time.set(Calendar.HOUR_OF_DAY, beginHour);
+            time.set(Calendar.MINUTE, beginMinute);
+            time.set(Calendar.SECOND, 0);
+            Log.d("Calendar after", calendar2.toString());
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
+            }
+        }
+        else {
+            time.setTimeInMillis(System.currentTimeMillis());
+            time.add(Calendar.HOUR, 1);
+            //    time.add(Calendar.MINUTE, 30);
+        }
+
+        Log.d("Timer", Integer.toString(hour));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
+        }
+
         Toast.makeText(this, "Alarm set in " + time.getTime(),
                 Toast.LENGTH_LONG).show();
 
@@ -319,7 +369,7 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
                 myHour = hourOfDay;
                 myMinute = minute;
                // tvTimeBegin.setText("Time is " + myHour + " hours " + myMinute + " minutes");
-                btnSetBegin.setText(myHour + " : " + myMinute);
+               // btnSetBegin.setText(myHour + " : " + myMinute);
 
                 SetWaterTimeView model = new SetWaterTimeView();
                 model.setHour(myHour);
@@ -336,6 +386,12 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
                                 if (response.errorBody() == null && response.isSuccessful()) {
                                     assert response.body() != null;
                                     waterSettings = response.body();
+                                    timerCalendar.set(Calendar.HOUR_OF_DAY, waterSettings.getBeginHour() );
+                                    timerCalendar.set(Calendar.MINUTE, waterSettings.getBeginMinute() );
+
+                                    timeBegin = timerCalendar.getTime();
+
+                                    btnSetBegin.setText(timeFormat.format(timeBegin));
 
                                 } else {
                                     waterSettings = null;
@@ -368,7 +424,7 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
                 myHour = hourOfDay;
                 myMinute = minute;
                 //tvTimeEnd.setText("Time is " + myHour + " hours " + myMinute + " minutes");
-                btnSetEnd.setText(myHour + " : " + myMinute);
+               // btnSetEnd.setText(myHour + " : " + myMinute);
                 SetWaterTimeView model = new SetWaterTimeView();
                 model.setHour(myHour);
                 model.setMinute(myMinute);
@@ -393,6 +449,11 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
                                 if (response.errorBody() == null && response.isSuccessful()) {
                                     assert response.body() != null;
                                     waterSettings = response.body();
+                                    timerCalendar.set(Calendar.HOUR_OF_DAY, waterSettings.getEndHour() );
+                                    timerCalendar.set(Calendar.MINUTE, waterSettings.getEndMinute() );
+                                    timeEnd = timerCalendar.getTime();
+
+                                    btnSetEnd.setText(timeFormat.format(timeEnd));
 
                                 } else {
                                     waterSettings = null;

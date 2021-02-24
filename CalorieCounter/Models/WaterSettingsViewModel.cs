@@ -11,6 +11,7 @@ namespace CalorieCounter.Models
         public int EndHour { get; set; }
         public int BeginMinute { get; set; }
         public int EndMinute { get; set; }
+        public int DailyVolume { get; set; }
     }
 
     public class SetWaterSettingsViewModel
@@ -18,5 +19,10 @@ namespace CalorieCounter.Models
         public int Hour { get; set; }
        public int Minute { get; set; }
         
+    }
+
+    public class SetDailyWaterVolume
+    {
+        public int DailyVolume { get; set; }
     }
 }
