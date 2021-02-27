@@ -241,6 +241,29 @@ namespace CalorieCounter.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("CalorieCounter.Entities.UserDailyWeight", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<DateTime>("DateOfWeight")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserDailyWeights");
+                });
+
             modelBuilder.Entity("CalorieCounter.Entities.UserProfile", b =>
                 {
                     b.Property<long>("Id")
@@ -604,6 +627,17 @@ namespace CalorieCounter.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CalorieCounter.Entities.UserDailyWeight", b =>
+                {
+                    b.HasOne("CalorieCounter.Entities.DbUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

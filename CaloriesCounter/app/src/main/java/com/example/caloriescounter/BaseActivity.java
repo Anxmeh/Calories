@@ -188,6 +188,18 @@ public class BaseActivity extends AppCompatActivity {
                 intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.forTest:
+                intent = new Intent(this, TestProdActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.forTest2:
+                intent = new Intent(this, WeightStatActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.forTest3:
+                intent = new Intent(this, FinalTestDateActivity.class);
+                startActivity(intent);
+                break;
             case R.id.profile:
                 if (!sessionManager.isLogged) {
                     intent = new Intent(this, LoginActivity.class);

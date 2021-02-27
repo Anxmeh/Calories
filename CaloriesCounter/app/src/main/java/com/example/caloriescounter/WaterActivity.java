@@ -148,6 +148,8 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         this.mCountUpBar2 = (CircularProgressBar) this.findViewById(R.id.countup_bar2);
         mCountUpBar2.setMax(1500);
         txtDate.setText(formatDate.format(currentTime));
+        Locale locale = new Locale("uk","UA");
+        Locale.setDefault(locale);
         txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -478,6 +480,7 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         InputMethodManager imm = (InputMethodManager) WaterActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
+
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
@@ -488,12 +491,16 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void onDateSet(DatePicker view, int yearSelect, int monthSelect, int daySelect) {
                         calendar.set(yearSelect, monthSelect, daySelect);
+                        Date currentTime = calendar.getTime();
+                        //currentTime = calendar.getTime();
+                        txtDate.setText(formatDate.format(currentTime));
 
-                        txtDate.setText(daySelect + "/" + (monthSelect + 1) + "/" + yearSelect);
                         GetWater();
                     }
                 }, year, month, day);
+
         datePicker.show();
+
         GetWater();
     }
     public void onClickPreviousDate (View view) {

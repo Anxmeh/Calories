@@ -44,6 +44,7 @@ import com.example.caloriescounter.click_listeners.OnDeleteListener;
 import com.example.caloriescounter.click_listeners.OnDeleteListenerDailyMenu;
 import com.example.caloriescounter.click_listeners.OnDeleteListenerVitamins;
 import com.example.caloriescounter.models.AddProductView;
+import com.example.caloriescounter.models.AddUserDailyWeightViewModel;
 import com.example.caloriescounter.models.DailyMenuView;
 import com.example.caloriescounter.models.Dish;
 import com.example.caloriescounter.models.DishIngredientsView;
@@ -57,6 +58,7 @@ import com.example.caloriescounter.models.UserVitaminsView;
 import com.example.caloriescounter.models.VitaminDailyCheckView;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.SessionManager;
+import com.example.caloriescounter.network.Tokens;
 import com.example.caloriescounter.network.utils.CommonUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -92,20 +94,23 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
     private DailyMenuRecyclerAdapter adapter;
     public Product addedDish;
     private UserSettingsView userSettings;
-   // Calendar c = Calendar.getInstance();
+    private TextView myMenu, myVitamins, txtTodayWeight;
+    // Calendar c = Calendar.getInstance();
     //  c.set(2020, 12, 22);
 
-   private List<UserVitaminsDailyView> userVitamins;
-   // VitaminsRecyclerAdapter adapterVit;
+    private List<UserVitaminsDailyView> userVitamins;
+    // VitaminsRecyclerAdapter adapterVit;
     VitaminsDailyRecyclerAdapter adapterVitDaily;
+    private AddUserDailyWeightViewModel weightUser;
 
     private final Calendar calendar = Calendar.getInstance();
-    SimpleDateFormat formatDate = new SimpleDateFormat("MMM d, yyyy",  new Locale("uk","UA"));
+    // SimpleDateFormat formatDate = new SimpleDateFormat("MMM d, yyyy",  new Locale("uk","UA"));
+    SimpleDateFormat formatDate = new SimpleDateFormat("d MMM yyyy", new Locale("uk", "UA"));
 
     private Product addedProduct;
     private DailyMenuView addedProduct2;
 
-   // private ListView listView;
+    // private ListView listView;
     private Dish dish;
     private ArrayList<Product> addedProducts2 = new ArrayList<Product>();
     private double dishCalories = 0;
@@ -145,32 +150,44 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
         recyclerViewVit = findViewById(R.id.recycler_view_vit);
 
 
-
         // final TextView addedprod = findViewById(R.id.resultDish);
         //listView = findViewById(R.id.listViewProducts);
-       // inputSearch = (EditText) findViewById(R.id.inputSearch);
+        // inputSearch = (EditText) findViewById(R.id.inputSearch);
         txtDishProtein = findViewById(R.id.dishProtein);
         txtDishFat = findViewById(R.id.dishFat);
         txtDishCarbs = findViewById(R.id.dishCarbohydrate);
         txtDate = findViewById(R.id.dateAct);
+        txtTodayWeight = findViewById(R.id.txtTodayWeight);
         progressCalories = (ProgressTextView) findViewById(R.id.progressCalories);
         progressFat = (ProgressTextView) findViewById(R.id.progressFat);
         progressCarbs = (ProgressTextView) findViewById(R.id.progressCarbs);
         progressProtein = (ProgressTextView) findViewById(R.id.progressProtein);
         fab = findViewById(R.id.floating_action_button);
+        myMenu = findViewById(R.id.myMenu);
+        myVitamins = findViewById(R.id.myVitamins);
 
         setUserData();
+
         Date currentTime = Calendar.getInstance().getTime();
         //txtDate.setText(currentTime.toString());
-        int monthShow = calendar.get(Calendar.MONTH)+1;
+        int monthShow = calendar.get(Calendar.MONTH) + 1;
 
         txtDate.setText(formatDate.format(currentTime));
         //txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + monthShow + "/" + calendar.get((Calendar.YEAR)));
-       // txtDate.setText(daySelect + "/" + (monthSelect + 1) + "/" + yearSelect);
+        // txtDate.setText(daySelect + "/" + (monthSelect + 1) + "/" + yearSelect);
         txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePicker(v);
+            }
+        });
+
+//        GetdailyWeight();
+
+        txtTodayWeight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EdiDdailyWeight(v);
             }
         });
 
@@ -183,6 +200,28 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
             }
 
         });
+
+
+        myVitamins.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerViewVit.setVisibility(recyclerViewVit.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+                //  String text = recyclerViewVit.getVisibility() == View.VISIBLE ? "Приховати вітаміни" : "Показати вітаміни";
+                myVitamins.setText(recyclerViewVit.getVisibility() == View.VISIBLE ? "Приховати вітаміни" : "Показати вітаміни");
+
+            }
+        });
+        myMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView.setVisibility(recyclerView.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+                //  String text = recyclerViewVit.getVisibility() == View.VISIBLE ? "Приховати вітаміни" : "Показати вітаміни";
+                myVitamins.setText(recyclerView.getVisibility() == View.VISIBLE ? "Приховати меню" : "Показати меню");
+
+            }
+        });
+
+
 //        progressFat.setMaxValue(30);
 //        progressCarbs.setMaxValue(50);
 //        progressProtein.setMaxValue(50);
@@ -190,8 +229,6 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
         setRecyclerView();
         loadListPr();
         setRecyclerViewVit();
-
-
 
 
 //        NetworkService.getInstance()
@@ -450,7 +487,7 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e(TAG, "Delete product by name " + product.getProductId());
-                       // prodsindish.remove(product);
+                        // prodsindish.remove(product);
                         DailyMenuView v = new DailyMenuView();
                         v.setProductId(product.getProductId());
 
@@ -485,7 +522,7 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
 //                                                    "hello", Toast.LENGTH_LONG);
 //                            toast.show();
                                             // addedProduct = response.body();
-                                          //  dish = response.body();
+                                            //  dish = response.body();
 //                                            txtDishCalories.setText(Double.toString(dish.getDishCalories()));
 //                                            txtDishWeight.setText(Double.toString(dish.getDishWeight()));
 //                                            // double n= Math.round(dish.getDishProtein()*100.0)/100.0;
@@ -523,7 +560,6 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
 //
 
 
-
                         adapter.notifyDataSetChanged();
                         //loadListPr();
 
@@ -555,8 +591,8 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
                             double totalCarbs = 0;
 
                             for (DailyMenuView item : dailyMenu) {
-                                totalWeight +=item.getProductWeight();
-                                totalCalories +=item.getProductCalories();
+                                totalWeight += item.getProductWeight();
+                                totalCalories += item.getProductCalories();
                                 totalFat += item.getProductFat();
                                 totalProtein += item.getProductProtein();
                                 totalCarbs += item.getProductCarbohydrate();
@@ -565,13 +601,14 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
 
                             progressCalories.setValue((int) totalCalories);
                             progressCalories.setTextColor(Color.parseColor("#000000"));
-                            progressFat.setValue((int)totalFat);
+                            progressFat.setValue((int) totalFat);
                             progressFat.setTextColor(Color.parseColor("#000000"));
-                            progressCarbs.setValue((int)totalCarbs);
+                            progressCarbs.setValue((int) totalCarbs);
                             progressCarbs.setTextColor(Color.parseColor("#000000"));
-                            progressProtein.setValue((int)totalProtein);
+                            progressProtein.setValue((int) totalProtein);
                             progressProtein.setTextColor(Color.parseColor("#000000"));
                             getUserVitamins();
+
                             adapter.notifyDataSetChanged();
                         } else {
                             dailyMenu = null;
@@ -607,12 +644,10 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
                             progressProtein.setMaxValue((int) userSettings.getUserProtein());
                             progressFat.setMaxValue((int) userSettings.getUserFat());
 
-
+                            //    GetdailyWeight();
                             //  double heigh = userSettings.getHeight();
                             // int heightM = (int) userSettings.getHeight() / 100;
                             //  int heightCm = (int) userSettings.getHeight() - (100 * heightM);
-
-
 
 
                         } else {
@@ -686,27 +721,28 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
                     @Override
                     public void onDateSet(DatePicker view, int yearSelect, int monthSelect, int daySelect) {
                         calendar.set(yearSelect, monthSelect, daySelect);
-
-                        txtDate.setText(daySelect + "/" + (monthSelect + 1) + "/" + yearSelect);
+                        Date currentTime = calendar.getTime();
+                        txtDate.setText(formatDate.format(currentTime));
                         loadListPr();
                     }
                 }, year, month, day);
         datePicker.show();
         loadListPr();
     }
-     public void onClickPreviousDate (View view) {
-        calendar.add(Calendar.DATE, -1);
-         int month = calendar.get(Calendar.MONTH)+1;
 
-         Date currentTime =  calendar.getTime();;
-         txtDate.setText(formatDate.format(currentTime));
+    public void onClickPreviousDate(View view) {
+        calendar.add(Calendar.DATE, -1);
+        int month = calendar.get(Calendar.MONTH) + 1;
+
+        Date currentTime = calendar.getTime();
+        txtDate.setText(formatDate.format(currentTime));
         //txtDate.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + month + "/" + calendar.get((Calendar.YEAR)));
         loadListPr();
     }
 
     public void onClickNextDate(View view) {
         calendar.add(Calendar.DATE, 1);
-        int month = calendar.get(Calendar.MONTH)+1;
+        int month = calendar.get(Calendar.MONTH) + 1;
         Date currentTime = calendar.getTime();
         //currentTime = calendar.getTime();
         txtDate.setText(formatDate.format(currentTime));
@@ -715,14 +751,14 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
     }
 
     public void getUserVitamins() {
-        CommonUtils.showLoading(this);
+        //   CommonUtils.showLoading(this);
         NetworkService.getInstance()
                 .getJSONApi()
                 .getDailyVitamins(calendar.getTime())
                 .enqueue(new Callback<List<UserVitaminsDailyView>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<UserVitaminsDailyView>> call, @NonNull Response<List<UserVitaminsDailyView>> response) {
-                        CommonUtils.hideLoading();
+                        //     CommonUtils.hideLoading();
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             if (userVitamins != null)
@@ -731,7 +767,7 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
                                 userVitamins.addAll(0, response.body());
                             adapterVitDaily.notifyDataSetChanged();
 
-
+                            GetdailyWeight();
                         } else {
                             userVitamins = null;
                         }
@@ -751,7 +787,7 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
         recyclerViewVit.setLayoutManager(new GridLayoutManager(this, 1,
                 GridLayoutManager.VERTICAL, false));
         userVitamins = new ArrayList<>();
-        adapterVitDaily = new VitaminsDailyRecyclerAdapter(userVitamins, this, this );
+        adapterVitDaily = new VitaminsDailyRecyclerAdapter(userVitamins, this, this);
 
         recyclerViewVit.setAdapter(adapterVitDaily);
 
@@ -771,50 +807,172 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
         Log.e(TAG, "After is  " + model.isTaken());
 
 
-                        NetworkService.getInstance()
-                                .getJSONApi()
-                                .checkDailyVitamin(model)
-                                .enqueue(new Callback<VitaminDailyCheckView>() {
-                                    @Override
-                                    public void onResponse(@NonNull Call<VitaminDailyCheckView> call, @NonNull Response<VitaminDailyCheckView> response) {
-                                        CommonUtils.hideLoading();
-                                        if (response.errorBody() == null && response.isSuccessful()) {
-                                            assert response.body() != null;
+        NetworkService.getInstance()
+                .getJSONApi()
+                .checkDailyVitamin(model)
+                .enqueue(new Callback<VitaminDailyCheckView>() {
+                    @Override
+                    public void onResponse(@NonNull Call<VitaminDailyCheckView> call, @NonNull Response<VitaminDailyCheckView> response) {
+                        //    CommonUtils.hideLoading();
+                        if (response.errorBody() == null && response.isSuccessful()) {
+                            assert response.body() != null;
 
-                                            adapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
 
 
-                                        } else {
-                                            String errorMessage;
-                                            try {
-                                                assert response.errorBody() != null;
-                                                errorMessage = response.errorBody().string();
-                                            } catch (IOException e) {
-                                                errorMessage = response.message();
-                                                e.printStackTrace();
-                                            }
+                        } else {
+                            String errorMessage;
+                            try {
+                                assert response.errorBody() != null;
+                                errorMessage = response.errorBody().string();
+                            } catch (IOException e) {
+                                errorMessage = response.message();
+                                e.printStackTrace();
+                            }
 //                            Toast toast = Toast.makeText(getApplicationContext(),
 //                                    errorMessage, Toast.LENGTH_LONG);
 //                            toast.show();
-                                        }
-                                    }
+                        }
+                    }
 
-                                    @Override
-                                    public void onFailure(@NonNull Call<VitaminDailyCheckView> call, @NonNull Throwable t) {
-                                        CommonUtils.hideLoading();
-                                        String error = "Error occurred while getting request!";
+                    @Override
+                    public void onFailure(@NonNull Call<VitaminDailyCheckView> call, @NonNull Throwable t) {
+                        CommonUtils.hideLoading();
+                        String error = "Error occurred while getting request!";
 //                        Toast toast = Toast.makeText(getApplicationContext(),
 //                                error, Toast.LENGTH_LONG);
 //                        toast.show();
-                                        t.printStackTrace();
-                                    }
-                                });
-                        //deleteConfirm(productEntry);
-
+                        t.printStackTrace();
+                    }
+                });
+        //deleteConfirm(productEntry);
 
 
     }
-    ///////////////////////////////////////////////
+
+    public void GetdailyWeight() {
+        Date tim1 = calendar.getTime();
+        //   CommonUtils.showLoading(this);
+        NetworkService.getInstance()
+                .getJSONApi()
+                .getUserWeight(calendar.getTime())
+                .enqueue(new Callback<AddUserDailyWeightViewModel>() {
+                    @Override
+                    public void onResponse(@NonNull Call<AddUserDailyWeightViewModel> call, @NonNull Response<AddUserDailyWeightViewModel> response) {
+                        //    CommonUtils.hideLoading();
+                        if (response.errorBody() == null && response.isSuccessful()) {
+                            weightUser = response.body();
+                            txtTodayWeight.setText(Double.toString(weightUser.getWeight()));
+
+                        } else {
+                            String errorMessage;
+                            try {
+                                assert response.errorBody() != null;
+                                errorMessage = response.errorBody().string();
+                            } catch (IOException e) {
+                                errorMessage = response.message();
+                                e.printStackTrace();
+                            }
+                            weightUser = null;
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    errorMessage, Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<AddUserDailyWeightViewModel> call, @NonNull Throwable t) {
+                        CommonUtils.hideLoading();
+                        String error = "Error occurred while getting request!";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
+                        weightUser = null;
+                        t.printStackTrace();
+                    }
+                });
+    }
+
+    public void EdiDdailyWeight(View view) {
+        AddUserDailyWeightViewModel model = new AddUserDailyWeightViewModel();
+
+        LayoutInflater li = LayoutInflater.from(context);
+        View promptsView = li.inflate(R.layout.prompt_usewweight, null);
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(context);
+        mDialogBuilder.setView(promptsView);
+        final EditText userInput = (EditText) promptsView.findViewById(R.id.inputWeight);
+
+        mDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //Вводим текст и отображаем в строке ввода на основном экране:
+
+
+                                model.setWeight(Double.parseDouble(userInput.getText().toString()));
+                                model.setDateOfWeight(calendar.getTime());
+
+                                //  CommonUtils.showLoading(this);
+                                NetworkService.getInstance()
+                                        .getJSONApi()
+                                        .editDailyWeight(model)
+                                        .enqueue(new Callback<AddUserDailyWeightViewModel>() {
+                                            @Override
+                                            public void onResponse(@NonNull Call<AddUserDailyWeightViewModel> call, @NonNull Response<AddUserDailyWeightViewModel> response) {
+                                                //    CommonUtils.hideLoading();
+                                                if (response.errorBody() == null && response.isSuccessful()) {
+                                                    weightUser = response.body();
+                                                    txtTodayWeight.setText(Double.toString(weightUser.getWeight()));
+
+                                                } else {
+                                                    String errorMessage;
+                                                    try {
+                                                        assert response.errorBody() != null;
+                                                        errorMessage = response.errorBody().string();
+                                                    } catch (IOException e) {
+                                                        errorMessage = response.message();
+                                                        e.printStackTrace();
+                                                    }
+                                                    weightUser = null;
+                                                    Toast toast = Toast.makeText(getApplicationContext(),
+                                                            errorMessage, Toast.LENGTH_LONG);
+                                                    toast.show();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(@NonNull Call<AddUserDailyWeightViewModel> call, @NonNull Throwable t) {
+                                                CommonUtils.hideLoading();
+                                                String error = "Error occurred while getting request!";
+                                                Toast toast = Toast.makeText(getApplicationContext(),
+                                                        error, Toast.LENGTH_LONG);
+                                                toast.show();
+                                                weightUser = null;
+                                                t.printStackTrace();
+                                            }
+                                        });
+
+                            }
+                        })
+                .setNegativeButton("Отмена",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        //Создаем AlertDialog:
+        AlertDialog alertDialog = mDialogBuilder.create();
+        //и отображаем его:
+        alertDialog.show();
+    }
+
+
+
+
+      //  }
+        ///////////////////////////////////////////////
 //    @Override
 //    public void deleteItem(final UserVitaminsView vitamin) {
 //        new MaterialAlertDialogBuilder(this)
@@ -1008,4 +1166,4 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
 //
 //
 //    }
-}
+        }

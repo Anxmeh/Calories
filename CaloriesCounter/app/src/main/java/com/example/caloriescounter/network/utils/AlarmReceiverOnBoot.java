@@ -358,6 +358,9 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver  {
             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             // builder.setSound(alarmSound);
 
+
+           //////!!!!!!!!!!тут ввечері нашадує одразу при вході
+
             //show only in period
             if (calendar.get(Calendar.HOUR_OF_DAY) > 18) {
                 Notification.Builder builder3 = null;

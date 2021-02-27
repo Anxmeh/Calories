@@ -169,6 +169,7 @@ public class ChooseIngredientActivity extends AppCompatActivity {
 
                                                                                 String succeed = "Add succeed";
                                                                                 Intent intent = new Intent(ChooseIngredientActivity.this,RecyclerActivity.class);
+                                                                                finish();
                                                                                 startActivity(intent);
                                                                                 ////////////
                                                                                 //CommonUtils.showLoading(this);

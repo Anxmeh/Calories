@@ -62,4 +62,8 @@
     <string name="end">До: </string>
     <string name="TimeAlarm">Час нагадування:</string>
     <string name="amount">Кількість</string>
+    <string name="Name">Назва:</string>
+    <string name="MyMenu">Моє меню</string>
+    <string name="weightToday">Вага цього дня:</string>
+    <string name="kg">кг</string>
 </resources>

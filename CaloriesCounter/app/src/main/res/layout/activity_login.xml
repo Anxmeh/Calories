@@ -80,20 +80,20 @@
 
                 <Button
                     android:id="@+id/buttonLogin"
-                    android:layout_width="150dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="30dp"
                     android:background="@drawable/button_gradient"
                     android:onClick="onClickSignIn"
                     android:text="@string/signIn" />
 
                 <Button
                     android:id="@+id/buttonSignUp"
-                    android:layout_width="150dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"

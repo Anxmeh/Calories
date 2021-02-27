@@ -158,6 +158,7 @@ public class AddProductActivity extends BaseActivity {
                                     succeed, Toast.LENGTH_LONG);
                             toast.show();
                             Intent intent = new Intent(AddProductActivity.this, ProductsActivity.class);
+                            finish();
                             startActivity(intent);
                         } else {
                             String errorMessage;

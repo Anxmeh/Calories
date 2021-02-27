@@ -43,6 +43,32 @@ namespace CalorieCounter.Controllers
             return Ok(result);
         }
 
+        [HttpPost("addvitamin")]
+        public IActionResult AddVitamin([FromBody] AddVitaminViewModel model)
+        {
+            var vitamin = _context.Vitamins.SingleOrDefault(v => v.VitaminName == model.VitaminName);
+            if (vitamin != null)
+                return BadRequest(new { invalid = "Уже є в базі" });
+            vitamin = new Vitamin
+            {
+                VitaminName = model.VitaminName
+            };
+            _context.Vitamins.Add(vitamin);
+            _context.SaveChanges();
+
+
+            var query = _context.Vitamins.AsQueryable();
+            ICollection<GetVitaminsViewModel> result;
+            result = query.Select(p => new GetVitaminsViewModel
+            {
+                Id = p.Id,
+                VitaminName = p.VitaminName,
+
+            }).ToList();
+            return Ok(result);
+        }
+
+
         [HttpGet("myvitamins")]
         public IActionResult GetMyVitamins()
         {
@@ -363,12 +389,12 @@ namespace CalorieCounter.Controllers
 
             if (userVitamins.Count > daily.Count)
             {
-                
-                
-                foreach (var vitamin in userVitamins)
-                    {
 
-                   var temp = daily.FirstOrDefault(v => v.VitaminId == vitamin.VitaminId);
+
+                foreach (var vitamin in userVitamins)
+                {
+
+                    var temp = daily.FirstOrDefault(v => v.VitaminId == vitamin.VitaminId);
                     if (temp == null)
                     {
                         var vit = new UserVitamins()
@@ -393,9 +419,9 @@ namespace CalorieCounter.Controllers
                         //    DateOfVitamin = date.Date
                         //});
 
-                         queryDailyVitamins = _context.UserVitamins.AsQueryable();
+                        queryDailyVitamins = _context.UserVitamins.AsQueryable();
 
-                        
+
                         daily = queryDailyVitamins.Select(d => new DailyVitaminsViewModel
                         {
                             Id = d.Id,
@@ -409,7 +435,7 @@ namespace CalorieCounter.Controllers
                 }
             }
 
-          
+
 
             var queryVitamins = _context.Vitamins.AsQueryable();
 
@@ -428,13 +454,13 @@ namespace CalorieCounter.Controllers
              {
                  UserId = d.UserId,
                  VitaminId = d.VitaminId,
-                 VitaminName= p.VitaminName,
+                 VitaminName = p.VitaminName,
                  Amount = d.Amount,
                  IsTaken = d.IsTaken,
                  DateOfVitamin = d.DateOfVitamin
-                             }); // результат
+             }); // результат
 
-                        return Ok(result5);
+            return Ok(result5);
         }
 
         [HttpPost("checkvitamin")]
@@ -465,7 +491,7 @@ namespace CalorieCounter.Controllers
             }
             //long ids = user.Id;
 
-            var vitamin = _context.UserVitamins.SingleOrDefault(p => p.VitaminId == model.VitaminId && 
+            var vitamin = _context.UserVitamins.SingleOrDefault(p => p.VitaminId == model.VitaminId &&
             p.UserId == user.Id && p.DateOfVitamin.Date == model.DateOfVitamin.Date);
             if (vitamin == null)
                 return BadRequest(new { invalid = "Не знайдено" });

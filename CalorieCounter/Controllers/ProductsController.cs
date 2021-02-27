@@ -65,33 +65,7 @@ namespace CalorieCounter.Controllers
             _context.ProductsInDish.RemoveRange(_context.ProductsInDish);
             _context.SaveChanges();
 
-            //  _context.Database.ExecuteStoreCommand("TRUNCATE TABLE [\"ProcutsInDish\"]");
-            // _context.Database.ExecuteSqlCommand("TRUNCATE TABLE [\"ProcutsInDish\"]");
-            //using (var context = new DataDb())
-            //{
-            //    var ctx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)context).ObjectContext;
-            //    ctx.ExecuteStoreCommand("DELETE FROM [TableName] WHERE Name= {0}", Name);
-            //}
-
-            //using (var cont = new EFContext(DbContextOptions<EFContext> options))
-            //{
-
-            //}
-
-            // var books = _context.Products.FromSqlRaw("SELECT BookId, Title, AuthorId, Isbn FROM Books").ToList();
-            //string tblNames = "ProductsInDish";
-
-            //var commandText = "INSERT Categories (CategoryName) VALUES (@CategoryName)";
-            //var name = new SqlParameter("@CategoryName", "Test");
-            //_context.Database.ExecuteSqlCommand(commandText, name);
-            // _context.Database.ExecuteSqlRaw("TRUNCATE TABLE [" + tblNames+"]");
-
-
-
-
-
-
-
+          
             return Ok(new ProductViewModel
             {
                 Name = product.Name,

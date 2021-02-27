@@ -38,6 +38,8 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
                 android:text="Date"
+                android:drawableLeft="@drawable/ic_calendar"
+                android:drawablePadding="20dp"
                 android:textColor="#743000"
                 android:textSize="20sp" />
 
@@ -52,6 +54,39 @@
                 android:textAlignment="textStart" />
 
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+                       android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:text="@string/weightToday"
+            android:textColor="#743000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/txtTodayWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:drawableLeft="@drawable/ic_edit"
+            android:drawablePadding="20dp"
+            android:textColor="#743000"
+            android:textSize="20sp" />
+
+        <TextView
+                      android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:text="@string/kg"
+            android:textColor="#743000"
+            android:textSize="20sp" />
+    </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -201,7 +236,14 @@
 <!--                    android:horizontalSpacing="5dp"-->
 <!--                    android:numColumns="1"-->
 <!--                    android:verticalSpacing="5dp" />-->
-
+                <TextView
+                    android:id="@+id/myMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/MyMenu"
+                    android:textSize="20sp"
+                    android:textColor="#743000"
+                    android:layout_gravity="center_horizontal"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"

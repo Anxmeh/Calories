@@ -1,67 +1,38 @@
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:orientation="vertical"
-    tools:context=".TestProdActivity">
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/main_menu" />
+    android:background="@drawable/background"
+    tools:context=".TestProdActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/home_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/home_toolbar_gradient"
-            android:elevation="4dp"
-            android:minHeight="60dp"
-            android:theme="@style/customToolbar"
-            tools:targetApi="lollipop">
-
-            <TextView
-                android:id="@+id/title_home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:gravity="start"
-
-                android:textAlignment="textStart"
-                android:textColor="@color/Indigo"
-
-                android:textSize="20dp"
-                android:textStyle="bold" />
-        </androidx.appcompat.widget.Toolbar>
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             />
-
-        <TextView
-            android:id="@+id/txtspin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:gravity="start"
-            android:textAlignment="textStart"
-            android:textColor="@color/Indigo"
-
-            android:textSize="20dp"
-            android:textStyle="bold" />
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="65dp">
 
     </LinearLayout>
 
-</androidx.drawerlayout.widget.DrawerLayout>
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:layout_marginBottom="70dp"
+        android:id="@+id/graph" />
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:layout_marginBottom="70dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/graphWeight" />
+
+
+
+</LinearLayout>

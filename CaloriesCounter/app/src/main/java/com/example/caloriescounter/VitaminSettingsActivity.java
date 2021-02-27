@@ -1,11 +1,11 @@
 package com.example.caloriescounter;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,13 +23,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.caloriescounter.adapters.CustomAdapterSpinner;
 import com.example.caloriescounter.adapters.ProductListRecyclerAdapter;
 import com.example.caloriescounter.adapters.VitaminsRecyclerAdapter;
 import com.example.caloriescounter.click_listeners.OnChangeAmountVitamins;
 import com.example.caloriescounter.click_listeners.OnDeleteListenerVitamins;
+import com.example.caloriescounter.models.AddVitaminView;
 import com.example.caloriescounter.models.DailyMenuView;
+import com.example.caloriescounter.models.Dish;
 import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.models.UserVitaminsView;
 import com.example.caloriescounter.models.Vitamin;
@@ -209,6 +214,112 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
 //        builder.setView(sp);
 //        builder.create().show();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.vitamin_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch(id){
+            case R.id.action_add :
+                LayoutInflater li = LayoutInflater.from(context);
+                View promptsView = li.inflate(R.layout.prompt_name, null);
+
+                //Создаем AlertDialog
+                android.app.AlertDialog.Builder mDialogBuilder = new android.app.AlertDialog.Builder(context);
+
+                //Настраиваем prompt.xml для нашего AlertDialog:
+                mDialogBuilder.setView(promptsView);
+
+                //Настраиваем отображение поля для ввода текста в открытом диалоге:
+                final EditText userInput = (EditText) promptsView.findViewById(R.id.inputVitaminName);
+
+                //Настраиваем сообщение в диалоговом окне:
+                mDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+//
+//
+                                        final AddVitaminView vitaminModel = new AddVitaminView();
+                                        vitaminModel.setVitaminName(userInput.getText().toString());
+
+                                        CommonUtils.showLoading(VitaminSettingsActivity.this);
+                                        NetworkService.getInstance()
+                                                .getJSONApi()
+                                                .addVitamin(vitaminModel)
+                                                .enqueue(new Callback<List<Vitamin>>() {
+                                                    @Override
+                                                    public void onResponse(@NonNull Call<List<Vitamin>> call, @NonNull Response<List<Vitamin>> response) {
+                                                        CommonUtils.hideLoading();
+                                                        if (response.errorBody() == null && response.isSuccessful()) {
+                                                            assert response.body() != null;
+
+                                                            getVitaminsList();
+
+
+                                                            ///////////
+//                                                                                Toast toast = Toast.makeText(getApplicationContext(),
+//                                                                                        succeed, Toast.LENGTH_LONG);
+//                                                                                toast.show();
+//                                                                                Intent intent = new Intent(AddProductActivity.this, ProductsActivity.class);
+//                                                                                startActivity(intent);
+                                                        } else {
+                                                            String errorMessage;
+                                                            try {
+                                                                assert response.errorBody() != null;
+                                                                errorMessage = response.errorBody().string();
+                                                            } catch (IOException e) {
+                                                                errorMessage = response.message();
+                                                                e.printStackTrace();
+                                                            }
+                                                            Toast toast = Toast.makeText(getApplicationContext(),
+                                                                    errorMessage, Toast.LENGTH_LONG);
+                                                            toast.show();
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(@NonNull Call<List<Vitamin>> call, @NonNull Throwable t) {
+                                                        CommonUtils.hideLoading();
+                                                        String error = "Error occurred while getting request!";
+                                                        Toast toast = Toast.makeText(getApplicationContext(),
+                                                                error, Toast.LENGTH_LONG);
+                                                        toast.show();
+                                                        t.printStackTrace();
+                                                    }
+                                                });
+
+                                    }
+                                })
+                        .setNegativeButton("Відміна",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                //Создаем AlertDialog:
+                AlertDialog alertDialog = mDialogBuilder.create();
+                //и отображаем его:
+                alertDialog.show();
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
 
     public void getVitaminsList() {
         CommonUtils.showLoading(this);

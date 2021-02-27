@@ -44,6 +44,18 @@
         android:id="@+id/profile"
         android:icon="@drawable/ic_user"
         android:title="Профіль користувача" />
+            <item
+                android:id="@+id/forTest"
+                android:icon="@drawable/ic_user"
+                android:title="Для тесту" />
+                            <item
+                                android:id="@+id/forTest2"
+                                android:icon="@drawable/ic_user"
+                                android:title="Для тесту Вага" />
+                                                            <item
+                                                                android:id="@+id/forTest3"
+                                                                android:icon="@drawable/ic_user"
+                                                                android:title="Для тесту Вага  MPA" />
     <item
         android:id="@+id/logout"
         android:icon="@drawable/ic_exit"

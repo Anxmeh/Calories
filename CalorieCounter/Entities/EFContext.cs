@@ -28,6 +28,7 @@ namespace CalorieCounter.Entities
 
         public virtual DbSet<UserVitamins> UserVitamins { get; set; }
         public virtual DbSet<VitaminSettings> VitaminSettings { get; set; }
+        public virtual DbSet<UserDailyWeight> UserDailyWeights { get; set; }
 
 
         public EFContext(DbContextOptions<EFContext> options) : base(options) { }

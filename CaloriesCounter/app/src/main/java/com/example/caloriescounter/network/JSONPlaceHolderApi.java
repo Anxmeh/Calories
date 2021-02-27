@@ -3,6 +3,8 @@ package com.example.caloriescounter.network;
 import android.database.Observable;
 
 import com.example.caloriescounter.models.AddProductView;
+import com.example.caloriescounter.models.AddUserDailyWeightViewModel;
+import com.example.caloriescounter.models.AddVitaminView;
 import com.example.caloriescounter.models.DailyMenuView;
 import com.example.caloriescounter.models.Dish;
 import com.example.caloriescounter.models.DishIngredientsView;
@@ -14,6 +16,7 @@ import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.models.RegisterView;
 import com.example.caloriescounter.models.RemoveDailyView;
 import com.example.caloriescounter.models.SetWaterTimeView;
+import com.example.caloriescounter.models.UserDailyWeight;
 import com.example.caloriescounter.models.UserSettingsView;
 import com.example.caloriescounter.models.UserView;
 import com.example.caloriescounter.models.UserVitaminsDailyView;
@@ -132,6 +135,8 @@ public interface JSONPlaceHolderApi {
 
     @GET("/api/vitamins/allvitamins")
     Call<List<Vitamin>> getAllVitamins();
+    @POST("/api/vitamins/addvitamin")
+    Call<List<Vitamin>> addVitamin(@Body AddVitaminView model);
     @GET("/api/vitamins/myvitamins")
     Call<List<UserVitaminsView>> getUserVitamins();
     @POST("/api/vitamins/addmyvitamin")
@@ -145,6 +150,18 @@ public interface JSONPlaceHolderApi {
     Call<List<UserVitaminsDailyView>> getDailyVitamins(@Body Date dateOfVitamin);
     @POST("/api/vitamins/checkvitamin")
     Call<VitaminDailyCheckView> checkDailyVitamin(@Body VitaminDailyCheckView model);
+
+    @GET("/api/userdailyweight/userdailyweights")
+    Call<List<UserDailyWeight>> getDailyWeight();
+
+    @POST("/api/userdailyweight/userweight")
+    Call<AddUserDailyWeightViewModel> getUserWeight(@Body Date date);
+
+    @POST("/api/userdailyweight/adduserdailyweight")
+    Call<List<UserDailyWeight>> addDailyWeight();
+
+    @POST("/api/userdailyweight/edituserdailyweight")
+    Call<AddUserDailyWeightViewModel> editDailyWeight(@Body AddUserDailyWeightViewModel model);
 
 
 

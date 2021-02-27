@@ -125,6 +125,7 @@ public class RecyclerActivity extends BaseActivity implements OnDeleteListener {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecyclerActivity.this, ChooseIngredientActivity.class);
+                finish();
                 startActivity(intent);
             }
 

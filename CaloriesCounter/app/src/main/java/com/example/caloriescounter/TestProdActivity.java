@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,274 +26,278 @@ import android.widget.Toast;
 
 import com.example.caloriescounter.adapters.CustomAdapter;
 import com.example.caloriescounter.adapters.ProductAdapter;
+import com.example.caloriescounter.models.AddUserDailyWeightViewModel;
 import com.example.caloriescounter.models.Product;
+import com.example.caloriescounter.models.UserDailyWeight;
 import com.example.caloriescounter.models.Vitamin;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.utils.CommonUtils;
+import com.jjoe64.graphview.DefaultLabelFormatter;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TestProdActivity extends AppCompatActivity {
-    private String[] cats = { "Васька", "Мурзик", "Барсик", "Рыжик" };
-    private TextView tx;
+    private int mNumLabels = 6;
+    private Date minDate, maxDate;
+    SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM",  new Locale("uk","UA"));
+    private AddUserDailyWeightViewModel weightUser;
+//    public Dates(int numLabels) {
+//        mNumLabels = numLabels;
+//    }
+//
+//    public Dates() {
+//        mNumLabels = 4;
+//    }
+
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_test_prod);
-        tx = findViewById(R.id.txtspin);
+        GraphView graph = (GraphView) findViewById(R.id.graph);
+        initGraph(graph);
 
-        Spinner spinner = findViewById(R.id.spinner);
-        CustomAdapter adapter = new CustomAdapter(this,
-                android.R.layout.simple_spinner_item, cats);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.post(new Runnable() {
-            @Override
-            public void run() {
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        tx.setText("");
-                    }
+        GraphView graphWeight = (GraphView) findViewById(R.id.graphWeight);
+//        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+//                new DataPoint(0, 1),
+//                new DataPoint(1, 5),
+//                new DataPoint(2, 3),
+//                new DataPoint(3, 2)
+//
+//        });
+//        graph.addSeries(series);
+      //  new DataPoint(4, 6)
 
+    }
+
+    public void initGraph(GraphView graph) {
+
+
+        // generate Dates
+//        Calendar calendar = Calendar.getInstance();
+//        Date d1 = calendar.getTime();
+//              Log.e("d1:", d1.toString());
+//
+//        calendar.add(Calendar.DATE, 1);
+//        calendar.set(Calendar.HOUR_OF_DAY, 0);
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 0);
+//        Date d2 = calendar.getTime();
+//        calendar.add(Calendar.DATE, 1);
+//        Date d3 = calendar.getTime();
+//        calendar.add(Calendar.DATE, 1);
+//        Date d4 = calendar.getTime();
+//       calendar.add(Calendar.DATE, 1);
+//      Date d5 = calendar.getTime();
+//        calendar.add(Calendar.DATE, 1);
+//        Date d6 = calendar.getTime();
+//        Log.e("d6:", d6.toString());
+
+        // you can directly pass Date objects to DataPoint-Constructor
+        // this will convert the Date to double via Date#getTime()
+//        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
+//                new DataPoint(d1, 1),
+//                new DataPoint(d2, 5),
+//                new DataPoint(d3, 3),
+//                new DataPoint(d4, 2),
+//               new DataPoint(d5, 5),
+//                new DataPoint(d6, 1)
+//        });
+//        graph.addSeries(series);
+
+        graph.addSeries(new LineGraphSeries(generateDataWeight()));
+
+        // set date label formatter
+     //   graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(graph.getContext()));
+
+
+      ////  майже працюэ
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
                     @Override
-                    public void onItemSelected(AdapterView<?> parent, View view,
-                                               int pos, long id) {
-                        // Set adapter flag that something has been chosen
-                        CustomAdapter.flag = true;
-                        String current = (String) spinner.getSelectedItem();
-                        tx.setText(current.toString());
-                        // String[] choose = getResources().getStringArray(R.array.cats);
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "Ваш выбор: " + current.toString(), Toast.LENGTH_SHORT);
-                        toast.show();
+                    public String formatLabel(double value, boolean isValueX) {
+                        if (isValueX) {
+                            Log.e("Value", Double.toString(value));
+                            // transform number to time
+                            return formatDate.format(new Date((long) value));
+                        } else {
+                           // return null;
+                            Log.e("Value in else", Double.toString(value));
+                            return super.formatLabel(value, isValueX);
+                        }
                     }
                 });
-            }
-        });
+
+
+//        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+//          staticLabelsFormatter.setHorizontalLabels(new String[] {"21/02",  "26/02"});
+       // staticLabelsFormatter.setHorizontalLabels(hLabels);
+        graph.getGridLabelRenderer().setNumHorizontalLabels(mNumLabels);
+        Log.e("mindate:", Long.toString(maxDate.getTime()));
+        // set manual x bounds to have nice steps
+        graph.getViewport().setMinX(minDate.getTime());
+        graph.getViewport().setMaxX(maxDate.getTime());
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setScrollable(true);
+
+        // as we use dates as labels, the human rounding to nice readable numbers
+        // is not nessecary
+        graph.getGridLabelRenderer().setHumanRounding(false);
     }
+
+
+    private DataPoint[] generateDataWeight() {
+
+        int count = 6;
+        // hLabels = new String[dailyWeights.size()];
+        // new DataPoint(dd1, 1),
+        DataPoint[] values = new DataPoint[count];
+      //  int i = 0;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        for(int i=0; i<6; i++) {
+
+
+            Date d1 = calendar.getTime();
+            if (i == 0) {
+                minDate = d1;
+
+            }
+            if (i==5) {
+                maxDate = d1;
+            }
+            Log.e("d1:", d1.toString());
+            Log.e("dateinml:", Long.toString(calendar.getTimeInMillis()));
+            calendar.add(Calendar.DATE, 1);
+
+            int y = i+2;
+            DataPoint data = new DataPoint(d1, y);
+            values[i] = data;
+
+
+        }
+
+
+
+        return values;
+    }
+
+
+
+
+
 
 }
 
 
+//    LineGraphSeries<DataPoint> seriesWeight = new LineGraphSeries<>(new DataPoint[] {
+//            new DataPoint(0, 48),
+//            new DataPoint(1, 48),
+//            new DataPoint(2, 49),
+//            new DataPoint(3, 49),
+//            new DataPoint(4, 48),
+//            new DataPoint(5, 47),
+//            new DataPoint(6, 46),
+//            new DataPoint(7, 47),
+//            new DataPoint(8, 47.8),
+//            new DataPoint(9, 48),
+//            new DataPoint(10, 48.2),
+//            new DataPoint(11, 48),
+//            new DataPoint(12, 47.6),
+//            new DataPoint(13, 47.2),
 //
-//    private ListView listView;
-//    private List<Product> products;
-//    EditText inputSearch;
-//    ProductAdapter customAdapter;
-//
-//    final Context context = this;
-//
-//    private LinearLayout mLayout;
-//    private EditText mEditText;
-//    private Button mButton;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_test_prod);
-//
-////        mLayout = (LinearLayout) findViewById(R.id.linearLayout);
-////        mEditText = (EditText) findViewById(R.id.editText);
-////        mButton = (Button) findViewById(R.id.button);
-////        mButton.setOnClickListener(onClick());
-////        TextView textView = new TextView(this);
-////        textView.setText("New text");
+//    });
+//        graphWeight.getViewport().setYAxisBoundsManual(true);
+//                graphWeight.addSeries(seriesWeight);
+//                graphWeight.getViewport().setMinY(40);
+//                graphWeight.getViewport().setMaxY(60);
+//                graphWeight.getViewport().setScalable(true);
 //
 //
-//        //final TextView addedprod = findViewById(R.id.etProduct);
-//        listView = findViewById(R.id.listViewProducts);
-//        inputSearch = (EditText) findViewById(R.id.inputSearch);
 //
-//        CommonUtils.showLoading(this);
-//        NetworkService.getInstance()
-//                .getJSONApi()
-//                .getProducts()
-//                .enqueue(new Callback<List<Product>>() {
-//                    @Override
-//                    public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
-//                        CommonUtils.hideLoading();
-//                        if (response.errorBody() == null && response.isSuccessful()) {
-//                            assert response.body() != null;
-//                            products = response.body();
-//                            final ProductAdapter adapter = new ProductAdapter(products, TestProdActivity.this);
-//                            //customAdapter = new ProductAdapter(products, CreateNewDishActivity.this);
+//                Calendar calendar = Calendar.getInstance();
+//                Date d1 = calendar.getTime();
+//                calendar.add(Calendar.DATE, 1);
+//                Date d2 = calendar.getTime();
+//                calendar.add(Calendar.DATE, 1);
+//                Date d3 = calendar.getTime();
 //
-//                            listView.setAdapter(adapter);
-//                            //listView.setAdapter(customAdapter);
 //
-//                            inputSearch.addTextChangedListener(new TextWatcher() {
 //
-//                                @Override
-//                                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-//                                    //Когда пользователь вводит какой-нибудь текст:
-//                                    adapter.getFilter().filter(cs);
-//                                    // CreateNewDishActivity.this.adapter.getFilter().filter(cs);
+//// you can directly pass Date objects to DataPoint-Constructor
+//// this will convert the Date to double via Date#getTime()
+//                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
+//        new DataPoint(d1, 1),
+//        new DataPoint(d2, 5),
+//        new DataPoint(d3, 3)
+//        });
 //
-//                                }
+//        graph.addSeries(series);
 //
-//                                @Override
-//                                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-//                                                              int arg3) {
-//                                }
+//// set date label formatter
+//        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(graph.getContext()));
+//        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
 //
-//                                @Override
-//                                public void afterTextChanged(Editable arg0) {
-//                                }
-//                            });
+//// set manual x bounds to have nice steps
+//        graph.getViewport().setMinX(d1.getTime());
+//        graph.getViewport().setMaxX(d3.getTime());
+//        graph.getViewport().setXAxisBoundsManual(true);
+//
+//// as we use dates as labels, the human rounding to nice readable numbers
+//// is not necessary
+//        graph.getGridLabelRenderer().setHumanRounding(false);
 //
 //
 //
 //
 //
 //
-//                            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//                                @Override
-//                                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
 //
-//                                    AlertDialog.Builder builder = new AlertDialog.Builder(TestProdActivity.this);
-//                                    builder.setMessage("Are you sure you want to delete category")
-//                                            .setCancelable(false)
-//                                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                                                @Override
-//                                                public void onClick(DialogInterface dialog, int which) {
-//                                                    Toast toast = Toast.makeText(getApplicationContext(),
-//                                                            "Good you changed your mind!", Toast.LENGTH_LONG);
-//                                                    toast.show();
-//                                                }
-//                                            })
-//                                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                                                @Override
-//                                                public void onClick(DialogInterface dialog, int which) {
-//                                                    Product product = products.get(position);
-//                                                    products.remove(product);
-//                                                    customAdapter.notifyDataSetChanged();
-//                                                    Toast toast = Toast.makeText(getApplicationContext(),
-//                                                            "You are deleted category!", Toast.LENGTH_LONG);
-//                                                    toast.show();
-//                                                }
-//                                            });
-//                                    AlertDialog alertDialog = builder.create();
-//                                    alertDialog.show();
-//                                    return true;
-//                                }
-//                            });
-//
-//                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                                @Override
-//                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                                    Product product = (Product) adapter.getItem(position);
-//                                    Product product2 = products.get(position);
-//                                   // addedprod.append(product.getName() + " ");
+//        }
 //
 //
-//                                    //Получаем вид с файла prompt.xml, который применим для диалогового окна:
-//                                    LayoutInflater li = LayoutInflater.from(context);
-//                                    View promptsView = li.inflate(R.layout.prompt, null);
+//public void initGraph(GraphView graph) {
+//        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
+//        new DataPoint(0, 1),
+//        new DataPoint(1, 5),
+//        new DataPoint(2, 3),
+//        new DataPoint(3, 2),
+//        new DataPoint(4, 5),
+//        new DataPoint(5, 6)
+//        });
+//        graph.addSeries(series);
 //
-//                                    //Создаем AlertDialog
-//                                    AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(context);
+//        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[]{
+//        new DataPoint(0, 30),
+//        new DataPoint(1, 30),
+//        new DataPoint(2, 60),
+//        new DataPoint(3, 20),
+//        new DataPoint(4, 60),
+//        new DataPoint(5, 50)
+//        });
 //
-//                                    //Настраиваем prompt.xml для нашего AlertDialog:
-//                                    mDialogBuilder.setView(promptsView);
-//
-//                                    //Настраиваем отображение поля для ввода текста в открытом диалоге:
-//                                    final EditText userInput = (EditText) promptsView.findViewById(R.id.inputWeight);
-//
-//                                    //Настраиваем сообщение в диалоговом окне:
-//                                    mDialogBuilder
-//                                            .setCancelable(false)
-//                                            .setPositiveButton("OK",
-//                                                    new DialogInterface.OnClickListener() {
-//                                                        public void onClick(DialogInterface dialog,int id) {
-//                                                            //Вводим текст и отображаем в строке ввода на основном экране:
-//                                                         //   addedprod.append(userInput.getText() + "\n");
-//
-//                                                            LayoutInflater ltInflater = getLayoutInflater();
-//                                                            LinearLayout subLayoutFieldsForBtnAdd = (LinearLayout) findViewById(R.id.subLayoutFields);
-//                                                            View view1 = ltInflater.inflate(R.layout.sub_fields_prod, subLayoutFieldsForBtnAdd, true);
-//                                                            EditText et = (EditText)findViewById(R.id.prodInList);
-//
-//                                                            et.setText(product.getName());
-//                                                        }
-//                                                    })
-//                                            .setNegativeButton("Отмена",
-//                                                    new DialogInterface.OnClickListener() {
-//                                                        public void onClick(DialogInterface dialog,int id) {
-//                                                            dialog.cancel();
-//                                                        }
-//                                                    });
-//
-//                                    //Создаем AlertDialog:
-//                                    AlertDialog alertDialog = mDialogBuilder.create();
-//
-//                                    //и отображаем его:
-//                                    alertDialog.show();
-//
-//
-//                                    // Intent intent = new Intent(ProductsActivity.this, ClickedProductActivity.class).
-//                                    //putExtra("product", product);
-//                                    //  startActivity(intent);
-//
-//
-//                                }
-//                            });
-//
-//                        } else {
-//                            products = null;
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
-//                        CommonUtils.hideLoading();
-//                        products = null;
-//                        t.printStackTrace();
-//                    }
-//                });
-//    }
-//
-//
-//
-//
-//
-//
-//    public void onClickAdd(View view) {
-//        LayoutInflater ltInflater = getLayoutInflater();
-//        LinearLayout subLayoutFieldsForBtnAdd = (LinearLayout) findViewById(R.id.subLayoutFields);
-//        View view1 = ltInflater.inflate(R.layout.sub_fields_prod, subLayoutFieldsForBtnAdd, true);
-//        EditText et = (EditText)findViewById(R.id.prodInList);
-//        et.setText("This is not the original Text defined in the XML layout !");
-//
-//       // mEditText = (EditText) findViewById(R.id.editText);
-//    }
-//
-//    public void onClickRemove(View v) {
-//        View v1 = (View) v.getParent();
-//        LinearLayout subLayoutFieldsForBtnRemove = (LinearLayout) findViewById(R.id.subLayoutFields);
-//        subLayoutFieldsForBtnRemove.removeView((LinearLayout)v1.getParent());
-//    }
-//
-////    private View.OnClickListener onClick() {
-////        return new View.OnClickListener() {
-////
-////            @Override
-////            public void onClick(View v) {
-////                mLayout.addView(createNewTextView(mEditText.getText().toString()));
-////            }
-////        };
-////    }
-////
-////    private TextView createNewTextView(String text) {
-////        final LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-////        final TextView textView = new TextView(this);
-////        textView.setLayoutParams(lparams);
-////        textView.setText("New text: " + text);
-////        return textView;
-////    }
-//}
+//        // set second scale
+//        graph.getSecondScale().addSeries(series2);
+//        // the y bounds are always manual for second scale
+//        graph.getSecondScale().setMinY(0);
+//        graph.getSecondScale().setMaxY(100);
+//        series2.setColor(Color.RED);
+
+

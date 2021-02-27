@@ -12,6 +12,12 @@ namespace CalorieCounter.Models
        
     }
 
+    public class AddVitaminViewModel
+    {
+      
+        public string VitaminName { get; set; }
+
+    }
 
 
     public class AddMyVitaminsViewModel
