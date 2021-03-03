@@ -141,7 +141,7 @@ public class ProfileActivity extends BaseActivity {
                                     @Override
                                     public void onFailure(@NonNull Call<UserView> call, @NonNull Throwable t) {
                                         CommonUtils.hideLoading();
-                                        String error = "Error occurred while getting request!";
+                                        String error = "Помилка з'єднання!";
                                         Toast toast = Toast.makeText(getApplicationContext(),
                                                 error, Toast.LENGTH_LONG);
                                         toast.show();
@@ -335,7 +335,7 @@ public class ProfileActivity extends BaseActivity {
                     @Override
                     public void onFailure(@NonNull Call<UserView> call, @NonNull Throwable t) {
                         CommonUtils.hideLoading();
-                        String error = "Error occurred while getting request!";
+                        String error = "Помилка з'єднання!";
                         Toast toast = Toast.makeText(getApplicationContext(),
                                 error, Toast.LENGTH_LONG);
                         toast.show();

@@ -68,6 +68,10 @@ public interface JSONPlaceHolderApi {
 
     @GET("/api/watersettings/watersettings")
     Call<WaterTimeView> getWaterSettings();
+
+    @POST("/api/watersettings/setdailyvolume")
+    Call<WaterTimeView> setdailyvolume(@Body int volume);
+
     @POST("/api/watersettings/setbegin")
     Call<WaterTimeView> setWaterBegin(@Body SetWaterTimeView model);
     @POST("/api/watersettings/setend")
@@ -142,7 +146,7 @@ public interface JSONPlaceHolderApi {
     @POST("/api/vitamins/addmyvitamin")
     Call<UserVitaminsView> addUserVitamin(@Body UserVitaminsView model);
     @POST("/api/vitamins/removemyvitamin")
-    Call<UserVitaminsView> removeUserVitamin(@Body long vitaminId);
+    Call<List<UserVitaminsView>>removeUserVitamin(@Body long vitaminId);
     @POST("/api/vitamins/сhangemyvitamin")
     Call<UserVitaminsView> changeUserVitamin(@Body UserVitaminsView model);
 

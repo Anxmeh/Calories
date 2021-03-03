@@ -72,7 +72,7 @@ namespace CalorieCounter.Controllers
 
 
         [HttpPost("setdailyvolume")]
-        public IActionResult SetDailyWaterVolume([FromBody] SetDailyWaterVolume model)
+        public IActionResult SetDailyWaterVolume([FromBody] int volume)
         {
             string userName;
 
@@ -108,7 +108,7 @@ namespace CalorieCounter.Controllers
                 return BadRequest("Потрібно спочатку залогінитися!");
 
             }
-            water.UserWaterVolume = model.DailyVolume;
+            water.UserWaterVolume = volume;
 
             _context.SaveChanges();
 

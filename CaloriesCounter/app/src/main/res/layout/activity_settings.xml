@@ -74,6 +74,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_weight="2"
+                            android:inputType="numberDecimal"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -108,6 +109,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:inputType="numberDecimal"
                             android:layout_weight="2" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -141,6 +143,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:inputType="numberDecimal"
                             android:layout_weight="2" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -174,6 +177,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:inputType="numberDecimal"
                             android:layout_weight="2" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -208,6 +212,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:inputType="numberDecimal"
                             android:layout_weight="2" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -241,6 +246,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:inputType="numberDecimal"
                             android:layout_weight="2" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -277,6 +283,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:inputType="numberDecimal"
                             android:layout_weight="2" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -310,6 +317,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:inputType="number"
                             android:layout_weight="2" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -336,7 +344,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        app:errorEnabled="true"
+                                                app:errorEnabled="true"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
 
@@ -345,6 +353,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:inputType="numberDecimal"
                             android:layout_weight="2" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -378,6 +387,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:inputType="numberDecimal"
                             android:layout_weight="2" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -541,7 +551,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="3"
                         android:gravity="center_vertical"
-                        android:padding="0dp"
+                        android:paddingLeft="10dp"
                         android:text="@string/userCalories"
                         android:textColor="#000000"
                         android:textSize="15sp" />
@@ -559,6 +569,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:inputType="number"
                             android:layout_weight="2" />
                     </com.google.android.material.textfield.TextInputLayout>
 

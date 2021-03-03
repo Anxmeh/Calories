@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,10 +45,13 @@ import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -65,6 +69,7 @@ import com.example.caloriescounter.network.utils.AlarmReceiver;
 import com.example.caloriescounter.network.utils.AlarmReceiverOnBoot;
 import com.example.caloriescounter.network.utils.CommonUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputLayout;
 //import com.example.caloriescounter.network.utils.MyWorker;
 
 import java.sql.Time;
@@ -73,6 +78,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -85,18 +91,19 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
     private static final int ONE_SECOND_IN_MS = 1000;
     private CircularProgressBar mCountUpBar2;
 
-
+    private String requiredFieldError = "Заповніть поле";
     private final Calendar calendar = Calendar.getInstance();
     private final Calendar calendar2 = Calendar.getInstance();
     private Calendar timerCalendar = Calendar.getInstance();
     private Date currentTime;
     private Date timeBegin, timeEnd;
+    private EditText txtUserWaterVolume;
     private WaterView waterView;
     private WaterTimeView waterSettings;
     private DateFormat timeFormat;
 
     private Button btnAdd100, btnAdd200, btnAdd300, btnAdd400, btnAdd500, btnAdd600, btnAddX;
-    private Button btnSetEnd, btnSetBegin;
+    private Button btnSetEnd, btnSetBegin, btnSetVolume;
     int wat;
     int water2;
     int beginHour, beginMinute, endHour, endMinute;
@@ -118,10 +125,12 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         super.addContentView(R.layout.activity_water);
         this.getSupportActionBar().setTitle("Лічильник води");
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         //  setContentView(R.layout.activity_water);
         timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         currentTime = Calendar.getInstance().getTime();
         txtDate = findViewById(R.id.dateAct);
+        txtUserWaterVolume = findViewById(R.id.txtUserWaterVolume);
 
         btnAdd100 = findViewById(R.id.btnAdd100);
         btnAdd200 = findViewById(R.id.btnAdd200);
@@ -132,6 +141,7 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         btnAddX = findViewById(R.id.btnAddX);
         btnSetEnd = findViewById(R.id.btnSetEnd);
         btnSetBegin = findViewById(R.id.btnSetBegin);
+        btnSetVolume = findViewById(R.id.btnSetVolume);
 
         btnAdd100.setOnClickListener(this);
         btnAdd200.setOnClickListener(this);
@@ -146,7 +156,7 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
 
 
         this.mCountUpBar2 = (CircularProgressBar) this.findViewById(R.id.countup_bar2);
-        mCountUpBar2.setMax(1500);
+      //  mCountUpBar2.setMax(1500);
         txtDate.setText(formatDate.format(currentTime));
         Locale locale = new Locale("uk","UA");
         Locale.setDefault(locale);
@@ -154,6 +164,26 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onClick(View v) {
                 showDatePicker(v);
+            }
+        });
+        btnSetVolume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setDailyWater(v);
+            }
+        });
+
+        txtUserWaterVolume.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                        || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    setDailyWater(v);
+
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -182,6 +212,8 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
                             timeEnd = timerCalendar.getTime();
 
                             btnSetEnd.setText(timeFormat.format(timeEnd));
+                            txtUserWaterVolume.setText(Integer.toString(waterSettings.getDailyVolume()));
+                            mCountUpBar2.setMax(waterSettings.getDailyVolume());
 
                         } else {
                             waterSettings = null;
@@ -190,8 +222,13 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onFailure(@NonNull Call<WaterTimeView> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         waterSettings = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -260,8 +297,13 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onFailure(@NonNull Call<WaterView> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         waterView = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -287,6 +329,8 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         int endHour = waterSettings.getEndHour();
         int beginMinute = waterSettings.getBeginMinute();
         int endMinute = waterSettings.getEndMinute();
+        int waterVolume = waterSettings.getDailyVolume();
+        int currentWatervolume = waterView.getWaterVolume();
         Log.d("Bootbegin", Integer.toString(waterSettings.getBeginHour()));
         Log.d("Bootend", Integer.toString(waterSettings.getEndHour()));
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -297,16 +341,13 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         int hour = time.get(Calendar.HOUR_OF_DAY);
 
 
-        if (hour > end ) // або випита ціль води
+        if (hour > end || currentWatervolume >= waterVolume ) // або випита ціль води
         {
+            time.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR)+1 );
             time.set(Calendar.HOUR_OF_DAY, beginHour);
             time.set(Calendar.MINUTE, beginMinute);
             time.set(Calendar.SECOND, 0);
             Log.d("Calendar after", calendar2.toString());
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
-            }
         }
         else {
             time.setTimeInMillis(System.currentTimeMillis());
@@ -318,17 +359,8 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
         }
-
         Toast.makeText(this, "Alarm set in " + time.getTime(),
                 Toast.LENGTH_LONG).show();
-
-
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
-//                + (i * 1000), pendingIntent);
-
-
-        // alarmManager.set(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), pendingIntent);
-
     }
 
     @Override
@@ -402,8 +434,13 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
 
                             @Override
                             public void onFailure(@NonNull Call<WaterTimeView> call, @NonNull Throwable t) {
-                                CommonUtils.hideLoading();
+
                                 waterSettings = null;
+                                CommonUtils.hideLoading();
+                                String error = "Помилка з'єднання";
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        error, Toast.LENGTH_LONG);
+                                toast.show();
                                 t.printStackTrace();
                             }
                         });
@@ -464,8 +501,13 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
 
                             @Override
                             public void onFailure(@NonNull Call<WaterTimeView> call, @NonNull Throwable t) {
-                                CommonUtils.hideLoading();
+
                                 waterSettings = null;
+                                CommonUtils.hideLoading();
+                                String error = "Помилка з'єднання";
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        error, Toast.LENGTH_LONG);
+                                toast.show();
                                 t.printStackTrace();
                             }
                         });
@@ -544,13 +586,63 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onFailure(@NonNull Call<WaterView> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         waterView = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
     }
+    public void setDailyWater(View v) {
+        final TextInputLayout userWaterVolumeLayout = findViewById(R.id.userWaterVolumeLayout);
+        boolean isCorrect = true;
+        if (Objects.requireNonNull(txtUserWaterVolume.getText()).toString().equals("")) {
+            userWaterVolumeLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            userWaterVolumeLayout.setError(null);
+        }
+        if (!isCorrect)
+            return;
 
+        int volume = Integer.parseInt(txtUserWaterVolume.getText().toString());
+
+        CommonUtils.showLoading(this);
+        NetworkService.getInstance()
+                .getJSONApi()
+                .setdailyvolume(volume)
+                .enqueue(new Callback<WaterTimeView>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onResponse(@NonNull Call<WaterTimeView> call, @NonNull Response<WaterTimeView> response) {
+                        CommonUtils.hideLoading();
+                        if (response.errorBody() == null && response.isSuccessful()) {
+                            assert response.body() != null;
+                            waterSettings = response.body();
+                            txtUserWaterVolume.setText(Integer.toString(waterSettings.getDailyVolume()));
+                            txtUserWaterVolume.clearFocus();
+                        } else {
+                            waterSettings = null;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<WaterTimeView> call, @NonNull Throwable t) {
+
+                        waterSettings = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
+                        t.printStackTrace();
+                    }
+                });
+    }
 
 }
 

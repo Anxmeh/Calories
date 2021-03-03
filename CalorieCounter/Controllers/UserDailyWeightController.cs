@@ -18,7 +18,6 @@ namespace CalorieCounter.Controllers
         public UserDailyWeightController(EFContext context)
         {
             _context = context;
-
         }
 
         [HttpGet("userdailyweights")]
@@ -50,16 +49,14 @@ namespace CalorieCounter.Controllers
             }
 
             var queryWeights = _context.UserDailyWeights.AsQueryable();
-                        ICollection<UserDailyWeightsViewModel> dailyWeights;
-
-         
+            ICollection<UserDailyWeightsViewModel> dailyWeights;
             dailyWeights = queryWeights.Select(d => new UserDailyWeightsViewModel
             {
                 UserId = d.UserId,
                 Weight = d.Weight,
                 DateOfWeight = d.DateOfWeight.Date,
             }).Where(u => u.UserId == user.Id)
-            .OrderBy(m=>m.DateOfWeight)
+            .OrderBy(m => m.DateOfWeight)
             .ToList();
 
             return Ok(dailyWeights);
@@ -69,7 +66,6 @@ namespace CalorieCounter.Controllers
         public IActionResult AddUserDailyWeight([FromBody] AddUserDailyWeightsViewModel model)
         {
             string userName;
-
             try
             {
                 userName = User.Claims.FirstOrDefault(x => x.Type == "name").Value;
@@ -92,7 +88,6 @@ namespace CalorieCounter.Controllers
             {
                 return BadRequest("Поганий запит!");
             }
-
 
             var dailyWeight = _context.UserDailyWeights.SingleOrDefault(d => d.UserId == user.Id && d.DateOfWeight == model.DateOfWeight);
             if (dailyWeight != null)
@@ -102,25 +97,20 @@ namespace CalorieCounter.Controllers
                 UserId = user.Id,
                 DateOfWeight = model.DateOfWeight,
                 Weight = model.Weight,
-               
+
             };
             _context.UserDailyWeights.Add(dailyWeight);
             _context.SaveChanges();
 
-
             var queryWeights = _context.UserDailyWeights.AsQueryable();
             ICollection<UserDailyWeightsViewModel> dailyWeights;
-
-
             dailyWeights = queryWeights.Select(d => new UserDailyWeightsViewModel
             {
                 UserId = d.UserId,
                 Weight = d.Weight,
                 DateOfWeight = d.DateOfWeight,
-            }).Where(u => u.UserId == user.Id)         
+            }).Where(u => u.UserId == user.Id)
             .ToList();
-            
-           //  .OrderBy(d => d.DateOfWeight)
             return Ok(dailyWeights);
         }
 
@@ -128,7 +118,6 @@ namespace CalorieCounter.Controllers
         public IActionResult EditUserDailyWeight([FromBody] AddUserDailyWeightsViewModel model)
         {
             string userName;
-
             try
             {
                 userName = User.Claims.FirstOrDefault(x => x.Type == "name").Value;
@@ -151,7 +140,6 @@ namespace CalorieCounter.Controllers
             {
                 return BadRequest("Поганий запит!");
             }
-
 
             var dailyWeight = _context.UserDailyWeights.SingleOrDefault(d => d.UserId == user.Id && d.DateOfWeight.Date == model.DateOfWeight);
             if (dailyWeight == null)
@@ -174,25 +162,12 @@ namespace CalorieCounter.Controllers
                 Weight = dailyWeight.Weight,
                 DateOfWeight = dailyWeight.DateOfWeight,
             });
-
-            //var queryWeights = _context.UserDailyWeights.AsQueryable();
-            //ICollection<UserDailyWeightsViewModel> dailyWeights;
-
-            //dailyWeights = queryWeights.Select(d => new UserDailyWeightsViewModel
-            //{
-            //    UserId = d.UserId,
-            //    Weight = d.Weight,
-            //    DateOfWeight = d.DateOfWeight,
-            //}).Where(u => u.UserId == user.Id).ToList();
-
-            //return Ok(dailyWeights);
         }
 
         [HttpPost("userweight")]
         public IActionResult GetUserWeight([FromBody] DateTime date)
         {
             string userName;
-
             try
             {
                 userName = User.Claims.FirstOrDefault(x => x.Type == "name").Value;
@@ -205,7 +180,6 @@ namespace CalorieCounter.Controllers
             if (string.IsNullOrEmpty(userName))
             {
                 return BadRequest("Потрібно спочатку залогінитися!");
-
             }
 
             var queryUser = _context.Users.AsQueryable();
@@ -217,8 +191,7 @@ namespace CalorieCounter.Controllers
             }
 
             var dailyWeight = _context.UserDailyWeights.SingleOrDefault(d => d.UserId == user.Id && d.DateOfWeight.Date == date.Date);
-
-            if (dailyWeight ==null)
+            if (dailyWeight == null)
             {
                 var weight = new UserDailyWeight
                 {
@@ -235,13 +208,12 @@ namespace CalorieCounter.Controllers
                     DateOfWeight = weight.DateOfWeight,
                 });
             }
-   
-            return Ok(new AddUserDailyWeightsViewModel {
+
+            return Ok(new AddUserDailyWeightsViewModel
+            {
                 Weight = dailyWeight.Weight,
                 DateOfWeight = dailyWeight.DateOfWeight,
             });
         }
-
-
     }
 }

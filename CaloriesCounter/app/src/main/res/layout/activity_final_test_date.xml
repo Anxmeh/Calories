@@ -3,21 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="30dp">
+    android:background="@drawable/background"
+    android:noHistory="true"
+>
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
-        android:layout_width="match_parent"
-        android:layout_height="300dp" />
+<!--    <com.github.mikephil.charting.charts.LineChart-->
+<!--        android:id="@+id/chart"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="300dp" />-->
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/reportingChart"
         android:layout_width="match_parent"
-        android:layout_height="230dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="75dp"
+        android:paddingTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:elevation="5dp"
         android:background="@color/white"
-        android:elevation="10dp"
         />
+
+
 </LinearLayout>

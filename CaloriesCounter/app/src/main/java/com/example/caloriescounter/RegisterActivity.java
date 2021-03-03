@@ -133,7 +133,7 @@ public class RegisterActivity extends BaseActivity {
                     @Override
                     public void onFailure(@NonNull Call<Tokens> call, @NonNull Throwable t) {
                         CommonUtils.hideLoading();
-                        String error = "Error occurred while getting request!";
+                        String error = "Помилка з'єднання!";
                         Toast toast = Toast.makeText(getApplicationContext(),
                                 error, Toast.LENGTH_LONG);
                         toast.show();

@@ -40,7 +40,7 @@
                 android:text="Date"
                 android:drawableLeft="@drawable/ic_calendar"
                 android:drawablePadding="20dp"
-                android:textColor="#743000"
+                android:textColor="@color/Indigo"
                 android:textSize="20sp" />
 
             <Button
@@ -66,7 +66,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="5dp"
             android:text="@string/weightToday"
-            android:textColor="#743000"
+            android:textColor="@color/Indigo"
             android:textSize="20sp" />
 
         <TextView
@@ -84,7 +84,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="5dp"
             android:text="@string/kg"
-            android:textColor="#743000"
+            android:textColor="@color/Indigo"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -242,7 +242,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/MyMenu"
                     android:textSize="20sp"
-                    android:textColor="#743000"
+                    android:textColor="@color/Indigo"
                     android:layout_gravity="center_horizontal"/>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -263,7 +263,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/MyVitamins"
                     android:textSize="20sp"
-                    android:textColor="#743000"
+                    android:textColor="@color/Indigo"
                     android:layout_gravity="center_horizontal"/>
 
                 <androidx.recyclerview.widget.RecyclerView

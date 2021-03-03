@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -296,6 +298,27 @@ namespace CalorieCounter.Controllers
                 }
 
                 await _signInManager.SignInAsync(dbUser, isPersistent: false);
+
+                //var emailMessage = new MimeMessage();
+
+                //emailMessage.From.Add(new MailboxAddress("Peter", "noreply@karpaty.tk"));
+                //emailMessage.To.Add(new MailboxAddress("", "77dasha0377@gmail.com"));
+                //emailMessage.Subject = "Title---";
+                //emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+                //{
+                //    Text = "Efefe---f"
+                //};
+
+                //using (var client = new SmtpClient())
+                //{
+                //    //client.Connect("smtp.gmail.com", 587, true);
+                //    //client.Authenticate("itstudentyre@gmail.com", "user@karpaty.tk");
+                //    client.Connect("karpaty.tk", 587, true);
+                //    client.Authenticate("user@karpaty.tk", "Qwerty-1");
+                //    client.Send(emailMessage);
+
+                //    client.Disconnect(true);
+                //}
 
                 return Ok(
                      new

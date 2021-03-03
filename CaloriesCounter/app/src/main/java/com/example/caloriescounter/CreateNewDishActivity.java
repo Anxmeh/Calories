@@ -237,8 +237,13 @@ public class CreateNewDishActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         products = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання!";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });

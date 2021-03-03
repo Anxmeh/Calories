@@ -150,8 +150,12 @@ public class LoginActivity extends BaseActivity {
 
                                         @Override
                                         public void onFailure(@NonNull Call<UserView> call, @NonNull Throwable t) {
+                                                                                   userProfile = null;
                                             CommonUtils.hideLoading();
-                                            userProfile = null;
+                                            String error = "Помилка з'єднання!";
+                                            Toast toast = Toast.makeText(getApplicationContext(),
+                                                    error, Toast.LENGTH_LONG);
+                                            toast.show();
                                             t.printStackTrace();
                                         }
                                     });
@@ -286,8 +290,13 @@ public class LoginActivity extends BaseActivity {
 
                                             @Override
                                             public void onFailure(@NonNull Call<UserView> call, @NonNull Throwable t) {
-                                                CommonUtils.hideLoading();
+
                                                 userProfile = null;
+                                                CommonUtils.hideLoading();
+                                                String error = "Помилка з'єднання!";
+                                                Toast toast = Toast.makeText(getApplicationContext(),
+                                                        error, Toast.LENGTH_LONG);
+                                                toast.show();
                                                 t.printStackTrace();
                                             }
                                         });
@@ -312,7 +321,7 @@ public class LoginActivity extends BaseActivity {
                         @Override
                         public void onFailure(@NonNull Call<Tokens> call, @NonNull Throwable t) {
                             CommonUtils.hideLoading();
-                            String error = "Error occurred while getting request!";
+                            String error = "Помилка з'єднання!";
                             Toast toast = Toast.makeText(getApplicationContext(),
                                     error, Toast.LENGTH_LONG);
                             toast.show();

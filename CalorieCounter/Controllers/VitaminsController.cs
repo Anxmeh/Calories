@@ -271,7 +271,38 @@ namespace CalorieCounter.Controllers
             else
                 return BadRequest(new { invalid = "Не знайдено" });
 
-            return Ok();
+            ICollection<VitaminSettingsViewModel> userVitamins;
+            var queryVitaminSettings = _context.VitaminSettings.AsQueryable();
+            userVitamins = queryVitaminSettings.Select(d => new VitaminSettingsViewModel
+            {
+                UserId = d.UserId,
+                VitaminId = d.VitaminId,
+                Amount = d.Amount,
+
+            }).Where(u => u.UserId == user.Id).ToList();
+
+            var queryVitamins = _context.Vitamins.AsQueryable();
+            ICollection<VitaminsViewModel> allVitamins;
+
+            allVitamins = queryVitamins.Select(p => new VitaminsViewModel
+            {
+                Id = p.Id,
+                VitaminName = p.VitaminName,
+
+            }).ToList();
+
+            var result = userVitamins.Join(allVitamins,
+             d => d.VitaminId,
+             p => p.Id,
+             (d, p) => new AddMyVitaminsViewModel
+             {
+                 VitaminId = d.VitaminId,
+                 Amount = d.Amount,
+                 VitaminName = p.VitaminName,
+             }); // результат
+
+
+            return Ok(result);
         }
 
 
@@ -387,8 +418,8 @@ namespace CalorieCounter.Controllers
 
             }
 
-            if (userVitamins.Count > daily.Count)
-            {
+            //if (userVitamins.Count > daily.Count)
+            //{
 
 
                 foreach (var vitamin in userVitamins)
@@ -433,7 +464,7 @@ namespace CalorieCounter.Controllers
                         }).Where(u => u.UserId == user.Id && u.DateOfVitamin.Date == date.Date).ToList();
                     }
                 }
-            }
+            //}
 
 
 

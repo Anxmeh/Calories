@@ -93,7 +93,7 @@ namespace CalorieCounter.Controllers
             }
 
             user.UserSettings.Age = model.Age;
-            user.UserSettings.Weight = model.Weight; //перевырка на рост в см
+            user.UserSettings.Weight = model.Weight;
             user.UserSettings.Height = model.Height;
             user.UserSettings.Chest = model.Chest;
             user.UserSettings.Waist = model.Waist;
@@ -118,15 +118,11 @@ namespace CalorieCounter.Controllers
                 user.UserSettings.Calories = Math.Round(((447.6 + (9.2 * user.UserSettings.Weight) +
                 (3.1 * user.UserSettings.Height) - (4.3 * user.UserSettings.Age)) * user.UserSettings.Activity), 2);
 
-            // Формула для мужчин: 495 / (1.0324 - 0.19077(log(Объем талии - объем шеи)) + 0.15456(log(Рост))) - 450
-
-            //Фомула для женщин: 495 / (1.29579 - 0.35004(log(Объем талии + Объем бедер - Объем шеи)) + 0.22100(log(Рост))) - 450
-
-            if (user.UserSettings.Sex == true) //male
+            if (user.UserSettings.Sex == true)
                 user.UserSettings.FatPercentage = Math.Round(user.UserSettings.FatPercentage = 495 / (1.0324 - 0.19077 *
                     (Math.Log10(user.UserSettings.Waist - user.UserSettings.Neck)) +
                    0.15456 * (Math.Log10(user.UserSettings.Height))) - 450, 2);
-            else if (user.UserSettings.Sex == false) //female 
+            else if (user.UserSettings.Sex == false) 
                 user.UserSettings.FatPercentage = Math.Round(user.UserSettings.FatPercentage = 495 / (1.29579 - 0.35004 * (Math.Log10(user.UserSettings.Waist + user.UserSettings.Hips -
                      user.UserSettings.Neck)) + 0.22100 * (Math.Log10(user.UserSettings.Height))) - 450, 2);
 

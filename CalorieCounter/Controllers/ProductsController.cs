@@ -28,13 +28,9 @@ namespace CalorieCounter.Controllers
          [HttpGet("products")]
         public IActionResult GetAllProducts()
         {
-           
-
-            var query = _context.Products.AsQueryable();
-
+                       var query = _context.Products.AsQueryable();
             ICollection<ProductViewModel> result;
-
-            result = query.Select(p => new ProductViewModel
+                        result = query.Select(p => new ProductViewModel
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -64,7 +60,6 @@ namespace CalorieCounter.Controllers
             _context.SaveChanges();
             _context.ProductsInDish.RemoveRange(_context.ProductsInDish);
             _context.SaveChanges();
-
           
             return Ok(new ProductViewModel
             {
@@ -75,24 +70,11 @@ namespace CalorieCounter.Controllers
                 Fat = product.Fat
             });
         }
-
-        //[HttpPost("removeproduct")]
-        //public IActionResult RemoveProduct([FromBody] RemoveProductViewModel model)
-        //{
-        //    var product = _context.Products.SingleOrDefault(p => p.Name == model.Name);
-        //    if (product == null)
-        //        return BadRequest(new { invalid = "Not found" });
-            
-        //    _context.Products.Remove(product);
-        //    _context.SaveChanges();
-        //    return Ok();
-        //}
-
+  
         [HttpPost("addproducttodish")]
         public IActionResult AddProductToDish([FromBody] AddDishViewModel model)
         {
-            
-            var product =  new Dish
+                        var product =  new Dish
             {
                 ProductName = model.ProductName,
                 ProductCalories = model.ProductCalories,
@@ -114,6 +96,7 @@ namespace CalorieCounter.Controllers
                 ProductWeight = product.ProductWeight
             });
         }
+
         [HttpPost("removeproduct")]
         public IActionResult RemoveProduct([FromBody]int productId)
         {
@@ -139,7 +122,6 @@ namespace CalorieCounter.Controllers
             _context.ProductsInDish.Remove(product);
             _context.SaveChanges();
 
-            //////////
             var query = _context.ProductsInDish.AsQueryable();
             ICollection<DishViewModel> ingredients;
 
@@ -162,17 +144,16 @@ namespace CalorieCounter.Controllers
 
             foreach (var item in ingredients)
             {
-                double cal = item.ProductCalories * item.ProductWeight / 100;
-                double protein = item.ProductProtein * item.ProductWeight / 100;
-                double carb = item.ProductCarbohydrate * item.ProductWeight / 100;
-                double fat = item.ProductFat * item.ProductWeight / 100;
+                double cal = Math.Round(item.ProductCalories * item.ProductWeight / 100, 2);
+                double protein = Math.Round(item.ProductProtein * item.ProductWeight / 100, 2);
+                double carb = Math.Round(item.ProductCarbohydrate * item.ProductWeight / 100, 2);
+                double fat = Math.Round(item.ProductFat * item.ProductWeight / 100 ,2);
                 calories += cal;
                 proteins += protein;
                 carbs += carb;
                 fats += fat;
                 weight += item.ProductWeight;
             }
-
 
             return Ok(new ResultDishViewModel
             {
@@ -182,9 +163,7 @@ namespace CalorieCounter.Controllers
                 DishCarbohydrate = carbs,
                 DishFat = fats,
                 DishProtein = proteins,
-            }); ;
-
-/////////////////////////
+            }); 
         }
 
         [HttpGet("testtest")]

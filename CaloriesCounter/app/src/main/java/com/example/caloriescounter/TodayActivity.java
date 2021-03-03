@@ -549,10 +549,10 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
                                     @Override
                                     public void onFailure(@NonNull Call<List<DailyMenuView>> call, @NonNull Throwable t) {
                                         CommonUtils.hideLoading();
-                                        String error = "Error occurred while getting request!";
-//                        Toast toast = Toast.makeText(getApplicationContext(),
-//                                error, Toast.LENGTH_LONG);
-//                        toast.show();
+                                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                                         t.printStackTrace();
                                     }
                                 });
@@ -617,8 +617,13 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
 
                     @Override
                     public void onFailure(@NonNull Call<List<DailyMenuView>> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         dailyMenu = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -657,8 +662,13 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
 
                     @Override
                     public void onFailure(@NonNull Call<UserSettingsView> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         userSettings = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -775,8 +785,13 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
 
                     @Override
                     public void onFailure(@NonNull Call<List<UserVitaminsDailyView>> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         userVitamins = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -838,10 +853,10 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
                     @Override
                     public void onFailure(@NonNull Call<VitaminDailyCheckView> call, @NonNull Throwable t) {
                         CommonUtils.hideLoading();
-                        String error = "Error occurred while getting request!";
-//                        Toast toast = Toast.makeText(getApplicationContext(),
-//                                error, Toast.LENGTH_LONG);
-//                        toast.show();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -883,7 +898,7 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
                     @Override
                     public void onFailure(@NonNull Call<AddUserDailyWeightViewModel> call, @NonNull Throwable t) {
                         CommonUtils.hideLoading();
-                        String error = "Error occurred while getting request!";
+                        String error = "Помилка з'єднання";
                         Toast toast = Toast.makeText(getApplicationContext(),
                                 error, Toast.LENGTH_LONG);
                         toast.show();
@@ -944,7 +959,7 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
                                             @Override
                                             public void onFailure(@NonNull Call<AddUserDailyWeightViewModel> call, @NonNull Throwable t) {
                                                 CommonUtils.hideLoading();
-                                                String error = "Error occurred while getting request!";
+                                                String error = "Помилка з'єднання";
                                                 Toast toast = Toast.makeText(getApplicationContext(),
                                                         error, Toast.LENGTH_LONG);
                                                 toast.show();

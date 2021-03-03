@@ -17,6 +17,18 @@ public class WaterTimeView {
     @Expose
     private int endMinute;
 
+    @SerializedName("dailyVolume")
+    @Expose
+    private int dailyVolume;
+
+    public int getDailyVolume() {
+        return dailyVolume;
+    }
+
+    public void setDailyVolume(int dailyVolume) {
+        this.dailyVolume = dailyVolume;
+    }
+
     public int getBeginHour() {
         return beginHour;
     }
@@ -52,10 +64,11 @@ public class WaterTimeView {
     public WaterTimeView() {
     }
 
-    public WaterTimeView(int beginHour, int beginMinute, int endHour, int endMinute) {
+    public WaterTimeView(int beginHour, int beginMinute, int endHour, int endMinute, int dailyVolume) {
         this.beginHour = beginHour;
         this.beginMinute = beginMinute;
         this.endHour = endHour;
         this.endMinute = endMinute;
+        this.dailyVolume = dailyVolume;
     }
 }

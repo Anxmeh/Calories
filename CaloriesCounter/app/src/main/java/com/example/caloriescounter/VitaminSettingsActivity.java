@@ -290,7 +290,7 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
                                                     @Override
                                                     public void onFailure(@NonNull Call<List<Vitamin>> call, @NonNull Throwable t) {
                                                         CommonUtils.hideLoading();
-                                                        String error = "Error occurred while getting request!";
+                                                        String error = "Посмилка з'єднання";
                                                         Toast toast = Toast.makeText(getApplicationContext(),
                                                                 error, Toast.LENGTH_LONG);
                                                         toast.show();
@@ -386,8 +386,12 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
 
                     @Override
                     public void onFailure(@NonNull Call<List<Vitamin>> call, @NonNull Throwable t) {
+                                          vitamins = null;
                         CommonUtils.hideLoading();
-                        vitamins = null;
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -418,8 +422,13 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
 
                     @Override
                     public void onFailure(@NonNull Call<List<UserVitaminsView>> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         userVitamins = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -449,8 +458,13 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
 
                     @Override
                     public void onFailure(@NonNull Call<UserVitaminsView> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         userVitamin = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -479,21 +493,23 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
                 .setPositiveButton("Видалити", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+//                        userVitamins.remove(vitamin);
+//                        adapter.notifyDataSetChanged();
                         userVitamins.remove(vitamin);
                         adapter.notifyDataSetChanged();
-
 //
                         NetworkService.getInstance()
                                 .getJSONApi()
                                 .removeUserVitamin(vitamin.getVitaminId())
-                                .enqueue(new Callback<UserVitaminsView>() {
+                                .enqueue(new Callback<List<UserVitaminsView>>() {
                                     @Override
-                                    public void onResponse(@NonNull Call<UserVitaminsView> call, @NonNull Response<UserVitaminsView> response) {
+                                    public void onResponse(@NonNull Call<List<UserVitaminsView>> call, @NonNull Response<List<UserVitaminsView>> response) {
                                         CommonUtils.hideLoading();
                                         if (response.errorBody() == null && response.isSuccessful()) {
                                             assert response.body() != null;
-
-
+                                            userVitamins = response.body();
+//                                            userVitamins.remove(vitamin);
+                        adapter.notifyDataSetChanged();
                                         } else {
                                             String errorMessage;
                                             try {
@@ -510,12 +526,12 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
                                     }
 
                                     @Override
-                                    public void onFailure(@NonNull Call<UserVitaminsView> call, @NonNull Throwable t) {
+                                    public void onFailure(@NonNull Call<List<UserVitaminsView>> call, @NonNull Throwable t) {
                                         CommonUtils.hideLoading();
-                                        String error = "Error occurred while getting request!";
-//                        Toast toast = Toast.makeText(getApplicationContext(),
-//                                error, Toast.LENGTH_LONG);
-//                        toast.show();
+                                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                                         t.printStackTrace();
                                     }
                                 });
@@ -573,8 +589,13 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
 
                                             @Override
                                             public void onFailure(@NonNull Call<UserVitaminsView> call, @NonNull Throwable t) {
-                                                CommonUtils.hideLoading();
+
                                                 userVitamin = null;
+                                                CommonUtils.hideLoading();
+                                                String error = "Помилка з'єднання";
+                                                Toast toast = Toast.makeText(getApplicationContext(),
+                                                        error, Toast.LENGTH_LONG);
+                                                toast.show();
                                                 t.printStackTrace();
                                             }
                                         });
@@ -611,8 +632,13 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
 
                     @Override
                     public void onFailure(@NonNull Call<UserVitaminsView> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         userVitamin = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -647,8 +673,13 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
 
                     @Override
                     public void onFailure(@NonNull Call<UserVitaminsView> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         userVitamin = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });

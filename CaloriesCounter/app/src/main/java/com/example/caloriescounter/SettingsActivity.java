@@ -222,8 +222,12 @@ public class SettingsActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(@NonNull Call<UserSettingsView> call, @NonNull Throwable t) {
+                                               userSettings = null;
                         CommonUtils.hideLoading();
-                        userSettings = null;
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -421,8 +425,14 @@ public class SettingsActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(@NonNull Call<UserSettingsView> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         userSettings = null;
+
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });
@@ -488,8 +498,13 @@ public class SettingsActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(@NonNull Call<UserSettingsView> call, @NonNull Throwable t) {
-                        CommonUtils.hideLoading();
+
                         userSettings = null;
+                        CommonUtils.hideLoading();
+                        String error = "Помилка з'єднання";
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                error, Toast.LENGTH_LONG);
+                        toast.show();
                         t.printStackTrace();
                     }
                 });

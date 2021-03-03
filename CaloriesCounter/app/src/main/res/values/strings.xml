@@ -66,4 +66,5 @@
     <string name="MyMenu">Моє меню</string>
     <string name="weightToday">Вага цього дня:</string>
     <string name="kg">кг</string>
+    <string name="WaterVolume">Ліміт води в день</string>
 </resources>
