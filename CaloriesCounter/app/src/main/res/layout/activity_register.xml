@@ -12,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="70dp">
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/chooseImageRegister"
@@ -32,7 +33,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_emailRegister"
+                android:id="@+id/inputEmailRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_password"
@@ -52,7 +53,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_passwordRegister"
+                android:id="@+id/inputPasswordRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_password"
@@ -72,7 +73,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_passwordConfirmRegister"
+                android:id="@+id/inputPasswordConfirmRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_password"
@@ -102,5 +103,14 @@
             android:onClick="onClickRegister"
             android:background="@drawable/button_gradient"
             android:text="@string/signUp" />
+
+        <com.google.android.gms.common.SignInButton
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/signInGoogle"
+            />
     </LinearLayout>
 </ScrollView>

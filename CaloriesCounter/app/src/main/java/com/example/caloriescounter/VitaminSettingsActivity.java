@@ -493,8 +493,7 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
                 .setPositiveButton("Видалити", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        userVitamins.remove(vitamin);
-//                        adapter.notifyDataSetChanged();
+
                         userVitamins.remove(vitamin);
                         adapter.notifyDataSetChanged();
 //
@@ -507,7 +506,7 @@ public class VitaminSettingsActivity extends BaseActivity implements OnDeleteLis
                                         CommonUtils.hideLoading();
                                         if (response.errorBody() == null && response.isSuccessful()) {
                                             assert response.body() != null;
-                                            userVitamins = response.body();
+                                        //    userVitamins = response.body();
 //                                            userVitamins.remove(vitamin);
                         adapter.notifyDataSetChanged();
                                         } else {

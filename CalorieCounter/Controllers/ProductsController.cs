@@ -25,12 +25,12 @@ namespace CalorieCounter.Controllers
             _env = env;
         }
 
-         [HttpGet("products")]
+        [HttpGet("products")]
         public IActionResult GetAllProducts()
         {
-                       var query = _context.Products.AsQueryable();
+            var query = _context.Products.AsQueryable();
             ICollection<ProductViewModel> result;
-                        result = query.Select(p => new ProductViewModel
+            result = query.Select(p => new ProductViewModel
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -60,7 +60,7 @@ namespace CalorieCounter.Controllers
             _context.SaveChanges();
             _context.ProductsInDish.RemoveRange(_context.ProductsInDish);
             _context.SaveChanges();
-          
+
             return Ok(new ProductViewModel
             {
                 Name = product.Name,
@@ -70,11 +70,11 @@ namespace CalorieCounter.Controllers
                 Fat = product.Fat
             });
         }
-  
+
         [HttpPost("addproducttodish")]
         public IActionResult AddProductToDish([FromBody] AddDishViewModel model)
         {
-                        var product =  new Dish
+            var product = new Dish
             {
                 ProductName = model.ProductName,
                 ProductCalories = model.ProductCalories,
@@ -98,7 +98,7 @@ namespace CalorieCounter.Controllers
         }
 
         [HttpPost("removeproduct")]
-        public IActionResult RemoveProduct([FromBody]int productId)
+        public IActionResult RemoveProduct([FromBody] int productId)
         {
             var product = _context.Products.SingleOrDefault(p => p.Id == productId);
             if (product != null)
@@ -147,7 +147,7 @@ namespace CalorieCounter.Controllers
                 double cal = Math.Round(item.ProductCalories * item.ProductWeight / 100, 2);
                 double protein = Math.Round(item.ProductProtein * item.ProductWeight / 100, 2);
                 double carb = Math.Round(item.ProductCarbohydrate * item.ProductWeight / 100, 2);
-                double fat = Math.Round(item.ProductFat * item.ProductWeight / 100 ,2);
+                double fat = Math.Round(item.ProductFat * item.ProductWeight / 100, 2);
                 calories += cal;
                 proteins += protein;
                 carbs += carb;
@@ -163,7 +163,7 @@ namespace CalorieCounter.Controllers
                 DishCarbohydrate = carbs,
                 DishFat = fats,
                 DishProtein = proteins,
-            }); 
+            });
         }
 
         [HttpGet("testtest")]
@@ -184,7 +184,7 @@ namespace CalorieCounter.Controllers
 
 
             var query = _context.Products.AsQueryable();
-                        ICollection<ProductViewModel> products;
+            ICollection<ProductViewModel> products;
 
             products = query.Select(p => new ProductViewModel
             {
@@ -200,22 +200,22 @@ namespace CalorieCounter.Controllers
                          join p in products on d.ProductId equals p.Id
                          select new { UserId = d.UserId, Weight = d.ProductWeight, ProdName = p.Name };
 
-            
 
-          
+
+
 
             var result4 = daily.Join(products, // второй набор
              d => d.ProductId, // свойство-селектор объекта из первого набора
              p => p.Id, // свойство-селектор объекта из второго набора
              (d, p) => new { UserId = d.UserId, Weight = d.ProductWeight, ProdName = p.Name }); // результат
 
-            var result5 = daily.Join(products, 
+            var result5 = daily.Join(products,
              d => d.ProductId,
-             p => p.Id, 
+             p => p.Id,
              (d, p) => new TestJoinViewModel
-             { 
+             {
                  UserId = d.UserId,
-                 ProductWeight = d.ProductWeight, 
+                 ProductWeight = d.ProductWeight,
                  ProductName = p.Name,
                  ProductProtein = p.Protein
              }); // результат

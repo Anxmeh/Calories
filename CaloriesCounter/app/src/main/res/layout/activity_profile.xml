@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:hint="Прізвище"
+            android:hint="@string/Surname"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:hint="Дата народження"
+            android:hint="@string/birthDate"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -102,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:hint="Телефон"
+            android:hint="@string/phone"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText

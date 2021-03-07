@@ -48,37 +48,27 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //  setContentView(R.layout.activity_base);
-
         super.onCreate(savedInstanceState);
         mContext = BaseActivity.this;
         setContentView(R.layout.activity_base);
 
-        homeToolbar = findViewById(R.id.home_toolbar);
-       // homeToolbar.setTitle("Меню на сьогодні");
+        homeToolbar = findViewById(R.id.homeToolbar);
         setSupportActionBar(homeToolbar);
-
-        txtTitle = findViewById(R.id.title_home);
-
+        txtTitle = findViewById(R.id.titleHome);
         drawerLayout = findViewById(R.id.drawerLayout);
         NavigationView navigationView = findViewById(R.id.navigation);
+
         navigationView.bringToFront();
         View headerView = navigationView.getHeaderView(0);
-        TextView nav_email = (TextView) headerView.findViewById(R.id.header);
-        TextView nav_user = (TextView) headerView.findViewById(R.id.subheader);
-       // nav_user.setText("NEWHEADER");
-
-        //txtTitle.setText("Hohoh");
+        TextView navUser = (TextView) headerView.findViewById(R.id.header);
+        TextView navEmail = (TextView) headerView.findViewById(R.id.subheader);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                //.requestIdToken(getString(R.string.default_web_client_id))
                 .requestIdToken("951922290898-kgfog8u4i0q0qo8ms93817n7aejv746c.apps.googleusercontent.com")
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
         sessionManager = SessionManager.getInstance(this);
-
         mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -92,44 +82,14 @@ public class BaseActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         if (sessionManager.isLogged) {
-            String  login = sessionManager.fetchUserLogin();
-            nav_user.setText(login);
-            String  name = sessionManager.fetchUserName();
-            nav_email.setText(name);
-
-//            CommonUtils.showLoading(this);
-//            NetworkService.getInstance()
-//                    .getJSONApi()
-//                    .profile()
-//                    .enqueue(new Callback<UserView>() {
-//                        @SuppressLint("SetTextI18n")
-//                        @Override
-//                        public void onResponse(@NonNull Call<UserView> call, @NonNull Response<UserView> response) {
-//                            CommonUtils.hideLoading();
-//                            if (response.errorBody() == null && response.isSuccessful()) {
-//                                assert response.body() != null;
-//                                userProfile = response.body();
-//                                nav_user.setText(userProfile.getName());
-//                                nav_email.setText(userProfile.getEmail());
-//
-//                            } else {
-//                                userProfile = null;
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(@NonNull Call<UserView> call, @NonNull Throwable t) {
-//                            CommonUtils.hideLoading();
-//                            userProfile = null;
-//                            t.printStackTrace();
-//                        }
-//                    });
+            String login = sessionManager.fetchUserLogin();
+            navEmail.setText(login);
+            String name = sessionManager.fetchUserName();
+            navUser.setText(name);
+        } else {
+            navEmail.setText("Привіт, Гість");
+            navUser.setText("");
         }
-        else {
-            nav_user.setText("Привіт, Гість");
-            nav_email.setText("");
-        }
-
     }
 
     @Override
@@ -139,8 +99,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void addContentView(int layoutId) {
-        //homeToolbar.setTitle("Меню на сьогодні");
-        //setSupportActionBar(homeToolbar);
         LayoutInflater inflater = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(layoutId, null, false);
@@ -151,10 +109,10 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onNavItemSelected(MenuItem menuItem) {
         Intent intent;
         Toast toast;
-        // Handle item selection
         switch (menuItem.getItemId()) {
             case R.id.main:
-                drawerLayout.closeDrawers();
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 break;
             case R.id.products:
                 intent = new Intent(this, ProductsActivity.class);
@@ -188,15 +146,7 @@ public class BaseActivity extends AppCompatActivity {
                 intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.forTest:
-                intent = new Intent(this, TestProdActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.forTest2:
-                intent = new Intent(this, WeightStatActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.forTest3:
+            case R.id.weightStatistic:
                 intent = new Intent(this, FinalTestDateActivity.class);
                 startActivity(intent);
                 break;
@@ -210,12 +160,7 @@ public class BaseActivity extends AppCompatActivity {
                 break;
             case R.id.logout:
                 sessionManager = SessionManager.getInstance(this);
-                String message = "See you later!";
-               // textView.setText(message);
                 sessionManager.logout();
-                toast = Toast.makeText(getApplicationContext(),
-                        "You have been signed out successfully", Toast.LENGTH_LONG);
-                toast.show();
                 mGoogleSignInClient.signOut();
 
                 NetworkService.getInstance()
@@ -226,14 +171,11 @@ public class BaseActivity extends AppCompatActivity {
                             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                                 CommonUtils.hideLoading();
                                 if (response.errorBody() == null && response.isSuccessful()) {
-                                 //   assert response.body() != null;
-                                  //  addedProduct = response.body();
-
                                     String succeed = "Успішно";
                                     Toast toast = Toast.makeText(getApplicationContext(),
                                             succeed, Toast.LENGTH_LONG);
                                     toast.show();
-                                                                   } else {
+                                } else {
                                     String errorMessage;
                                     try {
                                         assert response.errorBody() != null;
@@ -258,15 +200,6 @@ public class BaseActivity extends AppCompatActivity {
                                 t.printStackTrace();
                             }
                         });
-
-
-
-
-
-
-
-
-               // drawerLayout.closeDrawers();
                 intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;

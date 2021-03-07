@@ -8,15 +8,13 @@
     android:orientation="vertical"
     tools:context=".TodayActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="65dp"
         android:layout_marginRight="10dp"
         android:orientation="vertical">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,9 +35,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginLeft="5dp"
-                android:text="Date"
                 android:drawableLeft="@drawable/ic_calendar"
                 android:drawablePadding="20dp"
+                android:text="Date"
                 android:textColor="@color/Indigo"
                 android:textSize="20sp" />
 
@@ -52,45 +50,45 @@
                 android:gravity="start"
                 android:onClick="onClickNextDate"
                 android:textAlignment="textStart" />
-
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <TextView
-                       android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
-            android:text="@string/weightToday"
-            android:textColor="@color/Indigo"
-            android:textSize="20sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text="@string/weightToday"
+                android:textColor="@color/Indigo"
+                android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/txtTodayWeight"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
-            android:drawableLeft="@drawable/ic_edit"
-            android:drawablePadding="20dp"
-            android:textColor="#743000"
-            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/txtTodayWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:drawableLeft="@drawable/ic_edit"
+                android:drawablePadding="20dp"
+                android:textColor="#743000"
+                android:textSize="20sp" />
 
-        <TextView
-                      android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
-            android:text="@string/kg"
-            android:textColor="@color/Indigo"
-            android:textSize="20sp" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:text="@string/kg"
+                android:textColor="@color/Indigo"
+                android:textSize="20sp" />
+        </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:scrollbars="none">
 
             <LinearLayout
@@ -201,49 +199,23 @@
                             android:background="@drawable/background_carbs_bar"
                             android:gravity="center" />
                     </LinearLayout>
-
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/DarkGrey"
                     android:layout_height="1sp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"/>
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/DarkGrey" />
 
-
-                <!--        <ScrollView-->
-                <!--            android:layout_width="match_parent"-->
-                <!--            android:layout_height="wrap_content">-->
-
-                <!--            <LinearLayout-->
-                <!--                android:layout_width="match_parent"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:orientation="vertical">-->
-
-
-<!--                <EditText-->
-<!--                    android:id="@+id/inputSearch"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:hint="Пошук..."-->
-<!--                    android:inputType="text" />-->
-
-<!--                <ListView-->
-<!--                    android:id="@+id/listViewProducts"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="70dp"-->
-<!--                    android:layout_margin="10dp"-->
-<!--                    android:horizontalSpacing="5dp"-->
-<!--                    android:numColumns="1"-->
-<!--                    android:verticalSpacing="5dp" />-->
                 <TextView
                     android:id="@+id/myMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:text="@string/MyMenu"
-                    android:textSize="20sp"
                     android:textColor="@color/Indigo"
-                    android:layout_gravity="center_horizontal"/>
+                    android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
@@ -252,25 +224,24 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/DarkGrey"
                     android:layout_height="1sp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"/>
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/DarkGrey" />
 
                 <TextView
                     android:id="@+id/myVitamins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:text="@string/MyVitamins"
-                    android:textSize="20sp"
                     android:textColor="@color/Indigo"
-                    android:layout_gravity="center_horizontal"/>
+                    android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_vit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/floating_action_button"
@@ -280,15 +251,8 @@
                     android:layout_margin="16dp"
                     android:background="@drawable/home_toolbar_gradient"
                     android:contentDescription="@string/addFab"
-                    app:srcCompat="@drawable/ic_plus_24"/>
-
-
+                    app:srcCompat="@drawable/ic_plus_24" />
             </LinearLayout>
-
-
-
         </ScrollView>
-
     </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

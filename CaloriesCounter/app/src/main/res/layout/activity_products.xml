@@ -1,71 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
- <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-        tools:ignore="ExtraText"
-    tools:context=".ProductsActivity"
     android:noHistory="true"
-    android:scrollbars="none">
-
-<!--    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
-
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent">-->
+    android:scrollbars="none"
+    tools:context=".ProductsActivity"
+    tools:ignore="ExtraText">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="65dp"
         android:layout_marginRight="20dp"
+        android:paddingBottom="10dp" />
 
-        android:paddingBottom="10dp"
-        />
-
-<!--     <View-->
-<!--         android:layout_width="match_parent"-->
-<!--         android:layout_height="40dp">-->
-
-<!--     </View>-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button"
+        android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         android:background="@drawable/home_toolbar_gradient"
         android:contentDescription="@string/addFab"
-        app:srcCompat="@drawable/ic_plus_24"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-<!--</ScrollView>-->
+        app:srcCompat="@drawable/ic_plus_24" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:background="@drawable/background"-->
-<!--    android:orientation="vertical"-->
-<!--    tools:context=".ProductsActivity">-->
-<!--    <TextView-->
-<!--        android:id="@+id/productName"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:height="100dp"-->
-<!--        android:text="@string/productName" />-->
-
-<!--    <GridView-->
-<!--        android:id="@+id/gridViewProducts"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="10dp"-->
-<!--        android:horizontalSpacing="5dp"-->
-<!--        android:numColumns="1"-->
-<!--        android:verticalSpacing="5dp" />-->
-<!--</LinearLayout>-->

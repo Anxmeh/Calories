@@ -1,197 +1,176 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:orientation="vertical"
-    android:id="@+id/drawerLayout"
     android:noHistory="true"
+    android:orientation="vertical"
     tools:context=".RecyclerActivity">
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="65dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="65dp">
-
-
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/allIngredients"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/Dish"
-            android:textColor="@color/black"
-            android:gravity="center_horizontal"
-            android:textSize="20sp"
-            android:layout_marginBottom="10dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/proteinLable"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
-                android:text="Б:"
-                android:textColor="#1E90FF"
-                android:textSize="17sp" />
+                <TextView
+                    android:id="@+id/allIngredients"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/Dish"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/dishProtein"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="17sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/fatLable"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
-                android:text="Ж:"
-                android:textColor="#FFA500"
-                android:textSize="17sp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/dishFat"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="17sp" />
+                        <TextView
+                            android:id="@+id/proteinLable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Б:"
+                            android:textColor="#1E90FF"
+                            android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/carbsLable"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
-                android:text="В:"
-                android:textColor="#3CB371"
-                android:textSize="17sp" />
+                        <TextView
+                            android:id="@+id/dishProtein"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text=""
+                            android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/dishCarbohydrate"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="17sp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/fatLable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="Ж:"
+                            android:textColor="#FFA500"
+                            android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/dishCalories"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="17sp" />
+                        <TextView
+                            android:id="@+id/dishFat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text=""
+                            android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/caloriesLable"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="0dp"
-                android:gravity="left"
-                android:text=" ккал" />
+                        <TextView
+                            android:id="@+id/carbsLable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text="В:"
+                            android:textColor="#3CB371"
+                            android:textSize="17sp" />
 
-            <TextView
-                android:id="@+id/dishWeight"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
-                android:text=""
-                android:textSize="17sp" />
+                        <TextView
+                            android:id="@+id/dishCarbohydrate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text=""
+                            android:textSize="17sp" />
+                    </LinearLayout>
 
-            <TextView
-                android:id="@+id/weightLable"
-                android:layout_width="19dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="5dp"
-                android:text=" г" />
-        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
 
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:background="@color/DarkGrey"
-            android:layout_height="1sp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"/>
+                        <TextView
+                            android:id="@+id/dishCalories"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text=""
+                            android:textSize="17sp" />
 
-<!--        <EditText android:id="@+id/inputSearch"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="@string/search"-->
-<!--            android:inputType="text"/>-->
+                        <TextView
+                            android:id="@+id/caloriesLable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="0dp"
+                            android:gravity="left"
+                            android:text=" ккал" />
 
-<!--        <ListView-->
-<!--            android:id="@+id/listViewProducts"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="70dp"-->
-<!--            android:layout_margin="10dp"-->
-<!--            android:horizontalSpacing="5dp"-->
-<!--            android:numColumns="1"-->
-<!--            android:verticalSpacing="5dp" />-->
+                        <TextView
+                            android:id="@+id/dishWeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text=""
+                            android:textSize="17sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/weightLable"
+                            android:layout_width="19dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:text=" г" />
+                    </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_action_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:background="@drawable/home_toolbar_gradient"
-            android:contentDescription="@string/addFab"
-            app:srcCompat="@drawable/ic_plus_24"/>
+                </LinearLayout>
 
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/AddDish"
-            android:onClick="onClickAddDish"
-            android:background="@drawable/button_gradient"
-            />
-    </LinearLayout>
-    </ScrollView>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1sp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/DarkGrey" />
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/floating_action_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/home_toolbar_gradient"
+                    android:contentDescription="@string/addFab"
+                    app:srcCompat="@drawable/ic_plus_24" />
 
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/button_gradient"
+                    android:onClick="onClickAddDish"
+                    android:text="@string/AddDish" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

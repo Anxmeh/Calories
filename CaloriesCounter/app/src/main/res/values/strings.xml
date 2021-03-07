@@ -67,4 +67,14 @@
     <string name="weightToday">Вага цього дня:</string>
     <string name="kg">кг</string>
     <string name="WaterVolume">Ліміт води в день</string>
+    <string name="Surname">Прізвище</string>
+    <string name="birthDate">Дата народження</string>
+    <string name="phone">Номер телефону</string>
+    <string name="date">Дата</string>
+    <string name="ml600">600 мл</string>
+    <string name="ml500">500 мл</string>
+    <string name="ml400">400 мл</string>
+    <string name="ml300">300 мл</string>
+    <string name="ml200">200 мл</string>
+    <string name="ml100">100 мл</string>
 </resources>

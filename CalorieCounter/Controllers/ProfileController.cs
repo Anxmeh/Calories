@@ -152,7 +152,9 @@ namespace CalorieCounter.Controllers
             {
                 string filePathSave = Path.Combine(path, fileName);
                 bmp.Save(filePathSave, ImageFormat.Jpeg);
-  
+                Console.WriteLine("File deleted.");
+
+
                 if (!String.IsNullOrWhiteSpace(user.UserProfile.Photo) && System.IO.File.Exists(Path.Combine(path, user.UserProfile.Photo)))
                 {
                     // If file found, delete it    

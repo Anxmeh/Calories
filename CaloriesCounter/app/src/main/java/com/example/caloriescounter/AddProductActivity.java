@@ -1,40 +1,20 @@
 package com.example.caloriescounter;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Base64;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.example.caloriescounter.models.AddProductView;
 import com.example.caloriescounter.models.Product;
-import com.example.caloriescounter.models.RegisterView;
-import com.example.caloriescounter.network.ImageRequester;
 import com.example.caloriescounter.network.NetworkService;
-import com.example.caloriescounter.network.SessionManager;
-import com.example.caloriescounter.network.Tokens;
 import com.example.caloriescounter.network.utils.CommonUtils;
-import com.example.caloriescounter.network.utils.FileUtils;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -42,54 +22,29 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddProductActivity extends BaseActivity {
-
-     private final String BASE_URL = NetworkService.getBaseUrl();
      private Product addedProduct;
-    private ActionBarDrawerToggle mToggle;
-    private DrawerLayout drawerLayout;
-    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.addContentView(R.layout.activity_add_product);
         this.getSupportActionBar().setTitle("Новий продукт");
-      //  setContentView(R.layout.activity_add_product);
-//        Toolbar homeToolbar = findViewById(R.id.home_toolbar);
-//        homeToolbar.setTitle("Новий продукт");
-//        setSupportActionBar(homeToolbar);
-//
-//        drawerLayout = findViewById(R.id.drawerLayout);
-//        NavigationView navigationView = findViewById(R.id.navigation);
-//        navigationView.bringToFront();
-//        mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-//        drawerLayout.addDrawerListener(mToggle);
-//        mToggle.syncState();
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                return onNavItemSelected(item);
-//            }
-//        });
-//
-//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-//        sessionManager = SessionManager.getInstance(this);
-    }
+         }
 
     public void onClickAddProduct(View view) {
-        final TextInputEditText nameProduct = findViewById(R.id.input_name);
+        final TextInputEditText nameProduct = findViewById(R.id.inputName);
         final TextInputLayout nameProductLayout = findViewById(R.id.nameLayout);
 
-        final TextInputEditText calories = findViewById(R.id.input_calories);
+        final TextInputEditText calories = findViewById(R.id.inputCalories);
         final TextInputLayout caloriesLayout = findViewById(R.id.caloriesLayout);
 
-        final TextInputEditText protein = findViewById(R.id.input_protein);
+        final TextInputEditText protein = findViewById(R.id.inputProtein);
         final TextInputLayout proteinLayout = findViewById(R.id.proteinLayout);
 
-        final TextInputEditText fat = findViewById(R.id.input_fat);
+        final TextInputEditText fat = findViewById(R.id.inputFat);
         final TextInputLayout fatLayout = findViewById(R.id.fatLayout);
 
-        final TextInputEditText carbs = findViewById(R.id.input_carbs);
+        final TextInputEditText carbs = findViewById(R.id.inputCarbs);
         final TextInputLayout carbsLayout = findViewById(R.id.carbsLayout);
 
         boolean isCorrect = true;
@@ -140,8 +95,6 @@ public class AddProductActivity extends BaseActivity {
         model.setFat(Double.parseDouble(fat.getText().toString()));
         model.setCarbohydrate(Double.parseDouble(carbs.getText().toString()));
 
-
-
         NetworkService.getInstance()
                 .getJSONApi()
                 .addProduct(model)
@@ -152,7 +105,6 @@ public class AddProductActivity extends BaseActivity {
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             addedProduct = response.body();
-
                             String succeed = "Успішно";
                             Toast toast = Toast.makeText(getApplicationContext(),
                                     succeed, Toast.LENGTH_LONG);
@@ -186,72 +138,4 @@ public class AddProductActivity extends BaseActivity {
                     }
                 });
     }
-//    @SuppressLint("NonConstantResourceId")
-//    public boolean onNavItemSelected(MenuItem menuItem) {
-//        Intent intent;
-//        Toast toast;
-//        // Handle item selection
-//        switch (menuItem.getItemId()) {
-//            case R.id.main:
-//                drawerLayout.closeDrawers();
-//                break;
-//            case R.id.products:
-//                intent = new Intent(this, ProductsActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.newDish:
-//                intent = new Intent(this, RecyclerActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.newProduct:
-//                intent = new Intent(this, AddProductActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.dailyMenu:
-//                intent = new Intent(this, TodayActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.userSettings:
-//                intent = new Intent(this, SettingsActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.login:
-//                intent = new Intent(this, LoginActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.register:
-//                intent = new Intent(this, RegisterActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.profile:
-//                if (!sessionManager.isLogged) {
-//                    intent = new Intent(this, LoginActivity.class);
-//                } else {
-//                    intent = new Intent(this, ProfileActivity.class);
-//                }
-//                startActivity(intent);
-//                break;
-//            case R.id.logout:
-//                sessionManager = SessionManager.getInstance(this);
-//                String message = "See you later!";
-//                sessionManager.logout();
-//                toast = Toast.makeText(getApplicationContext(),
-//                        "You have been signed out successfully", Toast.LENGTH_LONG);
-//                toast.show();
-//                drawerLayout.closeDrawers();
-//                break;
-//            default:
-//                return false;
-//        }
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (mToggle.onOptionsItemSelected(item)) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
 }

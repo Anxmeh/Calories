@@ -66,7 +66,6 @@ public class ProfileActivity extends BaseActivity {
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
 
-        // date picker dialog
         DatePickerDialog datePicker = new DatePickerDialog(ProfileActivity.this,
                 new DatePickerDialog.OnDateSetListener() {
                     @SuppressLint("SetTextI18n")
@@ -86,14 +85,11 @@ public class ProfileActivity extends BaseActivity {
                 .setNegativeButton("Ні", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         String url_photo = BASE_URL + "/images/" + userProfile.getPhoto();
-
                         imageRequester.getImageLoader().get(url_photo, new ImageLoader.ImageListener() {
                             @Override
                             public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
                                 Bitmap bitmap = imageContainer.getBitmap();
-                                //use bitmap
                                 editImage.setImageBitmap(bitmap);
                             }
 
@@ -249,7 +245,6 @@ public class ProfileActivity extends BaseActivity {
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             userProfile = response.body();
-
                             if (userProfile.getPhoto() == null || userProfile.getPhoto().isEmpty()) {
                                 imageRequester.setImageFromUrl(editImage, BASE_URL + "/images/testAvatarHen.jpg");
                             } else {
@@ -258,13 +253,11 @@ public class ProfileActivity extends BaseActivity {
                             textEditName.setText(userProfile.getName());
                             textEditSurname.setText(userProfile.getSurname());
                             sessionManager.saveUserName(userProfile.getName());
-
                             calendar.setTime(userProfile.getDateOfBirth());
                             int day = calendar.get(Calendar.DAY_OF_MONTH);
                             int month = calendar.get(Calendar.MONTH);
                             int year = calendar.get(Calendar.YEAR);
                             textEditBirthDate.setText(day + "/" + (month + 1) + "/" + year);
-
                             textEditPhone.setText(userProfile.getPhone());
                             textEditEmail.setText((userProfile.getEmail()));
                         } else {
@@ -312,7 +305,6 @@ public class ProfileActivity extends BaseActivity {
                         if (response.errorBody() == null && response.isSuccessful()) {
                             userProfile = response.body();
                             sessionManager.saveUserLogin(userProfile.getEmail());
-
                             String succeed = "Зміни внесені";
                             Toast toast = Toast.makeText(getApplicationContext(),
                                     succeed, Toast.LENGTH_LONG);

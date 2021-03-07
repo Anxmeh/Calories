@@ -140,19 +140,12 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.addContentView(R.layout.activity_today);
-        //this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        this.getSupportActionBar().setTitle("Меню на сьогодні");
-
+           this.getSupportActionBar().setTitle("Меню на сьогодні");
 
         sessionManager = SessionManager.getInstance(this);
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerViewVit = findViewById(R.id.recycler_view_vit);
-
-
-        // final TextView addedprod = findViewById(R.id.resultDish);
-        //listView = findViewById(R.id.listViewProducts);
-        // inputSearch = (EditText) findViewById(R.id.inputSearch);
         txtDishProtein = findViewById(R.id.dishProtein);
         txtDishFat = findViewById(R.id.dishFat);
         txtDishCarbs = findViewById(R.id.dishCarbohydrate);
@@ -205,7 +198,12 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
         myVitamins.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recyclerViewVit.setVisibility(recyclerViewVit.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+                //recyclerViewVit.setVisibility(View.GONE);
+
+                recyclerViewVit.setVisibility(recyclerViewVit.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+//                if (recyclerViewVit.getVisibility()==View.VISIBLE)
+//                    recyclerViewVit.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+              //  recyclerViewVit.setVisibility(recyclerViewVit.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
                 //  String text = recyclerViewVit.getVisibility() == View.VISIBLE ? "Приховати вітаміни" : "Показати вітаміни";
                 myVitamins.setText(recyclerViewVit.getVisibility() == View.VISIBLE ? "Приховати вітаміни" : "Показати вітаміни");
 
@@ -214,9 +212,11 @@ public class TodayActivity extends BaseActivity implements OnDeleteListenerDaily
         myMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recyclerView.setVisibility(recyclerView.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+                //recyclerView.setVisibility(View.GONE);
+            //    recyclerView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                recyclerView.setVisibility(recyclerView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
                 //  String text = recyclerViewVit.getVisibility() == View.VISIBLE ? "Приховати вітаміни" : "Показати вітаміни";
-                myVitamins.setText(recyclerView.getVisibility() == View.VISIBLE ? "Приховати меню" : "Показати меню");
+                myMenu.setText(recyclerView.getVisibility() == View.VISIBLE ? "Приховати меню" : "Показати меню");
 
             }
         });

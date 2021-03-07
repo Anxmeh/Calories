@@ -18,7 +18,6 @@ public class FileUtils {
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
     private FileUtils() {
-
     }
 
     public static File from(Context context, Uri uri) throws IOException {
@@ -53,7 +52,6 @@ public class FileUtils {
             name = fileName.substring(0, i);
             extension = fileName.substring(i);
         }
-
         return new String[]{name, extension};
     }
 

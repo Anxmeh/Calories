@@ -141,7 +141,7 @@ namespace CalorieCounter.Controllers
                 return BadRequest("Поганий запит!");
             }
 
-            var dailyWeight = _context.UserDailyWeights.SingleOrDefault(d => d.UserId == user.Id && d.DateOfWeight.Date == model.DateOfWeight);
+            var dailyWeight = _context.UserDailyWeights.SingleOrDefault(d => d.UserId == user.Id && d.DateOfWeight.Date == model.DateOfWeight.Date);
             if (dailyWeight == null)
             {
                 dailyWeight = new UserDailyWeight
@@ -154,8 +154,12 @@ namespace CalorieCounter.Controllers
                 _context.UserDailyWeights.Add(dailyWeight);
                 _context.SaveChanges();
             }
-            dailyWeight.Weight = model.Weight;
-            _context.SaveChanges();
+            else
+            {
+
+                dailyWeight.Weight = model.Weight;
+                _context.SaveChanges();
+            }
 
             return Ok(new AddUserDailyWeightsViewModel
             {

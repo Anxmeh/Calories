@@ -1,15 +1,9 @@
 package com.example.caloriescounter;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -18,15 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.caloriescounter.models.UserSettingsView;
-import com.example.caloriescounter.models.UserView;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.SessionManager;
 import com.example.caloriescounter.network.utils.CommonUtils;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.Calendar;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -35,11 +25,8 @@ import retrofit2.Response;
 
 public class SettingsActivity extends BaseActivity {
 
-    private ActionBarDrawerToggle mToggle;
-    private DrawerLayout drawerLayout;
     private SessionManager sessionManager;
     private EditText txtHeight;
-    private EditText txtHeightCm;
     private EditText txtWeight;
     private EditText txtChest;
     private EditText txtWaist;
@@ -57,40 +44,18 @@ public class SettingsActivity extends BaseActivity {
     private RadioGroup radioGroupActivity;
     private RadioGroup radioGroupSex;
     private String requiredFieldError = "Заповніть поле";
-
     private UserSettingsView userSettings;
     boolean sex;
     double activityIndex;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.addContentView(R.layout.activity_settings);
         this.getSupportActionBar().setTitle("Мої параметри");
-//        Toolbar homeToolbar = findViewById(R.id.home_toolbar);
-//        homeToolbar.setTitle("Параметри");
-//        setSupportActionBar(homeToolbar);
-//
-//        drawerLayout = findViewById(R.id.drawerLayout);
-//        NavigationView navigationView = findViewById(R.id.navigation);
-//        navigationView.bringToFront();
-//        mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-//        drawerLayout.addDrawerListener(mToggle);
-//        mToggle.syncState();
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                return onNavItemSelected(item);
-//            }
-//        });
-//
-//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         sessionManager = SessionManager.getInstance(this);
-
         txtCalories = findViewById(R.id.txtCalories);
         txtHeight = findViewById(R.id.txtHeight);
-//        txtHeightCm = findViewById(R.id.txtHeightCm);
         txtWeight = findViewById(R.id.txtWeight);
         txtChest = findViewById(R.id.txtChest);
         txtWaist = findViewById(R.id.txtWaist);
@@ -104,7 +69,6 @@ public class SettingsActivity extends BaseActivity {
         radioMale = findViewById(R.id.radioMale);
         radioFemale = findViewById(R.id.radioFemale);
         txtUserCalories = findViewById(R.id.txtUserCalories);
-
 
         radioGroupSex = (RadioGroup) findViewById(R.id.radioGroupSex);
         radioGroupSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -149,7 +113,6 @@ public class SettingsActivity extends BaseActivity {
             }
         });
 
-
         CommonUtils.showLoading(this);
         NetworkService.getInstance()
                 .getJSONApi()
@@ -162,13 +125,7 @@ public class SettingsActivity extends BaseActivity {
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             userSettings = response.body();
-                          //  double heigh = userSettings.getHeight();
-                          // int heightM = (int) userSettings.getHeight() / 100;
-                          //  int heightCm = (int) userSettings.getHeight() - (100 * heightM);
-
                             txtHeight.setText(Double.toString(userSettings.getHeight()));
-                           // txtHeightCm.setText(Integer.toString(heightCm));
-
                             txtWeight.setText(Double.toString(userSettings.getWeight()));
                             txtChest.setText(Double.toString(userSettings.getChest()));
                             txtWaist.setText(Double.toString(userSettings.getWaist()));
@@ -181,15 +138,6 @@ public class SettingsActivity extends BaseActivity {
                             txtCalories.setText(Double.toString(userSettings.getCalories()));
                             txtFatPercent.setText(Double.toString(userSettings.getFatPercentage()));
                             txtUserCalories.setText(Double.toString(userSettings.getUserCalories()));
-//                            if (userSettings.isSex()==true) {
-//                                radioMale.setChecked(true);
-//                            }
-//                            else {
-//                                radioFemale.setChecked(true);
-//                            }
-
-                            // userSettings.isSex() ? radioMale.setChecked(true) : radioFemale.setChecked(true);
-                            //  radioMale.setChecked( userSettings.isSex());
                             if (userSettings.isSex())
                                 radioGroupSex.check(R.id.radioMale);
                             else
@@ -197,8 +145,8 @@ public class SettingsActivity extends BaseActivity {
 
                             switch (String.valueOf(userSettings.getActivity())) {
                                 case "1.2":
-                                radioGroupActivity.check(R.id.radioMinimum);
-                                break;
+                                    radioGroupActivity.check(R.id.radioMinimum);
+                                    break;
                                 case "1.375":
                                     radioGroupActivity.check(R.id.radioLow);
                                     break;
@@ -212,9 +160,6 @@ public class SettingsActivity extends BaseActivity {
                                     radioGroupActivity.check(R.id.radioVeryHigh);
                                     break;
                             }
-
-
-
                         } else {
                             userSettings = null;
                         }
@@ -222,7 +167,7 @@ public class SettingsActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(@NonNull Call<UserSettingsView> call, @NonNull Throwable t) {
-                                               userSettings = null;
+                        userSettings = null;
                         CommonUtils.hideLoading();
                         String error = "Помилка з'єднання";
                         Toast toast = Toast.makeText(getApplicationContext(),
@@ -231,18 +176,11 @@ public class SettingsActivity extends BaseActivity {
                         t.printStackTrace();
                     }
                 });
-
-
     }
 
     public void onClickSave(View view) {
         final UserSettingsView settingsUpdate = new UserSettingsView();
         boolean isCorrect = true;
-
-
-
-       // final TextInputEditText email = findViewById(R.id.input_emailRegister);
-
         final TextInputLayout heightlLayout = findViewById(R.id.heightLayout);
         final TextInputLayout weightLayout = findViewById(R.id.weightLayout);
         final TextInputLayout chestLayout = findViewById(R.id.chestLayout);
@@ -250,7 +188,6 @@ public class SettingsActivity extends BaseActivity {
         final TextInputLayout hipsLayout = findViewById(R.id.hipsLayout);
         final TextInputLayout hipLayout = findViewById(R.id.hipLayout);
         final TextInputLayout wristLayout = findViewById(R.id.wristLayout);
-       // final TextInputLayout ageLayout = findViewById(R.id.ageLayout); !!!!!!!
         final TextInputLayout shinLayout = findViewById(R.id.shinLayout);
         final TextInputLayout forearmLayout = findViewById(R.id.forearmLayout);
         final TextInputLayout neckLayout = findViewById(R.id.neckLayout);
@@ -327,14 +264,14 @@ public class SettingsActivity extends BaseActivity {
         if (!isCorrect)
             return;
 
- settingsUpdate.setWeight(Double.parseDouble(txtWeight.getText().toString()));
-         settingsUpdate.setHeight(Double.parseDouble(txtHeight.getText().toString()));
+        settingsUpdate.setWeight(Double.parseDouble(txtWeight.getText().toString()));
+        settingsUpdate.setHeight(Double.parseDouble(txtHeight.getText().toString()));
         settingsUpdate.setChest(Double.parseDouble(txtChest.getText().toString()));
         settingsUpdate.setWaist(Double.parseDouble(txtWaist.getText().toString()));
         settingsUpdate.setHips(Double.parseDouble(txtHips.getText().toString()));
         settingsUpdate.setHip(Double.parseDouble(txtHip.getText().toString()));
         settingsUpdate.setWrist(Double.parseDouble(txtWrist.getText().toString()));
-        settingsUpdate.setAge(30);
+        settingsUpdate.setAge(30); ///!!!!!!
         settingsUpdate.setShin(Double.parseDouble(txtShin.getText().toString()));
         settingsUpdate.setForearm(Double.parseDouble(txtForearm.getText().toString()));
         settingsUpdate.setNeck(Double.parseDouble(txtNeck.getText().toString()));
@@ -388,7 +325,6 @@ public class SettingsActivity extends BaseActivity {
         settingsUpdate.setBmi(0);
         settingsUpdate.setFatPercentage(0);
 
-
         CommonUtils.showLoading(this);
         NetworkService.getInstance()
                 .getJSONApi()
@@ -401,23 +337,8 @@ public class SettingsActivity extends BaseActivity {
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             userSettings = response.body();
-//                            double heigh = userSettings.getHeight();
-//                            int heightM = (int) userSettings.getHeight() / 100;
-//                            int heightCm = (int) userSettings.getHeight() - (100 * heightM);
-//
-//                            txtHeightM.setText(Integer.toString(heightM));
-//                            txtHeightCm.setText(Integer.toString(heightCm));
-//
-//                            txtWeight.setText(Double.toString(userSettings.getWeight()));
-//                            txtChest.setText(Double.toString(userSettings.getChest()));
-//                            txtWaist.setText(Double.toString(userSettings.getWaist()));
-//                            txtHips.setText(Double.toString(userSettings.getHips()));
-//                            txtHip.setText(Double.toString(userSettings.getHip()));
-//                            txtWrist.setText(Double.toString(userSettings.getWrist()));
-//                            txtCalories.setText(Double.toString(userSettings.getCalories()));
                             txtCalories.setText(Double.toString(userSettings.getCalories()));
                             txtFatPercent.setText(Double.toString(userSettings.getFatPercentage()));
-
                         } else {
                             userSettings = null;
                         }
@@ -425,9 +346,7 @@ public class SettingsActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(@NonNull Call<UserSettingsView> call, @NonNull Throwable t) {
-
                         userSettings = null;
-
                         CommonUtils.hideLoading();
                         String error = "Помилка з'єднання";
                         Toast toast = Toast.makeText(getApplicationContext(),
@@ -436,12 +355,9 @@ public class SettingsActivity extends BaseActivity {
                         t.printStackTrace();
                     }
                 });
-
-
     }
 
     public void onClickSaveCalories(View view) {
-
         double userCalories = Double.parseDouble(txtUserCalories.getText().toString());
         userSettings.setUserCalories(Double.parseDouble(txtUserCalories.getText().toString()));
 
@@ -457,13 +373,7 @@ public class SettingsActivity extends BaseActivity {
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             userSettings = response.body();
-                            //  double heigh = userSettings.getHeight();
-                            // int heightM = (int) userSettings.getHeight() / 100;
-                            //  int heightCm = (int) userSettings.getHeight() - (100 * heightM);
-
                             txtHeight.setText(Double.toString(userSettings.getHeight()));
-                            // txtHeightCm.setText(Integer.toString(heightCm));
-
                             txtWeight.setText(Double.toString(userSettings.getWeight()));
                             txtChest.setText(Double.toString(userSettings.getChest()));
                             txtWaist.setText(Double.toString(userSettings.getWaist()));
@@ -476,21 +386,10 @@ public class SettingsActivity extends BaseActivity {
                             txtCalories.setText(Double.toString(userSettings.getCalories()));
                             txtFatPercent.setText(Double.toString(userSettings.getFatPercentage()));
                             txtUserCalories.setText(Double.toString(userSettings.getUserCalories()));
-//                            if (userSettings.isSex()==true) {
-//                                radioMale.setChecked(true);
-//                            }
-//                            else {
-//                                radioFemale.setChecked(true);
-//                            }
-
-                            // userSettings.isSex() ? radioMale.setChecked(true) : radioFemale.setChecked(true);
-                            //  radioMale.setChecked( userSettings.isSex());
                             if (userSettings.isSex())
                                 radioGroupSex.check(R.id.radioMale);
                             else
                                 radioGroupSex.check(R.id.radioFemale);
-
-
                         } else {
                             userSettings = null;
                         }
@@ -498,7 +397,6 @@ public class SettingsActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(@NonNull Call<UserSettingsView> call, @NonNull Throwable t) {
-
                         userSettings = null;
                         CommonUtils.hideLoading();
                         String error = "Помилка з'єднання";
@@ -508,76 +406,5 @@ public class SettingsActivity extends BaseActivity {
                         t.printStackTrace();
                     }
                 });
-
-
-
-
     }
-//    @SuppressLint("NonConstantResourceId")
-//    public boolean onNavItemSelected(MenuItem menuItem) {
-//        Intent intent;
-//        Toast toast;
-//        // Handle item selection
-//        switch (menuItem.getItemId()) {
-//            case R.id.main:
-//                drawerLayout.closeDrawers();
-//                break;
-//            case R.id.products:
-//                intent = new Intent(this, ProductsActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.newDish:
-//                intent = new Intent(this, RecyclerActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.newProduct:
-//                intent = new Intent(this, AddProductActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.dailyMenu:
-//                intent = new Intent(this, TodayActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.userSettings:
-//                intent = new Intent(this, SettingsActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.login:
-//                intent = new Intent(this, LoginActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.register:
-//                intent = new Intent(this, RegisterActivity.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.profile:
-//                if (!sessionManager.isLogged) {
-//                    intent = new Intent(this, LoginActivity.class);
-//                } else {
-//                    intent = new Intent(this, ProfileActivity.class);
-//                }
-//                startActivity(intent);
-//                break;
-//            case R.id.logout:
-//                sessionManager = SessionManager.getInstance(this);
-//                String message = "See you later!";
-//                sessionManager.logout();
-//                toast = Toast.makeText(getApplicationContext(),
-//                        "You have been signed out successfully", Toast.LENGTH_LONG);
-//                toast.show();
-//                drawerLayout.closeDrawers();
-//                break;
-//            default:
-//                return false;
-//        }
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if (mToggle.onOptionsItemSelected(item)) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }

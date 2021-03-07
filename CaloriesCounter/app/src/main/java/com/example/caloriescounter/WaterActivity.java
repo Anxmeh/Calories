@@ -102,7 +102,7 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
     private WaterTimeView waterSettings;
     private DateFormat timeFormat;
 
-    private Button btnAdd100, btnAdd200, btnAdd300, btnAdd400, btnAdd500, btnAdd600, btnAddX;
+    private Button btnAdd100, btnAdd200, btnAdd300, btnAdd400, btnAdd500, btnAdd600;
     private Button btnSetEnd, btnSetBegin, btnSetVolume;
     int wat;
     int water2;
@@ -129,7 +129,7 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         //  setContentView(R.layout.activity_water);
         timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         currentTime = Calendar.getInstance().getTime();
-        txtDate = findViewById(R.id.dateAct);
+        txtDate = findViewById(R.id.dateNow);
         txtUserWaterVolume = findViewById(R.id.txtUserWaterVolume);
 
         btnAdd100 = findViewById(R.id.btnAdd100);
@@ -138,7 +138,6 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         btnAdd400 = findViewById(R.id.btnAdd400);
         btnAdd500 = findViewById(R.id.btnAdd500);
         btnAdd600 = findViewById(R.id.btnAdd600);
-        btnAddX = findViewById(R.id.btnAddX);
         btnSetEnd = findViewById(R.id.btnSetEnd);
         btnSetBegin = findViewById(R.id.btnSetBegin);
         btnSetVolume = findViewById(R.id.btnSetVolume);
@@ -149,7 +148,7 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         btnAdd400.setOnClickListener(this);
         btnAdd500.setOnClickListener(this);
         btnAdd600.setOnClickListener(this);
-        btnAddX.setOnClickListener(this);
+
         calendar2.set(Calendar.HOUR_OF_DAY, 15);
         calendar2.set(Calendar.MINUTE, 10);
         calendar2.set(Calendar.SECOND, 0);
@@ -359,8 +358,8 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
         }
-        Toast.makeText(this, "Alarm set in " + time.getTime(),
-                Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "Наступне нагадування о " + time.getTime(),
+//                Toast.LENGTH_LONG).show();
     }
 
     @Override

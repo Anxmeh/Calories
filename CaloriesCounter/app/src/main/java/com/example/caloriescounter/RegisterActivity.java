@@ -1,25 +1,37 @@
 package com.example.caloriescounter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.caloriescounter.models.LoginGoogleView;
 import com.example.caloriescounter.models.RegisterView;
+import com.example.caloriescounter.models.UserView;
 import com.example.caloriescounter.network.SessionManager;
 import com.example.caloriescounter.network.Tokens;
 import com.example.caloriescounter.network.utils.CommonUtils;
 import com.example.caloriescounter.network.ImageRequester;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.utils.FileUtils;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -33,34 +45,157 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterActivity extends BaseActivity {
-    //Людина обрала файл
+
     public static final int PICKFILE_RESULT_CODE = 1;
     private ImageRequester imageRequester;
     private NetworkImageView editImage;
     private String chooseImageBase64;
     private final String BASE_URL = NetworkService.getBaseUrl();
+    private GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_SIGN_IN = 9001;
+    private SessionManager sessionManager;
+    private UserView userProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.addContentView(R.layout.activity_register);
-
-
         this.getSupportActionBar().setTitle("Реєстрація");
 
         imageRequester = ImageRequester.getInstance();
         editImage = findViewById(R.id.chooseImageRegister);
         imageRequester.setImageFromUrl(editImage, BASE_URL + "/images/testAvatarHen.jpg");
+        sessionManager = SessionManager.getInstance(RegisterActivity.this);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestIdToken("951922290898-kgfog8u4i0q0qo8ms93817n7aejv746c.apps.googleusercontent.com")
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        SignInButton signInBtn = findViewById(R.id.signInGoogle);
+        signInBtn.setOnClickListener(new View.OnClickListener() {
+
+            private void signIn() {
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.signInGoogle:
+                        signIn();
+                        break;
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // [START on_start_sign_in]
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        updateUI(account);
+    }
+
+    private void updateUI(@Nullable GoogleSignInAccount account) {
+        if (account != null) {
+            findViewById(R.id.signInGoogle).setVisibility(View.GONE);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            String idToken = account.getIdToken();
+            LoginGoogleView model = new LoginGoogleView(idToken);
+
+            CommonUtils.showLoading(this);
+            NetworkService.getInstance()
+                    .getJSONApi()
+                    .loginGoogle(model)
+                    .enqueue(new Callback<Tokens>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Tokens> call, @NonNull Response<Tokens> response) {
+                            CommonUtils.hideLoading();
+                            if (response.errorBody() == null && response.isSuccessful()) {
+                                Tokens token = response.body();
+                                assert token != null;
+                                sessionManager.saveJWTToken(token.getToken());
+                                sessionManager.saveUserLogin(account.getEmail());
+                                NetworkService.getInstance()
+                                        .getJSONApi()
+                                        .profile()
+                                        .enqueue(new Callback<UserView>() {
+                                            @SuppressLint("SetTextI18n")
+                                            @Override
+                                            public void onResponse(@NonNull Call<UserView> call, @NonNull Response<UserView> response) {
+                                                if (response.errorBody() == null && response.isSuccessful()) {
+                                                    assert response.body() != null;
+                                                    userProfile = response.body();
+                                                    sessionManager.saveUserName(userProfile.getName());
+                                                } else {
+                                                    userProfile = null;
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(@NonNull Call<UserView> call, @NonNull Throwable t) {
+                                                userProfile = null;
+                                                CommonUtils.hideLoading();
+                                                String error = "Помилка з'єднання!";
+                                                Toast toast = Toast.makeText(getApplicationContext(),
+                                                        error, Toast.LENGTH_LONG);
+                                                toast.show();
+                                                t.printStackTrace();
+                                            }
+                                        });
+
+                                Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
+                                startActivity(intent);
+                            } else {
+                                String errorMessage;
+                                try {
+                                    assert response.errorBody() != null;
+                                    errorMessage = response.errorBody().string();
+                                } catch (IOException e) {
+                                    errorMessage = response.message();
+                                    e.printStackTrace();
+                                }
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        errorMessage, Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<Tokens> call, @NonNull Throwable t) {
+                            CommonUtils.hideLoading();
+                            String error = "Помилка з'єднання!";
+                            Toast toast = Toast.makeText(getApplicationContext(),
+                                    error, Toast.LENGTH_LONG);
+                            toast.show();
+                            t.printStackTrace();
+                        }
+                    });
+            // Signed in successfully, show authenticated UI.
+            updateUI(account);
+        } catch (ApiException e) {
+            updateUI(null);
+        }
     }
 
     public void onClickRegister(View view) {
-        final TextInputEditText email = findViewById(R.id.input_emailRegister);
+        final TextInputEditText email = findViewById(R.id.inputEmailRegister);
         final TextInputLayout emailLayout = findViewById(R.id.emailLayoutRegister);
 
-        final TextInputEditText password = findViewById(R.id.input_passwordRegister);
+        final TextInputEditText password = findViewById(R.id.inputPasswordRegister);
         final TextInputLayout passwordLayout = findViewById(R.id.passwordLayoutRegister);
 
-        final TextInputEditText passwordConfirm = findViewById(R.id.input_passwordConfirmRegister);
+        final TextInputEditText passwordConfirm = findViewById(R.id.inputPasswordConfirmRegister);
         final TextInputLayout passwordConfirmLayout = findViewById(R.id.passwordConfirmLayoutRegister);
 
         boolean isCorrect = true;
@@ -160,6 +295,11 @@ public class RegisterActivity extends BaseActivity {
                         e.printStackTrace();
                     }
                 }
+                break;
+            }
+            case RC_SIGN_IN: {
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                handleSignInResult(task);
                 break;
             }
 

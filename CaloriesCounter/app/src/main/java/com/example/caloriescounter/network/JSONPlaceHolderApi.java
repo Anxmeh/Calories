@@ -30,18 +30,13 @@ import com.example.caloriescounter.models.WaterView;
 import java.util.Date;
 import java.util.List;
 
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 
 public interface JSONPlaceHolderApi {
+
     @POST("/api/account/login")
     Call<Tokens> login(@Body LoginView model);
 
@@ -74,20 +69,12 @@ public interface JSONPlaceHolderApi {
 
     @POST("/api/watersettings/setbegin")
     Call<WaterTimeView> setWaterBegin(@Body SetWaterTimeView model);
+
     @POST("/api/watersettings/setend")
     Call<WaterTimeView> setWaterEnd(@Body SetWaterTimeView model);
 
-
-    /////////
-//    @POST("/api/products/removeproduct")
-//    Call<List<Product>> removeProduct(@Body DishIngredientsView model);
-    ////////
-
     @POST("/api/products/addproducttodish")
     Call<Product> addProductToDish(@Body DishIngredientsView model);
-
-//    @POST("/api/products/removeproductindish")
-//    Call<Product> removeProductInDish(@Body Ingredients model);
 
     @POST("/api/products/removeproductindish")
     Call<Dish> removeProductInDish(@Body Ingredients model);
@@ -107,26 +94,18 @@ public interface JSONPlaceHolderApi {
     @POST("/api/daily/adddailyproduct")
     Call<DailyMenuView> addDailyProduct(@Body DailyMenuView model);
 
-//    @POST("/api/daily/removedailyproduct")
-//    Call<DailyMenuView> removeDailyProduct(@Body RemoveDailyView model );
-
     @POST("/api/daily/removedailyproduct")
     Call<List<DailyMenuView>> removeDailyProduct(@Body RemoveDailyView model);
 
-
-    //
     @POST("/api/profile/info")
     Call<UserView> profile();
 
-    //
     @POST("/api/profile/update")
     Call<UserView> update(@Body UserView profile);
 
-    //
     @POST("/api/profile/update-photo")
     Call<UserView> updatePhoto(@Body Photo photo);
 
-    //
     @POST("/api/settings/settings")
     Call<UserSettingsView> settings();
 
@@ -136,22 +115,27 @@ public interface JSONPlaceHolderApi {
     @POST("/api/settings/setusercalories")
     Call<UserSettingsView> updateCalories(@Body double userCalories);
 
-
     @GET("/api/vitamins/allvitamins")
     Call<List<Vitamin>> getAllVitamins();
+
     @POST("/api/vitamins/addvitamin")
     Call<List<Vitamin>> addVitamin(@Body AddVitaminView model);
+
     @GET("/api/vitamins/myvitamins")
     Call<List<UserVitaminsView>> getUserVitamins();
+
     @POST("/api/vitamins/addmyvitamin")
     Call<UserVitaminsView> addUserVitamin(@Body UserVitaminsView model);
+
     @POST("/api/vitamins/removemyvitamin")
     Call<List<UserVitaminsView>>removeUserVitamin(@Body long vitaminId);
+
     @POST("/api/vitamins/сhangemyvitamin")
     Call<UserVitaminsView> changeUserVitamin(@Body UserVitaminsView model);
 
     @POST("/api/vitamins/dailyvitamins")
     Call<List<UserVitaminsDailyView>> getDailyVitamins(@Body Date dateOfVitamin);
+
     @POST("/api/vitamins/checkvitamin")
     Call<VitaminDailyCheckView> checkDailyVitamin(@Body VitaminDailyCheckView model);
 
@@ -166,9 +150,5 @@ public interface JSONPlaceHolderApi {
 
     @POST("/api/userdailyweight/edituserdailyweight")
     Call<AddUserDailyWeightViewModel> editDailyWeight(@Body AddUserDailyWeightViewModel model);
-
-
-
-
 }
 

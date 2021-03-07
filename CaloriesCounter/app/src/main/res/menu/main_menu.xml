@@ -5,17 +5,33 @@
         android:icon="@drawable/ic_main"
         android:title="Головна" />
     <item
+        android:id="@+id/register"
+        android:icon="@drawable/ic_register"
+        android:title="Реєстрація" />
+    <item
+        android:id="@+id/login"
+        android:icon="@drawable/ic_login"
+        android:title="Вхід" />
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_user"
+        android:title="Профіль користувача" />
+    <item
+        android:id="@+id/userSettings"
+        android:icon="@drawable/ic_settings"
+        android:title="Заміри та параметри" />
+    <item
         android:id="@+id/products"
         android:icon="@drawable/ic_products"
         android:title="Список продуктів" />
     <item
-        android:id="@+id/newDish"
-        android:icon="@drawable/ic_new_dish"
-        android:title="Нова страва" />
-    <item
         android:id="@+id/newProduct"
         android:icon="@drawable/ic_new_product"
         android:title="Новий продукт" />
+    <item
+        android:id="@+id/newDish"
+        android:icon="@drawable/ic_new_dish"
+        android:title="Нова страва" />
     <item
         android:id="@+id/dailyMenu"
         android:icon="@drawable/ic_new_daily"
@@ -29,37 +45,11 @@
         android:icon="@drawable/ic_vitamins"
         android:title="Мої вітаміни" />
     <item
-        android:id="@+id/userSettings"
-        android:icon="@drawable/ic_settings"
-        android:title="Налаштування профілю" />
-    <item
-        android:id="@+id/login"
-        android:icon="@drawable/ic_login"
-        android:title="Вхід" />
-    <item
-        android:id="@+id/register"
-        android:icon="@drawable/ic_register"
-        android:title="Реєстрація" />
-    <item
-        android:id="@+id/profile"
-        android:icon="@drawable/ic_user"
-        android:title="Профіль користувача" />
-            <item
-                android:id="@+id/forTest"
-                android:icon="@drawable/ic_user"
-                android:title="Для тесту" />
-                            <item
-                                android:id="@+id/forTest2"
-                                android:icon="@drawable/ic_user"
-                                android:title="Для тесту Вага" />
-                                                            <item
-                                                                android:id="@+id/forTest3"
-                                                                android:icon="@drawable/ic_user"
-                                                                android:title="Для тесту Вага  MPA" />
+        android:id="@+id/weightStatistic"
+        android:icon="@drawable/ic_stat"
+        android:title="Статистика ваги" />
     <item
         android:id="@+id/logout"
         android:icon="@drawable/ic_exit"
         android:title="Вихід" />
-
-
 </menu>

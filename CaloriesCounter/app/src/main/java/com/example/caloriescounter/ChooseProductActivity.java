@@ -36,9 +36,8 @@ import retrofit2.Response;
 
 public class ChooseProductActivity extends AppCompatActivity {
     private ListView listView;
-    EditText inputSearch;
-
-    private ArrayList<Product> addedProducts2 = new ArrayList<Product>();
+    private EditText inputSearch;
+    private ArrayList<Product> addedProducts = new ArrayList<Product>();
     private List<Product> products;
     final Context context = this;
     private Dish dish;
@@ -47,7 +46,6 @@ public class ChooseProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_product);
-        //super.addContentView(R.layout.activity_choose_product);
 
         listView = findViewById(R.id.listViewProducts);
         inputSearch = (EditText) findViewById(R.id.inputSearch);
@@ -65,8 +63,6 @@ public class ChooseProductActivity extends AppCompatActivity {
                             products = response.body();
                             final ProductAdapter adapterP = new ProductAdapter(products, ChooseProductActivity.this);
                             listView.setAdapter(adapterP);
-
-
                             inputSearch.addTextChangedListener(new TextWatcher() {
 
                                 @Override
@@ -88,49 +84,17 @@ public class ChooseProductActivity extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Product product = (Product) adapterP.getItem(position);
-                                    // Product product2 = products.get(position);
-                                    addedProducts2.add(product);
-                                    //dishCalories = 0;
-                                    // caloriesInProduct =product.getCalories();
-
-                                    //addedprod.append(product.getName() + " ");
-                                    // addedprod.setText(Integer.toString(addedProducts2.size()));
-
-
-                                    //Получаем вид с файла prompt.xml, который применим для диалогового окна:
+                                    addedProducts.add(product);
                                     LayoutInflater li = LayoutInflater.from(context);
                                     View promptsView = li.inflate(R.layout.prompt, null);
-
-                                    //Создаем AlertDialog
                                     AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(context);
-
-                                    //Настраиваем prompt.xml для нашего AlertDialog:
                                     mDialogBuilder.setView(promptsView);
-
-                                    //Настраиваем отображение поля для ввода текста в открытом диалоге:
                                     final EditText userInput = (EditText) promptsView.findViewById(R.id.inputWeight);
-
-                                    //Настраиваем сообщение в диалоговом окне:
                                     mDialogBuilder
                                             .setCancelable(false)
                                             .setPositiveButton("OK",
                                                     new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int id) {
-                                                            //Вводим текст и отображаем в строке ввода на основном экране:
-                                                           // caloriesInProduct = product.getCalories() * Double.parseDouble(userInput.getText().toString()) / 100;
-                                                           // dishCalories += caloriesInProduct;
-
-//
-//                                                            // CommonUtils.showLoading(this);this
-//
-//                                                            final DishIngredientsView modelDish = new DishIngredientsView();
-//                                                            modelDish.setProductName(product.getName());
-//                                                            modelDish.setProductCalories(product.getCalories());
-//                                                            modelDish.setProductProtein(product.getProtein());
-//                                                            modelDish.setProductFat(product.getFat());
-//                                                            modelDish.setProductCarbohydrate(product.getCarbohydrate());
-//                                                            modelDish.setProductWeight(Double.parseDouble(userInput.getText().toString()));
-
                                                             final DailyMenuView modelDaily = new DailyMenuView();
                                                             modelDaily.setProductName(product.getName());
                                                             modelDaily.setProductCalories(product.getCalories());
@@ -138,11 +102,8 @@ public class ChooseProductActivity extends AppCompatActivity {
                                                             modelDaily.setProductFat(product.getFat());
                                                             modelDaily.setProductCarbohydrate(product.getCarbohydrate());
                                                             modelDaily.setProductWeight(Double.parseDouble(userInput.getText().toString()));
-                                                            // Calendar c = Calendar.getInstance();
-                                                            //  c.set(2020, 12, 22);
                                                             modelDaily.setDateOfMeal(currentTime);
                                                             modelDaily.setProductId(product.getId());
-
 
                                                             NetworkService.getInstance()
                                                                     .getJSONApi()
@@ -153,12 +114,7 @@ public class ChooseProductActivity extends AppCompatActivity {
                                                                             CommonUtils.hideLoading();
                                                                             if (response.errorBody() == null && response.isSuccessful()) {
                                                                                 assert response.body() != null;
-                                                                               // addedProduct2 = response.body();
 
-                                                                                String succeed = "Add succeed";
-
-                                                                                ////////////
-                                                                                //CommonUtils.showLoading(this);
                                                                                 NetworkService.getInstance()
                                                                                         .getJSONApi()
                                                                                         .calculateDish()
@@ -168,50 +124,10 @@ public class ChooseProductActivity extends AppCompatActivity {
                                                                                                 CommonUtils.hideLoading();
                                                                                                 if (response.errorBody() == null && response.isSuccessful()) {
                                                                                                     assert response.body() != null;
-
                                                                                                     dish = response.body();
-                                                                                                    Intent intent = new Intent(ChooseProductActivity.this,TodayActivity.class);
+                                                                                                    Intent intent = new Intent(ChooseProductActivity.this, TodayActivity.class);
                                                                                                     finish();
                                                                                                     startActivity(intent);
-
-
-                                                                                                    //  txtDishProtein.setText(Double.toString(Math.round(dish.getDishProtein()*100.0)/100.0));
-                                                                                                    //txtDishFat.setText(Double.toString(Math.round(dish.getDishFat()*100.0)/100.0));
-                                                                                                    //   txtDishCarbs.setText(Double.toString(Math.round(dish.getDishCarbohydrate()*100.0)/100.0));
-
-                                                                                                  //  loadListPr();
-
-                                                                                                 //   adapter.notifyDataSetChanged();
-                                                                                                    //////////////////////
-
-//                                                                                                    NetworkService.getInstance()
-//                                                                                                            .getJSONApi()
-//                                                                                                            .getProductsinDish()
-//                                                                                                            .enqueue(new Callback<List<Ingredients>>() {
-//                                                                                                                @Override
-//                                                                                                                public void onResponse(@NonNull Call<List<Ingredients>> call, @NonNull Response<List<Ingredients>> response) {
-//                                                                                                                    CommonUtils.hideLoading();
-//                                                                                                                    if (response.errorBody() == null && response.isSuccessful()) {
-//                                                                                                                        assert response.body() != null;
-//                                                                                                                        if (prodsindish != null)
-//                                                                                                                            prodsindish.clear();
-//                                                                                                                        prodsindish.addAll(0, response.body());
-//                                                                                                                        adapter.notifyDataSetChanged();
-//                                                                                                                    } else {
-//                                                                                                                        prodsindish = null;
-//                                                                                                                    }
-//                                                                                                                }
-//
-//                                                                                                                @Override
-//                                                                                                                public void onFailure(@NonNull Call<List<Ingredients>> call, @NonNull Throwable t) {
-//                                                                                                                    CommonUtils.hideLoading();
-//                                                                                                                    prodsindish = null;
-//                                                                                                                    t.printStackTrace();
-//                                                                                                                }
-//                                                                                                            });
-                                                                                                    /////////////////////
-
-
                                                                                                 } else {
                                                                                                     dish = null;
                                                                                                 }
@@ -229,12 +145,6 @@ public class ChooseProductActivity extends AppCompatActivity {
                                                                                                 t.printStackTrace();
                                                                                             }
                                                                                         });
-                                                                                ///////////
-//                                                                                Toast toast = Toast.makeText(getApplicationContext(),
-//                                                                                        succeed, Toast.LENGTH_LONG);
-//                                                                                toast.show();
-//                                                                                Intent intent = new Intent(AddProductActivity.this, ProductsActivity.class);
-//                                                                                startActivity(intent);
                                                                             } else {
                                                                                 String errorMessage;
                                                                                 try {
@@ -270,9 +180,7 @@ public class ChooseProductActivity extends AppCompatActivity {
                                                         }
                                                     });
 
-                                    //Создаем AlertDialog:
                                     AlertDialog alertDialog = mDialogBuilder.create();
-                                    //и отображаем его:
                                     alertDialog.show();
                                 }
                             });
@@ -289,8 +197,5 @@ public class ChooseProductActivity extends AppCompatActivity {
                         t.printStackTrace();
                     }
                 });
-
-
-
     }
 }

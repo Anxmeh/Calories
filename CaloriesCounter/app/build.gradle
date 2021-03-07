@@ -51,7 +51,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
-      implementation "androidx.work:work-runtime:2.4.0"
+      implementation "androidx.work:work-runtime:2.4.0" //work manager
     implementation 'com.jjoe64:graphview:4.2.2'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 //    implementation "com.android.support:support-compat:27.1.1"

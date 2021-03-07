@@ -7,42 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/header_navigation_drawer"
-        app:menu="@menu/main_menu" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background"
-        android:orientation="vertical"
-        >
-<!--                android:padding="20dp"-->
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/home_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/home_toolbar_gradient"
-            android:elevation="4dp"
-            android:minHeight="60dp"
-            android:theme="@style/customToolbar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            tools:targetApi="lollipop">
-
-            <TextView
-                android:id="@+id/title_home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                               android:gravity="center"
-                                android:textAlignment="center"
-                android:textColor="@android:color/white" />
-        </androidx.appcompat.widget.Toolbar>
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textMainActivity"
@@ -52,104 +21,17 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textAlignment="center"
             android:layout_marginBottom="20dp"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/chooseImage"
             android:layout_width="200dp"
             android:layout_height="175dp"
             android:layout_centerInParent="true" />
-
     </RelativeLayout>
-
 </androidx.drawerlayout.widget.DrawerLayout>
 
-
-    <!--<?xml version="1.0" encoding="utf-8"?>-->
-    <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--    xmlns:tools="http://schemas.android.com/tools"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent"-->
-    <!--    tools:context=".MainActivity">-->
-
-    <!--    <Button-->
-    <!--        android:id="@+id/button"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:text="@string/login"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/chooseImage"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        android:onClick="btnLogin"/>-->
-
-    <!--    <Button-->
-    <!--        android:id="@+id/button4"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:onClick="btnAddNewDish"-->
-    <!--        android:text="@string/newDish"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/chooseImage"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.501"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintVertical_bias="0.813" />-->
-
-    <!--    <com.android.volley.toolbox.NetworkImageView-->
-    <!--        android:id="@+id/chooseImage"-->
-    <!--        android:layout_width="202dp"-->
-    <!--        android:layout_height="174dp"-->
-    <!--        android:layout_gravity="center_horizontal"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.497"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintVertical_bias="0.499" />-->
-
-    <!--    <Button-->
-    <!--        android:id="@+id/buttonRegistration"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:onClick="btnRegistration"-->
-    <!--        android:text="Regsatration"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/chooseImage"-->
-    <!--        app:layout_constraintVertical_bias="0.207" />-->
-
-    <!--    <Button-->
-    <!--        android:id="@+id/button2"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:onClick="onClickList"-->
-    <!--        android:text="List"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.501"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/buttonRegistration"-->
-    <!--        app:layout_constraintVertical_bias="0.192" />-->
-
-    <!--    <Button-->
-    <!--        android:id="@+id/button3"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:onClick="onClickAdd"-->
-    <!--        android:text="Add"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.458"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/button2"-->
-    <!--        app:layout_constraintVertical_bias="0.762" />-->
-
-
-    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->

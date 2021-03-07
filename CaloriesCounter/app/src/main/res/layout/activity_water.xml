@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,11 +37,11 @@
                     android:onClick="onClickPreviousDate" />
 
                 <TextView
-                    android:id="@+id/dateAct"
+                    android:id="@+id/dateNow"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:text="Date"
+                    android:text="@string/date"
                     android:textColor="@color/Indigo"
                     android:textSize="20sp" />
 
@@ -55,12 +54,13 @@
                     android:gravity="start"
                     android:onClick="onClickNextDate"
                     android:textAlignment="textStart" />
-
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:background="@color/DarkGrey"
                 android:layout_height="1sp"/>
+
             <TextView
                 android:id="@+id/tvTime"
                 android:layout_width="wrap_content"
@@ -69,25 +69,12 @@
                 android:padding="10dp"
                 android:textColor="#000000"
                 android:text="@string/TimeAlarm"
-
                 android:textSize="17sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
-
-<!--                <TextView-->
-<!--                    android:id="@+id/lblBegin"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-
-<!--                    android:gravity="center_vertical"-->
-<!--                    android:padding="10dp"-->
-<!--                    android:text="З:   "-->
-<!--                    android:textColor="#000000"-->
-<!--                    android:textSize="17sp" />-->
 
                 <Button
                     android:id="@+id/btnSetBegin"
@@ -103,7 +90,6 @@
                     android:id="@+id/lblTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:gravity="center_vertical"
                     android:padding="10dp"
                     android:text=" - "
@@ -119,6 +105,7 @@
                     android:drawableRight="@drawable/ic_time"
                     android:onClick="onClickSetEnd" />
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:background="@color/DarkGrey"
@@ -137,13 +124,12 @@
                 android:padding="10dp"
                 android:textColor="#000000"
                 android:text="@string/WaterVolume"
-
                 android:textSize="17sp" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/userWaterVolumeLayout"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-
                 caloriescounter:errorEnabled="true"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
@@ -153,8 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:inputType="number"
-                    android:imeOptions="actionDone"
-                     />
+                    android:imeOptions="actionDone" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -164,11 +149,9 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/ic_done"
-
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"/>
         </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -183,9 +166,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/glass222"
-                    android:onClick="onClickAddWater1"
-                    android:text="100 мл" />
+                    android:drawableTop="@drawable/glass"
+                    android:text="@string/ml100" />
 
                 <Button
                     android:id="@+id/btnAdd200"
@@ -194,9 +176,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/glass222"
-                    android:onClick="onClickAddWater1"
-                    android:text="200 мл" />
+                    android:drawableTop="@drawable/glass"
+                    android:text="@string/ml200" />
 
                 <Button
                     android:id="@+id/btnAdd300"
@@ -205,9 +186,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/glass222"
-                    android:onClick="onClickAddWater1"
-                    android:text="300 мл" />
+                    android:drawableTop="@drawable/glass"
+                    android:text="@string/ml300" />
 
                 <Button
                     android:id="@+id/btnAdd400"
@@ -216,17 +196,13 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/glass222"
-                    android:onClick="onClickAddWater1"
-                    android:text="400 мл" />
-
-
+                    android:drawableTop="@drawable/glass"
+                    android:text="@string/ml400" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
@@ -237,9 +213,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/glass222"
-                    android:onClick="onClickAddWater1"
-                    android:text="500 мл" />
+                    android:drawableTop="@drawable/glass"
+                    android:text="@string/ml500" />
 
                 <Button
                     android:id="@+id/btnAdd600"
@@ -248,86 +223,9 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/glass222"
-                    android:onClick="onClickAddWater1"
-                    android:text="600 мл" />
-
-                <Button
-                    android:id="@+id/btnAddX"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:drawableTop="@drawable/glass222"
-                    android:onClick="onClickAddWater1"
-                    android:text="X мл" />
+                    android:drawableTop="@drawable/glass"
+                    android:text="@string/ml600" />
             </LinearLayout>
-
-
-            <!--            <RadioGroup-->
-            <!--                android:id="@+id/radioGroupWater"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:orientation="vertical">-->
-
-            <!--                <TextView-->
-            <!--                    android:id="@+id/lblActivity"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="match_parent"-->
-            <!--                    android:layout_weight="1"-->
-            <!--                    android:gravity="center_vertical"-->
-            <!--                    android:text="Об'єм"-->
-            <!--                    android:textColor="#000000"-->
-            <!--                    android:textSize="17sp" />-->
-
-            <!--                <RadioButton-->
-            <!--                    android:id="@+id/radio100"-->
-
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-
-            <!--                    android:layout_marginLeft="24dp"-->
-            <!--                    android:background="@android:color/transparent"-->
-            <!--                    android:drawableLeft="@drawable/glass222"-->
-
-            <!--                    android:text="100" />-->
-
-            <!--                <RadioButton-->
-            <!--                    android:id="@+id/radio200"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-
-            <!--                    android:layout_marginLeft="24dp"-->
-            <!--                    android:drawableLeft="@drawable/glass222"-->
-            <!--                    android:text="200" />-->
-
-            <!--                <RadioButton-->
-            <!--                    android:id="@+id/radio300"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-
-            <!--                    android:layout_marginLeft="24dp"-->
-            <!--                    android:drawableLeft="@drawable/glass222"-->
-            <!--                    android:text="300" />-->
-
-            <!--                <RadioButton-->
-            <!--                    android:id="@+id/radio400"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_marginLeft="24dp"-->
-            <!--                    android:drawableLeft="@drawable/glass222"-->
-            <!--                    android:text="400" />-->
-
-            <!--                <RadioButton-->
-            <!--                    android:id="@+id/radio500"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_marginLeft="24dp"-->
-            <!--                    android:drawableLeft="@drawable/glass222"-->
-            <!--                    android:text="500" />-->
-            <!--            </RadioGroup>-->
-
 
             <com.example.caloriescounter.elements.CircularProgressBar
                 android:id="@+id/countup_bar2"
@@ -346,9 +244,6 @@
                 caloriescounter:progressColor="#780000"
                 caloriescounter:progressStrokeWidth="6dp"
                 caloriescounter:showText="true" />
-
-
         </LinearLayout>
-
     </ScrollView>
 </ScrollView>

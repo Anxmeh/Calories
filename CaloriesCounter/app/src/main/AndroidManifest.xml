@@ -34,7 +34,6 @@
         <activity android:name=".WaterActivity" />
         <activity android:name=".AddProductActivity" />
         <activity android:name=".CreateNewDishActivity" />
-        <activity android:name=".ClickedProductActivity" />
         <activity android:name=".ProductsActivity" />
         <activity android:name=".TodayActivity" />
         <activity android:name=".RegisterActivity" />

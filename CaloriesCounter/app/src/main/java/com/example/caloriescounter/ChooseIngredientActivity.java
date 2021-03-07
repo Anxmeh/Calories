@@ -18,9 +18,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.caloriescounter.adapters.ProductAdapter;
-import com.example.caloriescounter.models.Dish;
 import com.example.caloriescounter.models.DishIngredientsView;
-import com.example.caloriescounter.models.Ingredients;
 import com.example.caloriescounter.models.Product;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.utils.CommonUtils;
@@ -37,32 +35,20 @@ public class ChooseIngredientActivity extends AppCompatActivity {
 
     private ListView listView;
     EditText inputSearch;
-    private List<Ingredients> prodsindish;
     private List<Product> products;
-    private ArrayList<Product> addedProducts2 = new ArrayList<Product>();
+    private ArrayList<Product> addedProducts = new ArrayList<Product>();
     final Context context = this;
     private double caloriesInProduct = 0;
     private double dishCalories = 0;
-    public Product addedDish;
-
     private Product addedProduct;
-    private Dish dish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_ingredient);
 
-
         listView = findViewById(R.id.listViewProducts);
         inputSearch = (EditText) findViewById(R.id.inputSearch);
-
-
-
-
-
-
-
 
         NetworkService.getInstance()
                 .getJSONApi()
@@ -76,8 +62,6 @@ public class ChooseIngredientActivity extends AppCompatActivity {
                             products = response.body();
                             final ProductAdapter adapterP = new ProductAdapter(products, ChooseIngredientActivity.this);
                             listView.setAdapter(adapterP);
-
-
                             inputSearch.addTextChangedListener(new TextWatcher() {
 
                                 @Override
@@ -99,53 +83,19 @@ public class ChooseIngredientActivity extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Product product = (Product) adapterP.getItem(position);
-                                    // Product product2 = products.get(position);
-                                    addedProducts2.add(product);
-                                    //dishCalories = 0;
-                                    // caloriesInProduct =product.getCalories();
-
-                                    //addedprod.append(product.getName() + " ");
-                                    // addedprod.setText(Integer.toString(addedProducts2.size()));
-
-
-                                    //Получаем вид с файла prompt.xml, который применим для диалогового окна:
+                                    addedProducts.add(product);
                                     LayoutInflater li = LayoutInflater.from(context);
                                     View promptsView = li.inflate(R.layout.prompt, null);
-
-                                    //Создаем AlertDialog
                                     AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(context);
-
-                                    //Настраиваем prompt.xml для нашего AlertDialog:
                                     mDialogBuilder.setView(promptsView);
-
-                                    //Настраиваем отображение поля для ввода текста в открытом диалоге:
                                     final EditText userInput = (EditText) promptsView.findViewById(R.id.inputWeight);
-
-                                    //Настраиваем сообщение в диалоговом окне:
                                     mDialogBuilder
                                             .setCancelable(false)
                                             .setPositiveButton("OK",
                                                     new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int id) {
-                                                            //Вводим текст и отображаем в строке ввода на основном экране:
                                                             caloriesInProduct = product.getCalories() * Double.parseDouble(userInput.getText().toString()) / 100;
                                                             dishCalories += caloriesInProduct;
-                                                            // addedprod.setText(Double.toString(dishCalories));
-
-                                                            // получим экземпляр FragmentTransaction из нашей Activity
-//                                                            FragmentManager fragmentManager = getFragmentManager();
-//                                                            FragmentTransaction fragmentTransaction = fragmentManager
-//                                                                    .beginTransaction();
-//
-//                                                            // добавляем фрагмент
-//                                                            MyFragment myFragment = MyFragment.newInstance(product.getName(), userInput.getText().toString(),
-//                                                                    Double.toString(product.getProtein()), Double.toString(product.getFat()),
-//                                                                    Double.toString(product.getCarbohydrate()), Double.toString(product.getCarbohydrate()));
-//                                                            //fragmentTransaction.add(R.id.myfragment, myFragment);
-//                                                            fragmentTransaction.add(R.id.container, myFragment);
-//                                                            fragmentTransaction.commit();
-//
-//                                                            // CommonUtils.showLoading(this);this
 
                                                             final DishIngredientsView modelDish = new DishIngredientsView();
                                                             modelDish.setProductName(product.getName());
@@ -154,7 +104,6 @@ public class ChooseIngredientActivity extends AppCompatActivity {
                                                             modelDish.setProductFat(product.getFat());
                                                             modelDish.setProductCarbohydrate(product.getCarbohydrate());
                                                             modelDish.setProductWeight(Double.parseDouble(userInput.getText().toString()));
-
 
                                                             NetworkService.getInstance()
                                                                     .getJSONApi()
@@ -166,20 +115,9 @@ public class ChooseIngredientActivity extends AppCompatActivity {
                                                                             if (response.errorBody() == null && response.isSuccessful()) {
                                                                                 assert response.body() != null;
                                                                                 addedProduct = response.body();
-
-                                                                                String succeed = "Add succeed";
-                                                                                Intent intent = new Intent(ChooseIngredientActivity.this,RecyclerActivity.class);
+                                                                                Intent intent = new Intent(ChooseIngredientActivity.this, RecyclerActivity.class);
                                                                                 finish();
                                                                                 startActivity(intent);
-                                                                                ////////////
-                                                                                //CommonUtils.showLoading(this);
-
-                                                                                ///////////
-//                                                                                Toast toast = Toast.makeText(getApplicationContext(),
-//                                                                                        succeed, Toast.LENGTH_LONG);
-//                                                                                toast.show();
-//                                                                                Intent intent = new Intent(AddProductActivity.this, ProductsActivity.class);
-//                                                                                startActivity(intent);
                                                                             } else {
                                                                                 String errorMessage;
                                                                                 try {
@@ -205,7 +143,6 @@ public class ChooseIngredientActivity extends AppCompatActivity {
                                                                             t.printStackTrace();
                                                                         }
                                                                     });
-
                                                         }
                                                     })
                                             .setNegativeButton("Отмена",
@@ -215,9 +152,7 @@ public class ChooseIngredientActivity extends AppCompatActivity {
                                                         }
                                                     });
 
-                                    //Создаем AlertDialog:
                                     AlertDialog alertDialog = mDialogBuilder.create();
-                                    //и отображаем его:
                                     alertDialog.show();
                                 }
                             });

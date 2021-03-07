@@ -17,15 +17,6 @@
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp">
 
-<!--        <com.android.volley.toolbox.NetworkImageView-->
-<!--            android:id="@+id/chooseImageLogin"-->
-<!--            android:layout_width="200dp"-->
-<!--            android:layout_height="150dp"-->
-<!--            android:layout_marginTop="25dp"-->
-<!--            android:layout_marginBottom="20dp"-->
-<!--            android:layout_gravity="center_horizontal" />-->
-
-        <!-- Email Label -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailLayout"
             android:layout_width="match_parent"
@@ -38,7 +29,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_email"
+                android:id="@+id/inputEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_email"
@@ -58,14 +49,13 @@
             app:errorEnabled="true" >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_password"
+                android:id="@+id/inputPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_password"
                 android:drawablePadding="10dp"
                 android:inputType="textPassword"
                 android:drawableLeft="@drawable/ic_password" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -86,7 +76,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginLeft="30dp"
+
+                    android:layout_weight="1"
                     android:background="@drawable/button_gradient"
                     android:onClick="onClickSignIn"
                     android:text="@string/signIn" />
@@ -98,12 +89,11 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:onClick="onClickSignUp"
                     android:background="@drawable/button_gradient"
                     android:text="@string/signUp" />
-
             </LinearLayout>
-
 
             <com.google.android.gms.common.SignInButton
                 android:layout_width="260dp"
@@ -111,25 +101,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center_horizontal"
-                android:id="@+id/sign_in_button"
+                android:id="@+id/signInGoogle"
                 />
-
-<!--            <TextView-->
-<!--                android:id="@+id/status"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"/>-->
-
-
-<!--            <Button-->
-<!--                android:id="@+id/sign_out_button"-->
-<!--                android:layout_width="250dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center_horizontal"-->
-<!--                android:background="@drawable/button_gradient"-->
-<!--                android:onClick="onClickSignOut"-->
-<!--                android:text="@string/SignOut" />-->
-
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

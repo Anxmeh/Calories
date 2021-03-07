@@ -44,41 +44,6 @@ namespace CalorieCounter.Controllers
             _IJwtTokenService = IJwtTokenService;
             _env = env;
         }
-        //[HttpPost("logingoogle")]
-        //public async Task<IActionResult> Login([FromBody] string email)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest("Bad Model");
-        //    }
-
-        //    var user = _context.Users.FirstOrDefault(u => u.Email == email);
-        //    if (user == null)
-        //    {
-        //        return BadRequest("Даний користувач не знайденний!");
-        //    }
-
-        //   // var result = _signInManager
-        //   //     .PasswordSignInAsync(user, model.Password, false, false).Result;
-
-        //    await _signInManager.SignInAsync(user, isPersistent: false);
-        //    return Ok(
-        //         new
-        //         {
-        //             token = _IJwtTokenService.CreateToken(user)
-        //         });
-        //}
-
-
-
-
-
-
-
-
-
-
-
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginViewModel model)
@@ -103,9 +68,6 @@ namespace CalorieCounter.Controllers
             }
             long ids = user1.Id;
             UserProfileView userProfile = new UserProfileView(user1);
-
-
-            //UserProfileView prof = new UserProfileView(user) ;
             if (userProfile.FromGoogleLogin)
                 return BadRequest("Ви зареєстровані через Google. Скористайтесь відповідною кнопкою для входу");
 
@@ -116,7 +78,7 @@ namespace CalorieCounter.Controllers
             {
                 return BadRequest("Невірно введений пароль!");
             }
-  
+
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Ok(
                  new
@@ -194,7 +156,7 @@ namespace CalorieCounter.Controllers
             {
                 user.UserProfile.Photo = fileName;
                 var bmp = model.ImageBase64.FromBase64StringToImage();
-                var serverPath = _env.ContentRootPath; //Directory.GetCurrentDirectory(); //_env.WebRootPath;
+                var serverPath = _env.ContentRootPath;
                 var folerName = "Uploaded";
                 var path = Path.Combine(serverPath, folerName);
 
@@ -204,7 +166,7 @@ namespace CalorieCounter.Controllers
                 }
 
                 string filePathSave = Path.Combine(path, fileName);
-                //   bmp.Save(filePathSave, ImageFormat.Jpeg);
+                bmp.Save(filePathSave, ImageFormat.Jpeg);
             }
 
             var res = _userManager.CreateAsync(user, model.Password).Result;
@@ -234,14 +196,9 @@ namespace CalorieCounter.Controllers
         public async Task<IActionResult> LoginGoogle([FromBody] LoginGoogleViewModel model)
         {
             var validPayload = await GoogleJsonWebSignature.ValidateAsync(model.IdToken);
-          //  will throw an InvalidJwtException
+
             if (validPayload == null)
                 return BadRequest("Поганий запит");
-            //Assert.NotNull(validPayload);
-            // validPayload.Email;
-           // validPayload.FamilyName;
-            //validPayload.GivenName;
-
             var user = _context.Users.FirstOrDefault(u => u.Email == validPayload.Email);
             if (user == null)
             {
@@ -253,7 +210,7 @@ namespace CalorieCounter.Controllers
                     Email = validPayload.Email,
                     UserName = validPayload.Email
                 };
-              
+
                 dbUser.UserSettings = new UserSettings()
                 {
                     Calories = 1500,
@@ -327,10 +284,6 @@ namespace CalorieCounter.Controllers
                      });
             }
 
-
-            // var result = _signInManager
-            //     .PasswordSignInAsync(user, model.Password, false, false).Result;
-
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Ok(
                  new
@@ -342,62 +295,33 @@ namespace CalorieCounter.Controllers
         [HttpPost("signout")]
         public async Task<IActionResult> Logout()
         {
-
             await _signInManager.SignOutAsync();
             return Ok();
         }
 
+        //public void SendMesssage()
+        //{
+        //    var emailMessage = new MimeMessage();
 
+        //    emailMessage.From.Add(new MailboxAddress("Peter", "noreply@karpaty.tk"));
+        //    emailMessage.To.Add(new MailboxAddress("", "77dasha0377@gmail.com"));
+        //    emailMessage.Subject = "Title---";
+        //    emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+        //    {
+        //        Text = "Hello"
+        //    };
 
+        //    using (var client = new SmtpClient())
+        //    {
+        //        //client.Connect("smtp.gmail.com", 587, true);
+        //        //client.Authenticate("itstudentyre@gmail.com", "user@karpaty.tk");
+        //        client.Connect("karpaty.tk", 587, true);
+        //        client.Authenticate("user@karpaty.tk", "Qwerty-1");
+        //        client.Send(emailMessage);
 
-
-
-
-
-            //[AllowAnonymous]
-            //[HttpPost("glogin")]
-            //public IActionResult GoogleLogin()
-            //{
-            //    string redirectUrl = Url.Action("GoogleResponse", "Account");
-            //    var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
-            //    return new ChallengeResult("Google", properties);
-            //}
-
-            //[AllowAnonymous]
-            //public async Task<IActionResult> GoogleResponse()
-            //{
-            //    ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
-            //    if (info == null)
-            //        return RedirectToAction(nameof(Login));
-
-            //    var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-            //    string[] userInfo = { info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value };
-            //    if (result.Succeeded)
-            //        //  return View(userInfo);
-            //        return Ok();
-            //    else
-            //    {
-            //        DbUser user = new DbUser
-            //        {
-            //            Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
-            //            UserName = info.Principal.FindFirst(ClaimTypes.Email).Value
-            //        };
-
-            //        IdentityResult identResult = await _userManager.CreateAsync(user);
-            //        if (identResult.Succeeded)
-            //        {
-            //            identResult = await _userManager.AddLoginAsync(user, info);
-            //            if (identResult.Succeeded)
-            //            {
-            //                await _signInManager.SignInAsync(user, false);
-            //                // return View(userInfo);
-            //                return Ok();
-            //            }
-            //        }
-            //        // return AccessDenied();
-            //        return BadRequest("Поганий запит!");
-            //    }
-            //}
-        }
+        //        client.Disconnect(true);
+        //    }
+        //}
+    }
 }
 

@@ -15,7 +15,7 @@ public class LineChartXAxisValueFormatter extends IndexAxisValueFormatter {
     @Override
     public String getFormattedValue(float value) {
         Log.e("in formatter, value", Float.toString(value));
-        Log.e("in formatt, value long", Long.toString((long)value));
+       // Log.e("in formatt, value long", Long.toString((long)value));
         // Convert float value to date string
         // Convert from seconds back to milliseconds to format time  to show to the user
       //  long emissionsMilliSince1970Time = ((long) value) * 1000;
@@ -28,8 +28,8 @@ public class LineChartXAxisValueFormatter extends IndexAxisValueFormatter {
        long milis =  TimeUnit.DAYS.toMillis((long)value);
 
         Date date1 = new Date(milis);
-        Date date = new Date((long)value);
-        Log.e("in formatter date", date.toString());
+   //     Date date = new Date((long)value);
+     //   Log.e("in formatter date", date.toString());
         Log.e("in formatter date1", date1.toString());
         //Specify the format you'd like
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM", Locale.ENGLISH);

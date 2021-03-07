@@ -40,7 +40,6 @@ public class Vitamin implements Serializable {
 
     @Override
     public String toString() {
-        return new String(Long.toString(this.id) +  this.vitaminName);
-               // this.vitaminName;
+        return this.vitaminName;
     }
 }
