@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/bar_background">
         <shape>
             <corners android:radius="2dp" />
-            <stroke android:color="#8B0000"
-                android:width="2dp"/>
-
+            <stroke
+                android:width="2dp"
+                android:color="#8B0000" />
             <gradient
                 android:angle="270"
                 android:centerColor="#E0FFFF"
@@ -19,7 +18,6 @@
         <clip>
             <shape>
                 <corners android:radius="2dp" />
-
                 <gradient
                     android:angle="270"
                     android:centerColor="#fa8072"
@@ -29,5 +27,4 @@
             </shape>
         </clip>
     </item>
-
 </layer-list>

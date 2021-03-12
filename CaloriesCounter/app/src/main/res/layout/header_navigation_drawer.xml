@@ -4,25 +4,24 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-<TextView
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_marginTop="24dp"
-android:layout_marginStart="24dp"
-android:layout_marginEnd="24dp"
-android:textAppearance="?attr/textAppearanceHeadline6"
-android:text="header_title"
-    android:id="@+id/header"/>
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="header_title"
+        android:textAppearance="?attr/textAppearanceHeadline6" />
 
-<TextView
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_marginBottom="24dp"
-android:layout_marginStart="24dp"
-android:layout_marginEnd="24dp"
-android:textAppearance="?attr/textAppearanceBody2"
-android:textColor="@color/material_on_surface_emphasis_medium"
-android:text="header_text"
-    android:id="@+id/subheader"/>
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/subheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:text="header_text"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="@color/material_on_surface_emphasis_medium" />
+</LinearLayout>

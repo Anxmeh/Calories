@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -48,13 +49,14 @@ public class RecyclerActivity extends BaseActivity implements OnDeleteListener {
     private Product addedProduct;
     private ListView listView;
     private Dish dish;
-       private FloatingActionButton fab;
+    private FloatingActionButton fab;
     private TextView txtDishProtein;
     private TextView txtDishFat;
     private TextView txtDishCarbs;
     private TextView txtDishWeight;
     private TextView txtDishCalories;
     private EditText inputSearch;
+    private Button btnAddDish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class RecyclerActivity extends BaseActivity implements OnDeleteListener {
         txtDishCarbs = findViewById(R.id.dishCarbohydrate);
         txtDishCalories = findViewById(R.id.dishCalories);
         txtDishWeight = findViewById(R.id.dishWeight);
+        btnAddDish = findViewById(R.id.btnAddDish);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,10 +84,13 @@ public class RecyclerActivity extends BaseActivity implements OnDeleteListener {
             }
 
         });
+
+
         sessionManager = SessionManager.getInstance(this);
         setRecyclerView();
         loadList();
         calculate();
+
 
     }
 
@@ -106,8 +112,11 @@ public class RecyclerActivity extends BaseActivity implements OnDeleteListener {
                 .setPositiveButton("Видалити", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.e(TAG, "Delete product by name " + product.getProductName());
                         prodsindish.remove(product);
+                        if (prodsindish == null || prodsindish.size() < 2)
+                            btnAddDish.setVisibility(View.GONE);
+                        else
+                            btnAddDish.setVisibility(View.VISIBLE);
 
                         NetworkService.getInstance()
                                 .getJSONApi()
@@ -237,6 +246,10 @@ public class RecyclerActivity extends BaseActivity implements OnDeleteListener {
                                 prodsindish.clear();
                             prodsindish.addAll(0, response.body());
                             adapter.notifyDataSetChanged();
+                            if (prodsindish == null || prodsindish.size() < 2)
+                                btnAddDish.setVisibility(View.GONE);
+                            else
+                                btnAddDish.setVisibility(View.VISIBLE);
                         } else {
                             prodsindish = null;
                         }

@@ -4,21 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Observable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.caloriescounter.models.Product;
-import com.example.caloriescounter.models.UserView;
 import com.example.caloriescounter.network.NetworkService;
 import com.example.caloriescounter.network.SessionManager;
 import com.example.caloriescounter.network.utils.CommonUtils;
@@ -28,16 +27,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Objects;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BaseActivity extends AppCompatActivity {
-    private UserView userProfile;
+
     private ActionBarDrawerToggle mToggle;
     private DrawerLayout drawerLayout;
     protected Context mContext;
@@ -45,6 +42,7 @@ public class BaseActivity extends AppCompatActivity {
     TextView txtTitle;
     Toolbar homeToolbar;
     private GoogleSignInClient mGoogleSignInClient;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +54,7 @@ public class BaseActivity extends AppCompatActivity {
         setSupportActionBar(homeToolbar);
         txtTitle = findViewById(R.id.titleHome);
         drawerLayout = findViewById(R.id.drawerLayout);
-        NavigationView navigationView = findViewById(R.id.navigation);
+        navigationView = findViewById(R.id.navigation);
 
         navigationView.bringToFront();
         View headerView = navigationView.getHeaderView(0);
@@ -69,6 +67,10 @@ public class BaseActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         sessionManager = SessionManager.getInstance(this);
+
+        if (sessionManager.isLogged)
+            hideItem();
+
         mToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -210,7 +212,9 @@ public class BaseActivity extends AppCompatActivity {
             default:
                 return false;
         }
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+
     }
 
     @Override
@@ -220,4 +224,21 @@ public class BaseActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void hideItem() {
+        Menu navMenu = navigationView.getMenu();
+        navMenu.findItem(R.id.login).setVisible(false);
+        navMenu.findItem(R.id.register).setVisible(false);
+    }
+
+
 }

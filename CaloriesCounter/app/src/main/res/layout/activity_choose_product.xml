@@ -5,16 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:noHistory="true"
     android:fillViewport="true"
     tools:context=".ChooseProductActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="10dp"
         android:orientation="vertical">
 
         <EditText
@@ -33,7 +32,6 @@
             android:horizontalSpacing="5dp"
             android:numColumns="1"
             android:verticalSpacing="5dp" />
-
 
 
     </LinearLayout>

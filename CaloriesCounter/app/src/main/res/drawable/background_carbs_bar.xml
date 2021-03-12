@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-
     <item android:id="@+id/bar_background_carbs">
         <shape>
             <corners android:radius="2dp" />
             <stroke android:color="#006400"
                 android:width="2dp"/>
-
             <gradient
                 android:angle="270"
                 android:centerColor="#E0FFFF"
@@ -19,7 +17,6 @@
         <clip>
             <shape>
                 <corners android:radius="2dp" />
-
                 <gradient
                     android:angle="270"
                     android:centerColor="#98FB98"
@@ -29,5 +26,4 @@
             </shape>
         </clip>
     </item>
-
 </layer-list>

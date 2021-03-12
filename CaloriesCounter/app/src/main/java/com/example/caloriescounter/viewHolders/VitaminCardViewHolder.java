@@ -2,8 +2,6 @@ package com.example.caloriescounter.viewHolders;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +18,6 @@ public class VitaminCardViewHolder extends RecyclerView.ViewHolder {
     public Button btnRemove;
     public Button btnAdd;
 
-
     public VitaminCardViewHolder(@NonNull View itemView) {
         super(itemView);
         this.view = itemView;
@@ -29,17 +26,6 @@ public class VitaminCardViewHolder extends RecyclerView.ViewHolder {
         delete = itemView.findViewById(R.id.btnDelete);
         btnRemove = itemView.findViewById(R.id.btnRemove);
         btnAdd = itemView.findViewById(R.id.btnAdd);
-
-
-//        txtNameVitamin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                Category category = new Category(1, "Hello", "belka.jpg");
-////                Intent intent = new Intent(view.getContext(), ClickedCategoryActivity.class).
-////                        putExtra("category", category);
-////                view.getContext().startActivity(intent);
-//            }
-//        });
     }
 
     public View getView() {

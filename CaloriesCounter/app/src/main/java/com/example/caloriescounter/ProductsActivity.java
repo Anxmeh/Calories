@@ -103,19 +103,21 @@ public class ProductsActivity extends BaseActivity implements OnDeleteListenerPr
                 .setPositiveButton("Видалити", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.e(TAG, "Delete category by Id " + product.getId());
-                        products.remove(product);
+                                            products.remove(product);
                         adapter.notifyDataSetChanged();
 
                         NetworkService.getInstance()
                                 .getJSONApi()
                                 .removeProduct(product.getId())
-                                .enqueue(new Callback<List<Product>>() {
+                                .enqueue(new Callback<Void>() {
                                     @Override
-                                    public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
+                                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                                         CommonUtils.hideLoading();
                                         if (response.errorBody() == null && response.isSuccessful()) {
-                                            assert response.body() != null;
+                                            String succeed = "Видалено";
+                                            Toast toast = Toast.makeText(getApplicationContext(),
+                                                    succeed, Toast.LENGTH_LONG);
+                                            toast.show();
                                         } else {
                                             String errorMessage;
                                             try {
@@ -129,7 +131,7 @@ public class ProductsActivity extends BaseActivity implements OnDeleteListenerPr
                                     }
 
                                     @Override
-                                    public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
+                                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                                         CommonUtils.hideLoading();
                                         String error = "Помилка з'єднання!";
                                         Toast toast = Toast.makeText(getApplicationContext(),

@@ -3,6 +3,7 @@ package com.example.caloriescounter;
 import androidx.annotation.NonNull;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -38,6 +39,7 @@ public class SettingsActivity extends BaseActivity {
     private EditText txtForearm;
     private TextView txtCalories;
     private TextView txtFatPercent;
+    private TextView txtBmi;
     private RadioButton radioMale;
     private RadioButton radioFemale;
     private EditText txtUserCalories;
@@ -66,6 +68,7 @@ public class SettingsActivity extends BaseActivity {
         txtNeck = findViewById(R.id.txtNeck);
         txtForearm = findViewById(R.id.txtForearm);
         txtFatPercent = findViewById(R.id.txtFatPercent);
+        txtBmi = findViewById(R.id.txtBmi);
         radioMale = findViewById(R.id.radioMale);
         radioFemale = findViewById(R.id.radioFemale);
         txtUserCalories = findViewById(R.id.txtUserCalories);
@@ -113,6 +116,12 @@ public class SettingsActivity extends BaseActivity {
             }
         });
 
+        if (!sessionManager.isLogged) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+
+
         CommonUtils.showLoading(this);
         NetworkService.getInstance()
                 .getJSONApi()
@@ -138,6 +147,7 @@ public class SettingsActivity extends BaseActivity {
                             txtCalories.setText(Double.toString(userSettings.getCalories()));
                             txtFatPercent.setText(Double.toString(userSettings.getFatPercentage()));
                             txtUserCalories.setText(Double.toString(userSettings.getUserCalories()));
+                            txtBmi.setText(Double.toString(userSettings.getBmi()));
                             if (userSettings.isSex())
                                 radioGroupSex.check(R.id.radioMale);
                             else
@@ -386,6 +396,7 @@ public class SettingsActivity extends BaseActivity {
                             txtCalories.setText(Double.toString(userSettings.getCalories()));
                             txtFatPercent.setText(Double.toString(userSettings.getFatPercentage()));
                             txtUserCalories.setText(Double.toString(userSettings.getUserCalories()));
+                            txtBmi.setText(Double.toString(userSettings.getBmi()));
                             if (userSettings.isSex())
                                 radioGroupSex.check(R.id.radioMale);
                             else

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:noHistory="true"
     android:scrollbars="none"
     tools:context=".ProductsActivity"
     tools:ignore="ExtraText">
@@ -14,9 +13,9 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="65dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="5dp"
         android:paddingBottom="10dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

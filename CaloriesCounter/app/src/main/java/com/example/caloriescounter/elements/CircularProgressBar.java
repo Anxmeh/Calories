@@ -16,33 +16,32 @@ import com.example.caloriescounter.R;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class CircularProgressBar extends View
-{
-    private static final int   DEFAULT_MAX_VALUE    = 100;
+public class CircularProgressBar extends View {
+    private static final int DEFAULT_MAX_VALUE = 100;
     private static final float ADJUST_FOR_12_OCLOCK = 270f;
 
     // properties for the background circle
     private final Paint mBgPaint;
 
     // properties for the progress circle
-    private final Paint        mProgressPaint;
+    private final Paint mProgressPaint;
 
     // text properties for the countdown text
-    private boolean            mShowText;
-    private final Paint        mTextPaint;
+    private boolean mShowText;
+    private final Paint mTextPaint;
 
     // maximum number of points in the circle default is 100
-    private int                mMax;
+    private int mMax;
 
     // current progress between 0 and mMax
-    private int                mProgress;
+    private int mProgress;
 
     // diameter (in dp) of the circle
-    private float              mDiameter;
+    private float mDiameter;
 
     // margin between circle and edges (default is 4dp)
     // NOTE: you will need to include some margin to account for the stroke width, so min padding is strokeWidth/2
-    private int                mLayoutMargin;
+    private int mLayoutMargin;
 
     // area to draw the progress arc
     private RectF mArcBounds;
@@ -50,13 +49,11 @@ public class CircularProgressBar extends View
     // height taken to draw text with the current settings
     private Rect mTextBounds;
 
-    public CircularProgressBar(final Context context, final AttributeSet attrs)
-    {
+    public CircularProgressBar(final Context context, final AttributeSet attrs) {
         this(context, attrs, -1);
     }
 
-    public CircularProgressBar(final Context context, final AttributeSet attrs, final int defStyle)
-    {
+    public CircularProgressBar(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
 
         // extract params (if provided)
@@ -71,8 +68,7 @@ public class CircularProgressBar extends View
         final float defaultTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14, this.getResources()
                 .getDisplayMetrics());
 
-        try
-        {
+        try {
             @SuppressLint("ResourceAsColor") final int bgColor = args.getColor(R.styleable.circularProgressBar_bgColor, R.color.black);
             final int bgStrokeWidth = args.getDimensionPixelSize(R.styleable.circularProgressBar_bgStrokeWidth,
                     (int) defaultStrokeWidth);
@@ -112,18 +108,14 @@ public class CircularProgressBar extends View
             this.mTextPaint.setStyle(Paint.Style.STROKE);
             this.mTextPaint.setTextAlign(Paint.Align.CENTER);
             this.mTextPaint.setTextSize(textSize);
-        }
-        finally
-        {
+        } finally {
             args.recycle();
         }
     }
 
     @Override
-    protected void onDraw(final Canvas canvas)
-    {
-        if (this.mArcBounds == null)
-        {
+    protected void onDraw(final Canvas canvas) {
+        if (this.mArcBounds == null) {
             // set view bounds for arc drawing
             this.mArcBounds = new RectF(this.mLayoutMargin, this.mLayoutMargin, this.mLayoutMargin + this.mDiameter,
                     this.mLayoutMargin + this.mDiameter);
@@ -144,10 +136,8 @@ public class CircularProgressBar extends View
         canvas.drawArc(this.mArcBounds, CircularProgressBar.ADJUST_FOR_12_OCLOCK, sweepAngle.floatValue(), false,
                 this.mProgressPaint);
 
-        if (this.mShowText)
-        {
-            if (this.mTextBounds == null)
-            {
+        if (this.mShowText) {
+            if (this.mTextBounds == null) {
                 // Reference: http://stackoverflow.com/questions/3654321/measuring-text-height-to-be-drawn-on-canvas-android
                 // answer #2
                 this.mTextBounds = new Rect();
@@ -160,8 +150,7 @@ public class CircularProgressBar extends View
         }
     }
 
-    public void setProgress(final int progress)
-    {
+    public void setProgress(final int progress) {
         this.mProgress = progress;
 
         // force redraw
@@ -169,55 +158,45 @@ public class CircularProgressBar extends View
     }
 
     @Override
-    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec)
-    {
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         // size will always be diameter + margin on add sides
         final int size = (int) this.mDiameter + (this.mLayoutMargin * 2);
         this.setMeasuredDimension(size, size);
     }
 
-    public void setMax(final int max)
-    {
+    public void setMax(final int max) {
         this.mMax = max;
     }
 
-    public void setBgColor(final int bgColor)
-    {
+    public void setBgColor(final int bgColor) {
         this.mBgPaint.setColor(bgColor);
     }
 
-    public void setBgStrokeWidth(final int bgStrokeWidth)
-    {
+    public void setBgStrokeWidth(final int bgStrokeWidth) {
         this.mBgPaint.setStrokeWidth(bgStrokeWidth);
     }
 
-    public void setProgressColor(final int progressColor)
-    {
+    public void setProgressColor(final int progressColor) {
         this.mProgressPaint.setColor(progressColor);
     }
 
-    public void setProgressStrokeWidth(final int progressStrokeWidth)
-    {
+    public void setProgressStrokeWidth(final int progressStrokeWidth) {
         this.mProgressPaint.setStrokeWidth(progressStrokeWidth);
     }
 
-    public void setShowText(final boolean showText)
-    {
+    public void setShowText(final boolean showText) {
         this.mShowText = showText;
     }
 
-    public void setTextSize(final int textSize)
-    {
+    public void setTextSize(final int textSize) {
         this.mTextPaint.setTextSize(textSize);
     }
 
-    public void setTextColor(final int textColor)
-    {
+    public void setTextColor(final int textColor) {
         this.mTextPaint.setColor(textColor);
     }
 
-    public void setDiameter(final float diameter)
-    {
+    public void setDiameter(final float diameter) {
         this.mDiameter = diameter;
     }
 

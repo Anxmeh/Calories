@@ -2,24 +2,23 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:fitsSystemWindows="true"
-    android:noHistory="true"
     tools:context=".ProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="65dp">
+        android:layout_marginTop="65dp"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp">
 
             <com.android.volley.toolbox.NetworkImageView
                 android:id="@+id/chooseImageProfile"
@@ -30,11 +29,11 @@
                 android:id="@+id/chooseImageBrush"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/chooseImageProfile"
-                app:srcCompat="@drawable/ic_brush"
                 android:layout_alignBottom="@id/chooseImageProfile"
+                android:layout_toEndOf="@id/chooseImageProfile"
+                android:layout_toRightOf="@id/chooseImageProfile"
                 android:contentDescription="change_photo"
-                android:layout_toRightOf="@id/chooseImageProfile" />
+                app:srcCompat="@drawable/ic_brush" />
         </RelativeLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -51,9 +50,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_user"
+                android:drawableLeft="@drawable/ic_user"
                 android:drawablePadding="10dp"
-                android:inputType="textNoSuggestions"
-                android:drawableLeft="@drawable/ic_user" />
+                android:inputType="textNoSuggestions" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,9 +70,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_user_v2"
+                android:drawableLeft="@drawable/ic_user_v2"
                 android:drawablePadding="10dp"
-                android:inputType="textNoSuggestions"
-                android:drawableLeft="@drawable/ic_user_v2" />
+                android:inputType="textNoSuggestions" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -91,9 +90,9 @@
                 android:layout_height="wrap_content"
                 android:autofillHints="name"
                 android:drawableStart="@drawable/ic_cake"
+                android:drawableLeft="@drawable/ic_cake"
                 android:drawablePadding="10dp"
-                android:inputType="date"
-                android:drawableLeft="@drawable/ic_cake" />
+                android:inputType="date" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -110,9 +109,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_phone"
+                android:drawableLeft="@drawable/ic_phone"
                 android:drawablePadding="10dp"
-                android:inputType="phone"
-                android:drawableLeft="@drawable/ic_phone" />
+                android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -129,9 +128,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_email"
+                android:drawableLeft="@drawable/ic_email"
                 android:drawablePadding="10dp"
-                android:inputType="textEmailAddress"
-                android:drawableLeft="@drawable/ic_email" />
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -140,7 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/button_gradient"
-            android:text="@string/changeProfile"
-            android:onClick="onClickUpdate"/>
+            android:onClick="onClickUpdate"
+            android:text="@string/changeProfile" />
     </LinearLayout>
 </ScrollView>

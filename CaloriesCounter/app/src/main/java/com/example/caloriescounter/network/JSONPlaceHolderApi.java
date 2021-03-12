@@ -80,7 +80,7 @@ public interface JSONPlaceHolderApi {
     Call<Dish> removeProductInDish(@Body Ingredients model);
 
     @POST("/api/products/removeproduct")
-    Call<List<Product>> removeProduct(@Body long productId);
+    Call<Void> removeProduct(@Body long productId);
 
     @GET("/api/dish/calculatedish")
     Call<Dish> calculateDish();

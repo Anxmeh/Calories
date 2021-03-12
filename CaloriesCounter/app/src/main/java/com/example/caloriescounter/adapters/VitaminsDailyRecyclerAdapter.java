@@ -9,29 +9,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.caloriescounter.R;
-import com.example.caloriescounter.click_listeners.OnChangeAmountVitamins;
 import com.example.caloriescounter.click_listeners.OnChangeDailyVitaminsListener;
-import com.example.caloriescounter.click_listeners.OnDeleteListenerVitamins;
 import com.example.caloriescounter.models.UserVitaminsDailyView;
-import com.example.caloriescounter.models.UserVitaminsView;
-import com.example.caloriescounter.network.ImageRequester;
-import com.example.caloriescounter.network.NetworkService;
-import com.example.caloriescounter.viewHolders.VitaminCardViewHolder;
 import com.example.caloriescounter.viewHolders.VitaminDailyCardViewHolder;
 
 import java.util.List;
 
-public class VitaminsDailyRecyclerAdapter extends RecyclerView.Adapter<VitaminDailyCardViewHolder>{
+public class VitaminsDailyRecyclerAdapter extends RecyclerView.Adapter<VitaminDailyCardViewHolder> {
     private List<UserVitaminsDailyView> vitaminsList;
     private OnChangeDailyVitaminsListener changeListener;
     private Context context;
-   // private final String BASE_URL = NetworkService.getBaseUrl();
 
     public VitaminsDailyRecyclerAdapter(List<UserVitaminsDailyView> vitaminsList, OnChangeDailyVitaminsListener changeListener, Context context) {
         this.vitaminsList = vitaminsList;
         this.changeListener = changeListener;
         this.context = context;
     }
+
     @NonNull
     @Override
     public VitaminDailyCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,9 +44,8 @@ public class VitaminsDailyRecyclerAdapter extends RecyclerView.Adapter<VitaminDa
                 @Override
                 public void onClick(View v) {
                     changeListener.checkVitamin(vitaminsList.get(position));
-                                  }
+                }
             });
- 
         }
     }
 

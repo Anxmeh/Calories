@@ -23,6 +23,7 @@ import retrofit2.Response;
 
 public class AddProductActivity extends BaseActivity {
      private Product addedProduct;
+     private String errorMessage = "Обов'язкове поле";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,35 +51,35 @@ public class AddProductActivity extends BaseActivity {
         boolean isCorrect = true;
 
         if (Objects.requireNonNull(nameProduct.getText()).toString().equals("")) {
-            nameProductLayout.setError("Required field!");
+            nameProductLayout.setError(errorMessage);
             isCorrect = false;
         } else {
             nameProductLayout.setError(null);
         }
 
         if (Objects.requireNonNull(calories.getText()).toString().equals("")) {
-            caloriesLayout.setError("Required field!");
+            caloriesLayout.setError(errorMessage);
             isCorrect = false;
         } else {
             caloriesLayout.setError(null);
         }
 
         if (Objects.requireNonNull(protein.getText()).toString().equals("")) {
-            proteinLayout.setError("Required field!");
+            proteinLayout.setError(errorMessage);
             isCorrect = false;
         } else {
             proteinLayout.setError(null);
         }
 
         if (Objects.requireNonNull(fat.getText()).toString().equals("")) {
-            fatLayout.setError("Required field!");
+            fatLayout.setError(errorMessage);
             isCorrect = false;
         } else {
             fatLayout.setError(null);
         }
 
         if (Objects.requireNonNull(carbs.getText()).toString().equals("")) {
-            carbsLayout.setError("Required field!");
+            carbsLayout.setError(errorMessage);
             isCorrect = false;
         } else {
             carbsLayout.setError(null);

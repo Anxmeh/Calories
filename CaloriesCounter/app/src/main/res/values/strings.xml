@@ -77,4 +77,6 @@
     <string name="ml300">300 мл</string>
     <string name="ml200">200 мл</string>
     <string name="ml100">100 мл</string>
+    <string name="bmi">Індекс маси тіла</string>
+    <string name="timer">Таймер</string>
 </resources>
