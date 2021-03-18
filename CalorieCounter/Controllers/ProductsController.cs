@@ -38,7 +38,7 @@ namespace CalorieCounter.Controllers
                 Fat = p.Fat,
                 Carbohydrate = p.Carbohydrate,
                 Calories = p.Calories,
-            }).ToList();
+            }).OrderBy(o=> o.Name).ToList();
 
             return Ok(result);
         }
@@ -200,14 +200,10 @@ namespace CalorieCounter.Controllers
                          join p in products on d.ProductId equals p.Id
                          select new { UserId = d.UserId, Weight = d.ProductWeight, ProdName = p.Name };
 
-
-
-
-
-            var result4 = daily.Join(products, // второй набор
-             d => d.ProductId, // свойство-селектор объекта из первого набора
-             p => p.Id, // свойство-селектор объекта из второго набора
-             (d, p) => new { UserId = d.UserId, Weight = d.ProductWeight, ProdName = p.Name }); // результат
+            var result4 = daily.Join(products,
+             d => d.ProductId,
+             p => p.Id,
+             (d, p) => new { UserId = d.UserId, Weight = d.ProductWeight, ProdName = p.Name }); 
 
             var result5 = daily.Join(products,
              d => d.ProductId,
@@ -218,11 +214,7 @@ namespace CalorieCounter.Controllers
                  ProductWeight = d.ProductWeight,
                  ProductName = p.Name,
                  ProductProtein = p.Protein
-             }); // результат
-
-
-
-
+             });
             return Ok();
         }
     }

@@ -12,10 +12,10 @@ namespace CalorieCounter.Entities
         [Key, ForeignKey("User")]
         public long Id { get; set; }
         public virtual DbUser User { get; set; }
-        public double Age { get; set; }
+        public int Age { get; set; }
         public double Weight { get; set; }
         public double Height { get; set; }
-            public double Chest { get; set; }
+        public double Chest { get; set; }
         public double Waist { get; set; }
         public double Hips { get; set; }
         public double Hip { get; set; }

@@ -40,6 +40,7 @@ public class SettingsActivity extends BaseActivity {
     private TextView txtCalories;
     private TextView txtFatPercent;
     private TextView txtBmi;
+    private TextView txtAge;
     private RadioButton radioMale;
     private RadioButton radioFemale;
     private EditText txtUserCalories;
@@ -69,6 +70,7 @@ public class SettingsActivity extends BaseActivity {
         txtForearm = findViewById(R.id.txtForearm);
         txtFatPercent = findViewById(R.id.txtFatPercent);
         txtBmi = findViewById(R.id.txtBmi);
+        txtAge = findViewById(R.id.txtAge);
         radioMale = findViewById(R.id.radioMale);
         radioFemale = findViewById(R.id.radioFemale);
         txtUserCalories = findViewById(R.id.txtUserCalories);
@@ -134,16 +136,17 @@ public class SettingsActivity extends BaseActivity {
                         if (response.errorBody() == null && response.isSuccessful()) {
                             assert response.body() != null;
                             userSettings = response.body();
-                            txtHeight.setText(Double.toString(userSettings.getHeight()));
-                            txtWeight.setText(Double.toString(userSettings.getWeight()));
-                            txtChest.setText(Double.toString(userSettings.getChest()));
-                            txtWaist.setText(Double.toString(userSettings.getWaist()));
-                            txtHips.setText(Double.toString(userSettings.getHips()));
-                            txtHip.setText(Double.toString(userSettings.getHip()));
-                            txtWrist.setText(Double.toString(userSettings.getWrist()));
-                            txtShin.setText(Double.toString(userSettings.getShin()));
-                            txtNeck.setText(Double.toString(userSettings.getNeck()));
-                            txtForearm.setText(Double.toString(userSettings.getForearm()));
+                            txtHeight.setText(userSettings.getHeight() == 0 ? "" : Double.toString(userSettings.getHeight()));
+                            txtWeight.setText(userSettings.getWeight() == 0 ? "" : Double.toString(userSettings.getWeight()));
+                            txtChest.setText(userSettings.getChest() == 0 ? "" : Double.toString(userSettings.getChest()));
+                            txtWaist.setText(userSettings.getWaist() == 0 ? "" : Double.toString(userSettings.getWaist()));
+                            txtHips.setText(userSettings.getHips() == 0 ? "" : Double.toString(userSettings.getHips()));
+                            txtHip.setText(userSettings.getHip() == 0 ? "" : Double.toString(userSettings.getHip()));
+                            txtWrist.setText(userSettings.getWrist() == 0 ? "" : Double.toString(userSettings.getWrist()));
+                            txtShin.setText(userSettings.getShin() == 0 ? "" : Double.toString(userSettings.getShin()));
+                            txtNeck.setText(userSettings.getNeck() == 0 ? "" : Double.toString(userSettings.getNeck()));
+                            txtForearm.setText(userSettings.getForearm() == 0 ? "" : Double.toString(userSettings.getForearm()));
+                            txtAge.setText(userSettings.getAge() == 0 ? "" : Integer.toString(userSettings.getAge()));
                             txtCalories.setText(Double.toString(userSettings.getCalories()));
                             txtFatPercent.setText(Double.toString(userSettings.getFatPercentage()));
                             txtUserCalories.setText(Double.toString(userSettings.getUserCalories()));
@@ -202,6 +205,7 @@ public class SettingsActivity extends BaseActivity {
         final TextInputLayout forearmLayout = findViewById(R.id.forearmLayout);
         final TextInputLayout neckLayout = findViewById(R.id.neckLayout);
         final TextInputLayout userCaloriesLayout = findViewById(R.id.userCaloriesLayout);
+        final TextInputLayout ageLayout = findViewById(R.id.ageLayout);
 
         if (Objects.requireNonNull(txtHeight.getText()).toString().equals("")) {
             heightlLayout.setError(requiredFieldError);
@@ -214,6 +218,15 @@ public class SettingsActivity extends BaseActivity {
             isCorrect = false;
         } else {
             weightLayout.setError(null);
+        }
+        if (Objects.requireNonNull(txtAge.getText()).toString().equals("")) {
+            ageLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else if (Integer.parseInt(txtAge.getText().toString()) > 100 || Integer.parseInt(txtAge.getText().toString()) < 1) {
+            ageLayout.setError(requiredFieldError);
+            isCorrect = false;
+        } else {
+            ageLayout.setError(null);
         }
         if (Objects.requireNonNull(txtChest.getText()).toString().equals("")) {
             chestLayout.setError(requiredFieldError);
@@ -281,7 +294,7 @@ public class SettingsActivity extends BaseActivity {
         settingsUpdate.setHips(Double.parseDouble(txtHips.getText().toString()));
         settingsUpdate.setHip(Double.parseDouble(txtHip.getText().toString()));
         settingsUpdate.setWrist(Double.parseDouble(txtWrist.getText().toString()));
-        settingsUpdate.setAge(30); ///!!!!!!
+        settingsUpdate.setAge(Integer.parseInt(txtAge.getText().toString()));
         settingsUpdate.setShin(Double.parseDouble(txtShin.getText().toString()));
         settingsUpdate.setForearm(Double.parseDouble(txtForearm.getText().toString()));
         settingsUpdate.setNeck(Double.parseDouble(txtNeck.getText().toString()));
@@ -349,6 +362,7 @@ public class SettingsActivity extends BaseActivity {
                             userSettings = response.body();
                             txtCalories.setText(Double.toString(userSettings.getCalories()));
                             txtFatPercent.setText(Double.toString(userSettings.getFatPercentage()));
+                            txtBmi.setText(Double.toString(userSettings.getBmi()));
                         } else {
                             userSettings = null;
                         }
@@ -385,6 +399,7 @@ public class SettingsActivity extends BaseActivity {
                             userSettings = response.body();
                             txtHeight.setText(Double.toString(userSettings.getHeight()));
                             txtWeight.setText(Double.toString(userSettings.getWeight()));
+                            txtAge.setText(Integer.toString(userSettings.getAge()));
                             txtChest.setText(Double.toString(userSettings.getChest()));
                             txtWaist.setText(Double.toString(userSettings.getWaist()));
                             txtHips.setText(Double.toString(userSettings.getHips()));

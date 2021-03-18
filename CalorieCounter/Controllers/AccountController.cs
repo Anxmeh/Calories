@@ -15,10 +15,14 @@ using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using Microsoft.Extensions.Configuration;
 
 namespace CalorieCounter.Controllers
 {
@@ -31,18 +35,21 @@ namespace CalorieCounter.Controllers
         private readonly SignInManager<DbUser> _signInManager;
         private readonly IJwtTokenService _IJwtTokenService;
         private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _Configuration;
 
         public AccountController(EFContext context,
            UserManager<DbUser> userManager,
            SignInManager<DbUser> signInManager,
            IJwtTokenService IJwtTokenService,
-           IWebHostEnvironment env)
+           IWebHostEnvironment env,
+           IConfiguration Configuration)
         {
             _userManager = userManager;
             _context = context;
             _signInManager = signInManager;
             _IJwtTokenService = IJwtTokenService;
             _env = env;
+            _Configuration = Configuration;
         }
 
         [HttpPost("login")]
@@ -183,6 +190,7 @@ namespace CalorieCounter.Controllers
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
+            SendMesssage(_Configuration, user.Email);
 
             return Ok(
                  new
@@ -255,27 +263,7 @@ namespace CalorieCounter.Controllers
                 }
 
                 await _signInManager.SignInAsync(dbUser, isPersistent: false);
-
-                //var emailMessage = new MimeMessage();
-
-                //emailMessage.From.Add(new MailboxAddress("Peter", "noreply@karpaty.tk"));
-                //emailMessage.To.Add(new MailboxAddress("", "77dasha0377@gmail.com"));
-                //emailMessage.Subject = "Title---";
-                //emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-                //{
-                //    Text = "Efefe---f"
-                //};
-
-                //using (var client = new SmtpClient())
-                //{
-                //    //client.Connect("smtp.gmail.com", 587, true);
-                //    //client.Authenticate("itstudentyre@gmail.com", "user@karpaty.tk");
-                //    client.Connect("karpaty.tk", 587, true);
-                //    client.Authenticate("user@karpaty.tk", "Qwerty-1");
-                //    client.Send(emailMessage);
-
-                //    client.Disconnect(true);
-                //}
+                SendMesssage(_Configuration, dbUser.Email);
 
                 return Ok(
                      new
@@ -285,6 +273,7 @@ namespace CalorieCounter.Controllers
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
+
             return Ok(
                  new
                  {
@@ -299,29 +288,18 @@ namespace CalorieCounter.Controllers
             return Ok();
         }
 
-        //public void SendMesssage()
-        //{
-        //    var emailMessage = new MimeMessage();
-
-        //    emailMessage.From.Add(new MailboxAddress("Peter", "noreply@karpaty.tk"));
-        //    emailMessage.To.Add(new MailboxAddress("", "77dasha0377@gmail.com"));
-        //    emailMessage.Subject = "Title---";
-        //    emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-        //    {
-        //        Text = "Hello"
-        //    };
-
-        //    using (var client = new SmtpClient())
-        //    {
-        //        //client.Connect("smtp.gmail.com", 587, true);
-        //        //client.Authenticate("itstudentyre@gmail.com", "user@karpaty.tk");
-        //        client.Connect("karpaty.tk", 587, true);
-        //        client.Authenticate("user@karpaty.tk", "Qwerty-1");
-        //        client.Send(emailMessage);
-
-        //        client.Disconnect(true);
-        //    }
-        //}
+        public async void SendMesssage(IConfiguration config, string email)
+        {
+            var apiKey = config.GetValue<string>("SendGrid");
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("oamakarova90@i.ua", "CaloriesCounter");
+            var subject = "Реєстрація в додатку CaloriesCounter";
+            var to = new EmailAddress(email, "User");
+            var plainTextContent = "Вітаємо в додатку CaloriesCounter! Ваш логін для входу " + email + ".";
+            var htmlContent = "Вітаємо в додатку CaloriesCounter! <br/> Ваш логін для входу " + email + ".";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+        }
     }
 }
 

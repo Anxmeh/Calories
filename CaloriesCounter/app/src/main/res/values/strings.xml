@@ -79,4 +79,12 @@
     <string name="ml100">100 мл</string>
     <string name="bmi">Індекс маси тіла</string>
     <string name="timer">Таймер</string>
+    <string name="red">Випито 50л води</string>
+    <string name="black">Випито 100л води</string>
+    <string name="bronze">Випито 150л води</string>
+    <string name="silver">Випито 250л води</string>
+    <string name="gold">Випито 500л води</string>
+    <string name="age">Вік, р</string>
+
+
 </resources>

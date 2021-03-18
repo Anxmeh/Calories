@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class UserSettingsView {
     @SerializedName("age")
     @Expose
-    private double age;
+    private int age;
     @SerializedName("weight")
     @Expose
     private double weight;
@@ -65,11 +65,11 @@ public class UserSettingsView {
     @Expose
     private double userCarbohydrate;
 
-    public double getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(double age) {
+    public void setAge(int age) {
         this.age = age;
     }
 

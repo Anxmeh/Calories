@@ -112,7 +112,7 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver {
                 }
             } else if (hour >= endHour) {
 
-                calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1);
+                calendar2.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1);
                 calendar2.set(Calendar.HOUR_OF_DAY, beginHour);
                 calendar2.set(Calendar.MINUTE, beginMinute);
                 calendar2.set(Calendar.SECOND, 0);
@@ -142,22 +142,52 @@ public class AlarmReceiverOnBoot extends BroadcastReceiver {
             // The PendingIntent to launch our activity if the user selects this notification
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, WaterActivity.class), 0);
             Notification.Builder builder = null;
-            Log.d("nen", "nen"+ System.currentTimeMillis() + " " + calendar.getTimeInMillis());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                builder = new Notification.Builder(context, channelID)
-                        .setSmallIcon(android.R.drawable.ic_dialog_info)
-                        .setWhen(System.currentTimeMillis())
-                .setShowWhen(true)
-                        .setContentTitle("Нагадування")
-                        .setContentText("Час випити води!")
-                        .setContentIntent(contentIntent)
-                                                .setAutoCancel(true)
-                        ;
+
+
+            Calendar now = Calendar.getInstance();
+            int hour = now.get(Calendar.HOUR_OF_DAY);
+            if (hour < endHour && hour > beginHour) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    builder = new Notification.Builder(context, channelID)
+                            .setSmallIcon(android.R.drawable.ic_dialog_info)
+                            .setWhen(System.currentTimeMillis())
+                            .setShowWhen(true)
+                            .setContentTitle("Нагадування")
+                            .setContentText("Час випити води!")
+                            .setContentIntent(contentIntent)
+                            .setAutoCancel(true);
+                }
+
+                Notification notification = builder.build();
+                int notificationId = 103;
+                notificationManager.notify(notificationId, notification);
+            }
+            else {
+                if (hour < beginHour) {
+                    calendar2.set(Calendar.HOUR_OF_DAY, beginHour);
+                    calendar2.set(Calendar.MINUTE, beginMinute);
+                    calendar2.set(Calendar.SECOND, 0);
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, contentIntent);
+                    }
+
+                } else if (hour >= endHour) {
+
+                    calendar2.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1);
+                    calendar2.set(Calendar.HOUR_OF_DAY, beginHour);
+                    calendar2.set(Calendar.MINUTE, beginMinute);
+                    calendar2.set(Calendar.SECOND, 0);
+                    Log.d("in if elseift", calendar2.getTime().toString());
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar2.getTimeInMillis(), AlarmManager.INTERVAL_HOUR, contentIntent);
+                    }
+                }
             }
 
-            Notification notification = builder.build();
-            int notificationId = 103;
-            notificationManager.notify(notificationId, notification);
+
         }
     }
 }

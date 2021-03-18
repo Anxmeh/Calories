@@ -1,12 +1,12 @@
-﻿using CalorieCounter.Entities;//+
-using CalorieCounter.Helpers;//+
-using CalorieCounter.Models;//+
-using Microsoft.AspNetCore.Authorization;//+
-using Microsoft.AspNetCore.Hosting;//+
+﻿using CalorieCounter.Entities;
+using CalorieCounter.Helpers;
+using CalorieCounter.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;//+
-using Microsoft.EntityFrameworkCore;//+
-using System;//+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
@@ -153,7 +153,6 @@ namespace CalorieCounter.Controllers
                 string filePathSave = Path.Combine(path, fileName);
                 bmp.Save(filePathSave, ImageFormat.Jpeg);
                 Console.WriteLine("File deleted.");
-
 
                 if (!String.IsNullOrWhiteSpace(user.UserProfile.Photo) && System.IO.File.Exists(Path.Combine(path, user.UserProfile.Photo)))
                 {

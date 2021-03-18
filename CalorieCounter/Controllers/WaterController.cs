@@ -50,7 +50,7 @@ namespace CalorieCounter.Controllers
             {
                 return BadRequest("Поганий запит!");
             }
-           // long ids = user.Id;
+            // long ids = user.Id;
             //  UserProfileView userProfile = new UserProfileView(user);
 
 
@@ -81,7 +81,7 @@ namespace CalorieCounter.Controllers
 
             return Ok(new AddWaterViewModel
             {
-                            DateOfDrink = water.DateOfDrink,
+                DateOfDrink = water.DateOfDrink,
                 WaterVolume = water.WaterVolume
 
             });
@@ -129,7 +129,7 @@ namespace CalorieCounter.Controllers
                 {
                     UserId = user.Id,
                     DateOfDrink = model.DateOfDrink,
-                    WaterVolume = model.WaterVolume                   
+                    WaterVolume = model.WaterVolume
                 };
                 newWater = addedWater.WaterVolume;
                 _context.WaterCounters.Add(addedWater);
@@ -143,13 +143,66 @@ namespace CalorieCounter.Controllers
                 _context.SaveChanges();
             }
 
-          
+
             return Ok(new AddWaterViewModel
             {
-               // UserId = user.Id,
+                // UserId = user.Id,
                 DateOfDrink = model.DateOfDrink,
                 WaterVolume = newWater
-               
+
+            });
+
+        }
+
+        [HttpGet("progresswater")]
+        public IActionResult GetProgressWater()
+        {
+            string userName;
+            try
+            {
+                userName = User.Claims.FirstOrDefault(x => x.Type == "name").Value;
+            }
+            catch (Exception)
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+            }
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                return BadRequest("Потрібно спочатку залогінитися!");
+
+            }
+
+            var queryUser = _context.Users.Include(x => x.UserProfile).AsQueryable();
+            var user = queryUser.FirstOrDefault(c => c.UserName == userName);
+
+            if (user == null)
+            {
+                return BadRequest("Поганий запит!");
+            }
+
+            var queryWater = _context.WaterCounters.AsQueryable();
+
+            ICollection<WaterViewModel> progressWater;
+
+            progressWater = queryWater.Select(d => new WaterViewModel
+            {
+                UserId = d.UserId,
+                WaterVolume = d.WaterVolume,
+                DateOfDrink = d.DateOfDrink
+
+            }).Where(u => u.UserId == user.Id).ToList();
+
+            int allWater = 0;
+
+            foreach (var item in progressWater)
+            {
+                allWater += item.WaterVolume;
+            }
+
+            return Ok(new ProgressWaterViewModel
+            {
+                WaterVolume = allWater
             });
 
         }

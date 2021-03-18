@@ -49,6 +49,10 @@
         android:icon="@drawable/ic_stat"
         android:title="Статистика ваги" />
     <item
+        android:id="@+id/progress"
+        android:icon="@drawable/ic_progress"
+        android:title="Мої досягнення" />
+    <item
         android:id="@+id/logout"
         android:icon="@drawable/ic_exit"
         android:title="Вихід" />

@@ -14,8 +14,13 @@ namespace CalorieCounter.Models
 
     public class AddWaterViewModel
     {
-       public int WaterVolume { get; set; }
+        public int WaterVolume { get; set; }
         public DateTime DateOfDrink { get; set; }
+    }
+
+    public class ProgressWaterViewModel
+    {
+        public int WaterVolume { get; set; }
     }
 
 }

@@ -2,16 +2,22 @@ package com.example.caloriescounter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Base64;
@@ -49,6 +55,7 @@ public class ProfileActivity extends BaseActivity {
     private NetworkImageView editImage;
     private final String BASE_URL = NetworkService.getBaseUrl();
     private UserView userProfile;
+    final Context context = this;
     private SessionManager sessionManager;
     private final Calendar calendar = Calendar.getInstance();
     private TextInputEditText textEditName;

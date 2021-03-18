@@ -19,5 +19,6 @@
     <color name="NavajoWhite">#FFDEAD</color>
     <color name="SaddleBrown">#8B4513</color>
     <color name="OrangeRed">#FF4500</color>
+    <color name="WhiteTint">#99F8F8FF</color>
 
 </resources>

@@ -53,16 +53,14 @@
                             android:layout_height="30dp"
                             android:layout_marginLeft="5dp"
                             android:text="Б:"
-                            android:textColor="#1E90FF"
-                            android:textSize="17sp" />
+                            android:textColor="#1E90FF" />
 
                         <TextView
                             android:id="@+id/dishProtein"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:layout_marginLeft="5dp"
-                            android:text=""
-                            android:textSize="17sp" />
+                            android:text="" />
 
                         <TextView
                             android:id="@+id/fatLable"
@@ -70,16 +68,14 @@
                             android:layout_height="30dp"
                             android:layout_marginLeft="5dp"
                             android:text="Ж:"
-                            android:textColor="#FFA500"
-                            android:textSize="17sp" />
+                            android:textColor="#FFA500" />
 
                         <TextView
                             android:id="@+id/dishFat"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:layout_marginLeft="5dp"
-                            android:text=""
-                            android:textSize="17sp" />
+                            android:text="" />
 
                         <TextView
                             android:id="@+id/carbsLable"
@@ -87,16 +83,14 @@
                             android:layout_height="30dp"
                             android:layout_marginLeft="5dp"
                             android:text="В:"
-                            android:textColor="#3CB371"
-                            android:textSize="17sp" />
+                            android:textColor="#3CB371" />
 
                         <TextView
                             android:id="@+id/dishCarbohydrate"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:layout_marginLeft="5dp"
-                            android:text=""
-                            android:textSize="17sp" />
+                            android:text="" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -111,8 +105,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:layout_marginLeft="5dp"
-                            android:text=""
-                            android:textSize="17sp" />
+                            android:text="" />
 
                         <TextView
                             android:id="@+id/caloriesLable"
@@ -127,8 +120,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:layout_marginLeft="5dp"
-                            android:text=""
-                            android:textSize="17sp" />
+                            android:text="" />
 
                         <TextView
                             android:id="@+id/weightLable"

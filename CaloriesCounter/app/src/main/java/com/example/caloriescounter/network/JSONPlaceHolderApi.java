@@ -23,6 +23,7 @@ import com.example.caloriescounter.models.UserVitaminsDailyView;
 import com.example.caloriescounter.models.UserVitaminsView;
 import com.example.caloriescounter.models.Vitamin;
 import com.example.caloriescounter.models.VitaminDailyCheckView;
+import com.example.caloriescounter.models.WaterProgressView;
 import com.example.caloriescounter.models.WaterSettingsView;
 import com.example.caloriescounter.models.WaterTimeView;
 import com.example.caloriescounter.models.WaterView;
@@ -60,6 +61,9 @@ public interface JSONPlaceHolderApi {
 
     @POST("/api/water/addwater")
     Call<WaterView> addWater(@Body WaterView model);
+
+    @GET("/api/water/progresswater")
+    Call<WaterProgressView> getWaterProgress();
 
     @GET("/api/watersettings/watersettings")
     Call<WaterTimeView> getWaterSettings();

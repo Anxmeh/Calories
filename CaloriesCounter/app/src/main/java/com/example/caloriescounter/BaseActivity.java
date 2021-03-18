@@ -209,6 +209,10 @@ public class BaseActivity extends AppCompatActivity {
                 intent = new Intent(this, VitaminSettingsActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.progress:
+                intent = new Intent(this, ProgressActivity.class);
+                startActivity(intent);
+                break;
             default:
                 return false;
         }

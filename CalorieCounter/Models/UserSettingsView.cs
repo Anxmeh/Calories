@@ -8,7 +8,7 @@ namespace CalorieCounter.Models
 {
     public class UserSettingsView
     {
-        public double Age { get; set; }
+        public int Age { get; set; }
         public double Weight { get; set; }
         public double Height { get; set; }
         public double Chest { get; set; }
@@ -52,8 +52,6 @@ namespace CalorieCounter.Models
             UserFat = settings.UserFat;
             UserProtein = settings.UserProtein;
             UserCarbohydrate = settings.UserCarbohydrate;
-
-
         }
     }
 }

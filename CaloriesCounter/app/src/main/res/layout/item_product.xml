@@ -12,11 +12,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
         android:orientation="vertical"
-        android:paddingLeft="2dp"
 
 
-        android:layout_marginTop="5dp">
+        android:paddingLeft="2dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,8 +31,7 @@
                 android:layout_weight="1"
                 android:paddingLeft="5dp"
                 android:text="@string/productName"
-                android:textColor="#000000"
-                 />
+                android:textColor="#000000" />
 
         </LinearLayout>
 
@@ -53,16 +52,14 @@
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:text="Б: "
-                    android:textColor="#1E90FF"
-                    />
+                    android:textColor="#1E90FF" />
 
                 <TextView
                     android:id="@+id/productProtein"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:text=""
-                     />
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/fatLable"
@@ -70,16 +67,14 @@
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:text="Ж: "
-                    android:textColor="#FFA500"
-                   />
+                    android:textColor="#FFA500" />
 
                 <TextView
                     android:id="@+id/productFat"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:text=""
-                    />
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/carbsLable"
@@ -87,16 +82,14 @@
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:text="В: "
-                    android:textColor="#3CB371"
-                     />
+                    android:textColor="#3CB371" />
 
                 <TextView
                     android:id="@+id/productCarbohydrate"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:text=""
-                     />
+                    android:text="" />
             </LinearLayout>
 
             <LinearLayout
@@ -111,31 +104,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:text=""
-                   />
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/caloriesLable"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
-                    android:text=" ккал"
-                    />
+                    android:text=" ккал" />
 
-                <!--            <TextView-->
-                <!--                android:id="@+id/product_weight"-->
-                <!--                android:layout_width="wrap_content"-->
-                <!--                android:layout_height="30dp"-->
-                <!--                android:layout_marginLeft="5dp"-->
-                <!--                android:text=""-->
-                <!--                android:textSize="17sp" />-->
 
-                <!--            <TextView-->
-                <!--                android:id="@+id/weightLable"-->
-                <!--                android:layout_width="19dp"-->
-                <!--                android:layout_height="30dp"-->
-                <!--                android:layout_marginLeft="5dp"-->
-                <!--                android:text=" г" />-->
             </LinearLayout>
         </LinearLayout>
 

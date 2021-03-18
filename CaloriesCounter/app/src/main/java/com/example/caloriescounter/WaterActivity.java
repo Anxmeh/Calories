@@ -278,7 +278,12 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
 
         Calendar time = Calendar.getInstance();
         int hour = time.get(Calendar.HOUR_OF_DAY);
-        if (hour > endHour || currentWatervolume >= waterVolume) {
+        if (hour < beginHour) {
+            time.set(Calendar.HOUR_OF_DAY, beginHour);
+            time.set(Calendar.MINUTE, beginMinute);
+            time.set(Calendar.SECOND, 0);
+
+        } else if (hour > endHour || currentWatervolume >= waterVolume) {
             time.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1);
             time.set(Calendar.HOUR_OF_DAY, beginHour);
             time.set(Calendar.MINUTE, beginMinute);
@@ -295,8 +300,14 @@ public class WaterActivity extends BaseActivity implements View.OnClickListener 
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
+            //  alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(),
+                    AlarmManager.INTERVAL_HOUR, pendingIntent);
         }
+        String message = "Наступне нагадування о ";
+        Toast toast = Toast.makeText(getApplicationContext(),
+                message + time.getTime().toString(), Toast.LENGTH_LONG);
+        toast.show();
     }
 
     @Override
